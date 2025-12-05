@@ -60,6 +60,8 @@ scaleup = 1; ///to change back, change to 0
 
 noturn = 0;
 
+nomove = 0;
+
 fruity = 1;
 
 
@@ -77,7 +79,7 @@ if global.game = 0{
 
     if global.lvl = 4{image_index = 2; value = 2;}
 
-    if global.lvl = 5{image_index = 3; value = 3;} 
+    if global.lvl = 5{image_index = 3; value = 3;}
 
     if global.lvl = 6{image_index = 3; value = 3;}
 
@@ -155,7 +157,7 @@ if global.game = 0{
 
     if global.lvl = 4{image_index = 2; value = 2;}
 
-    if global.lvl = 5{image_index = 3; value = 3;} 
+    if global.lvl = 5{image_index = 3; value = 3;}
 
     if global.lvl = 6{image_index = 3; value = 3;}
 
@@ -231,7 +233,7 @@ if global.game = 0{
 
     if global.lvl = 4{image_index = 13; value = 2;}
 
-    if global.lvl = 5{image_index = 3; value = 3;} 
+    if global.lvl = 5{image_index = 3; value = 3;}
 
     if global.lvl = 6{image_index = 3; value = 3;}
 
