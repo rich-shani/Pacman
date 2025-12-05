@@ -1,0 +1,1 @@
+dotcount = global.dottotal;

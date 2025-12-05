@@ -1,0 +1,35 @@
+if global.rand = 0{
+global.mr = 71
+global.mg = 184
+global.mb = 255
+global.mr2 = 184
+global.mg2 = 104
+global.mb2 = 0
+global.dr = 255
+global.dg = 255
+global.db = 0
+}
+else{
+global.mr = irandom(255)
+global.mg = irandom(255)
+global.mb = irandom(255)
+global.mr2 = irandom(255)
+global.mg2 = irandom(255)
+global.mb2 = irandom(255)
+global.dr = irandom(255)
+global.dg = irandom(255)
+global.db = irandom(255)
+if irandom(4) = 0{
+global.dr = 255
+global.dg = 255
+global.db = 255
+}
+}
+global.ex1 = 0
+global.ex2 = 0
+global.p1x = 16
+global.p1y = 144
+global.p2x = 16
+global.p2y = 464
+global.p3x = 256
+global.p3y = 256

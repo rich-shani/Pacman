@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"mazer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"mazer",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
