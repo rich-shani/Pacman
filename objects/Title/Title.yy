@@ -23,8 +23,8 @@
   "name":"Title",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"ScreenManager",
+    "path":"folders/Objects/ScreenManager.yy",
   },
   "parentObjectId":null,
   "persistent":false,

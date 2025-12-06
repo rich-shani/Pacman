@@ -18,8 +18,8 @@
   "name":"Pauser",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"Triggers",
+    "path":"folders/Objects/Triggers.yy",
   },
   "parentObjectId":null,
   "persistent":false,
