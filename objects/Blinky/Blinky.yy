@@ -14,8 +14,8 @@
   "name":"Blinky",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"Ghosts",
+    "path":"folders/Objects/Ghosts.yy",
   },
   "parentObjectId":null,
   "persistent":false,
