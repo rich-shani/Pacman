@@ -821,7 +821,7 @@ if dead = 0{
 
     if start = 1{
 
-    __view_set( e__VW.XView, 0, 24 ); if room = A2600_4{__view_set( e__VW.YView, 0, 184+48 )}else{__view_set( e__VW.YView, 0, 184 )};
+    __view_set( e__VW.XView, 0, 24 ); __view_set( e__VW.YView, 0, 184 );
 
     }
 
@@ -887,25 +887,13 @@ if dead = 3{
 
             __view_set( e__VW.YView, 0, 2*round(__view_get( e__VW.YView, 0 )/2) ); y=(__view_get( e__VW.YView, 0 )+200); 
 
-            if room = A2600_4{
-
-            if __view_get( e__VW.YView, 0 )<184+48{__view_set( e__VW.YView, 0, __view_get( e__VW.YView, 0 )+2 )}; 
-
-            if __view_get( e__VW.YView, 0 )>184+48{__view_set( e__VW.YView, 0, __view_get( e__VW.YView, 0 )-2 )};
-
-            }
-
-            else{
-
-            if __view_get( e__VW.YView, 0 )<184{__view_set( e__VW.YView, 0, __view_get( e__VW.YView, 0 )+2 )}; 
+            if __view_get( e__VW.YView, 0 )<184{__view_set( e__VW.YView, 0, __view_get( e__VW.YView, 0 )+2 )};
 
             if __view_get( e__VW.YView, 0 )>184{__view_set( e__VW.YView, 0, __view_get( e__VW.YView, 0 )-2 )};
 
-            }
-
 }
 
-if global.lvl > 0{if room = A2600_4{}else{if start = 1{visible = false}else{visible = true}}}
+if global.lvl > 0{if start = 1{visible = false}else{visible = true}}
 
 }
 

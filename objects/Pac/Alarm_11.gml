@@ -40,7 +40,7 @@ if dead = 2 or 3{
     if deader = 1{if global.p1lives > 0{global.p1lives = global.p1lives - 1;}}
     else{if global.p2lives > 0{global.p2lives = global.p2lives - 1;}}
     if (global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0){
-        dead = 3; if global.game = 2{y = -5000; y2 = -5000;}else{x = -5000; x2 = -5000; y = ystart; y2 = ystart;} Power.alarm[0] = 0; Power.alarm[1] = 0; blink = 0; alarm[8] = -1;
+        dead = 3; if global.game = 2{y = -5000; y2 = -5000;}else{x = -5000; x2 = -5000; y = ystart; y2 = ystart;} if instance_exists(Power){Power.alarm[0] = 0; Power.alarm[1] = 0;} blink = 0; alarm[8] = -1;
         countdown = countdown - 1; 
         if countdown = -1 or global.lvl = 0{alarm[11] = 120;}
         else{alarm[11] = 60;

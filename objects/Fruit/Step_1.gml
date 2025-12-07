@@ -15,42 +15,6 @@ if state > -1{
 if room_width = 448{}else{
     if !collision_point(chasex,chasey,Power,false,true){
         if instance_number(Power) = 0{}else{
-            if room = A2600_1 or room = A2600_2 or room = A2600_3 or room = A2600_4 or room = A2600_5 or room = A2600_6 or room = A2600_7{
-            if irandom(4) = 1{chasex = 64; chasey = 112}
-            else{
-                if irandom(3) = 1{chasex = 64; chasey = 832}
-                else{
-                    if irandom(2) = 1{chasex = 416; chasey = 112}
-                    else{
-                        if irandom(1) = 1{chasex = 416; chasey = 832}
-                        else{
-                    if !collision_point(64,112,Power,false,true)
-                    and !collision_point(416,112,Power,false,true)
-                    and !collision_point(64,832,Power,false,true)
-                    and !collision_point(416,832,Power,false,true){
-                        if irandom(1) = 1{
-                            if collision_point(240,352,Power,false,true){chasex = 240; chasey = 352};else{
-                            if collision_point(240,304,Power,false,true){chasex = 240; chasey = 304};else{
-                            if collision_point(240,256,Power,false,true){chasex = 240; chasey = 256};
-                        }}}
-                        else{
-                            if collision_point(240,544,Power,false,true){chasex = 240; chasey = 544};else{
-                            if collision_point(240,592,Power,false,true){chasex = 240; chasey = 592};else{
-                            if collision_point(240,604,Power,false,true){chasex = 240; chasey = 604};
-                        }}}
-                    }
-                    else{
-                        if irandom(3) = 1{chasex = 64; chasey = 112}
-                        else{
-                            if irandom(2) = 1{chasex = 64; chasey = 832}
-                            else{
-                                if irandom(1) = 1{chasex = 416; chasey = 112}
-                                else{
-                                    {chasex = 416; chasey = 832}
-                    }}}}
-                }}}}
-            }
-            else{
             if irandom(2) = 1{chasex = global.p1x; chasey = global.p1y}
             else{
                 if irandom(1) = 1{chasex = global.p2x; chasey = global.p2y}
@@ -76,20 +40,19 @@ if Pac.finish = 0{
 if state > -1{
 if Pac.chomp = 0{
 codir = 0;
-if (y > 48 and y < room_height - 48) or room = VS7 or room = Piranha{
+if (y > 48 and y < room_height - 48){
     if newtile = 0{
         if tilex = (16*(round(x/16))) and tiley = (16*(round(y/16))){}
         else{
             newtile = 1; tilex = (16*(round(x/16))); tiley = (16*(round(y/16)));
                 if state = 0{
                     if room_width = 448{
-                    if room = Strange4{script_execute(chase_object,tilex,tiley,192,512,)};else{
                     if tiley = (Blinky.ystart-224)+224 and tilex>144-1 and tilex<288{script_execute(chase_object,tilex,tiley,288,(Blinky.ystart-224)+224)};
                     else{if tilex = 288 and tiley>(Blinky.ystart-224)+224-1 and tiley<(Blinky.ystart-224)+320{script_execute(chase_object,tilex,tiley,288,(Blinky.ystart-224)+320)};
                     else{if tiley = (Blinky.ystart-224)+320 and tilex>144 and tilex<288+1{script_execute(chase_object,tilex,tiley,144,(Blinky.ystart-224)+320)};
                     else{if tilex = 144 and tiley>(Blinky.ystart-224)+224 and tiley<(Blinky.ystart-224)+320+1{script_execute(chase_object,tilex,tiley,144,(Blinky.ystart-224)+224)};
                     else{script_execute(chase_object,tilex,tiley,216,(Blinky.ystart-224)+272)};
-                    }}}}}
+                    }}}}
                     else{script_execute(random_direction);}
                 }
                 if state = 1{
@@ -104,19 +67,10 @@ if (y > 48 and y < room_height - 48) or room = VS7 or room = Piranha{
                 else{
                     script_execute(codir_script)
                     if room_width = 448{
-                        if room = JoyMan{if exopt < 2{script_execute(chase_object,tilex,tiley,80,272); exit}; else{script_execute(chase_object,tilex,tiley,352,272); exit}} ///JoyMan Fix
-                        if exopt=0{if room = Strange3{script_execute(chase_object,tilex,tiley,-320,208);}
-                        else{if room = Champ1{script_execute(chase_object,tilex,tiley,176,32);}
-                        else{script_execute(chase_object,tilex,tiley,0,global.ex1);}}}
-                        if exopt=1{if room = Strange3{script_execute(chase_object,tilex,tiley,0,304);}
-                        else{if room = Champ1{script_execute(chase_object,tilex,tiley,0,352);}
-                        else{script_execute(chase_object,tilex,tiley,0,global.ex2);}}}
-                        if exopt=2{if room = Strange3{script_execute(chase_object,tilex,tiley,432+320,208);}
-                        else{if room = Champ1{script_execute(chase_object,tilex,tiley,256,32);}
-                        else{script_execute(chase_object,tilex,tiley,432,global.ex1);}}}
-                        if exopt=3{if room = Strange3{script_execute(chase_object,tilex,tiley,432,304);}
-                        else{if room = Champ1{script_execute(chase_object,tilex,tiley,432,352);}
-                        else{script_execute(chase_object,tilex,tiley,432,global.ex2);}}}
+                        if exopt=0{script_execute(chase_object,tilex,tiley,0,global.ex1);}
+                        if exopt=1{script_execute(chase_object,tilex,tiley,0,global.ex2);}
+                        if exopt=2{script_execute(chase_object,tilex,tiley,432,global.ex1);}
+                        if exopt=3{script_execute(chase_object,tilex,tiley,432,global.ex2);}
                     }
                     else{
                         if instance_number(Power) = 0{script_execute(random_direction);}

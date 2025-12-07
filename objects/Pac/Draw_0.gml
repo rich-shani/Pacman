@@ -609,12 +609,12 @@ if global.credit = 0{draw_text(Blinky.xstart-74,Blinky.ystart+2,string_hash_to_n
 else{draw_text(Blinky.xstart-74,Blinky.ystart+2,string_hash_to_newline("PUSH START"))}
 if test = 0{draw_text(Blinky.xstart-74,Blinky.ystart+48+2,string_hash_to_newline("    TO    "))}
 draw_text(Blinky.xstart-74,Blinky.ystart+96+2,string_hash_to_newline(" CONTINUE "))
-if (room_height < 960 and Drawless.c64 = 0) or room = A2600_4{
+if (room_height < 960 and Drawless.c64 = 0){
 if countdown = 10{draw_text(xstart-10,ystart+2,string_hash_to_newline(countdown-1))}
 else{draw_text(xstart-10,ystart+2,string_hash_to_newline(countdown))}
 }
 else{
-if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_06 or room = A2600_2 or room = A2600_6 or room = A2600_7{
+if false{
 if countdown = 10{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(countdown-1))}
 else{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(countdown))}
 }
@@ -628,12 +628,12 @@ if global.credit = 0{draw_text(Blinky.xstart-72,Blinky.ystart,string_hash_to_new
 else{draw_text(Blinky.xstart-72,Blinky.ystart,string_hash_to_newline("PUSH START"))}
 if test = 0{draw_text(Blinky.xstart-72,Blinky.ystart+48,string_hash_to_newline("    TO    "))}
 draw_text(Blinky.xstart-72,Blinky.ystart+96,string_hash_to_newline(" CONTINUE "))
-if (room_height < 960 and Drawless.c64 = 0) or room = A2600_4{
+if (room_height < 960 and Drawless.c64 = 0){
 if countdown = 10{draw_text(xstart-8,ystart,string_hash_to_newline(countdown-1))}
 else{draw_text(xstart-8,ystart,string_hash_to_newline(countdown))}
 }
 else{
-if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_06 or room = A2600_2 or room = A2600_6 or room = A2600_7{
+if false{
 if countdown = 10{draw_text(xstart-8,ystart+48,string_hash_to_newline(countdown-1))}
 else{draw_text(xstart-8,ystart+48,string_hash_to_newline(countdown))}
 }

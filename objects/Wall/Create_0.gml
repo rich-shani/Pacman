@@ -15,7 +15,6 @@ mv2 = 0
 extra = 0
 
 c64 = 0;
-if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_04 or room = C64_05 or room = C64_06{c64 = 1}
 extend = 0;
 
 
@@ -299,7 +298,7 @@ if x = room_width - 16 and image_index = 19{image_index = 29; extra = 1}
 
 ///Strange Level 32
 
-if room = Strange32{
+if false{
 
     alarm[1] = 10
 

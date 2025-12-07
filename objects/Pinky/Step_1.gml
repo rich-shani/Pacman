@@ -27,7 +27,7 @@ pursuex = (16*(round(Pac.x/16))+(2*Pac.xdir)); pursuey = (16*(round(Pac.y/16))+(
 }
 }
 
-if (y > 48 and y < room_height - 48) or room = VS7 or room = Piranha{
+if (y > 48 and y < room_height - 48){
 if house = 0{
 if Pac.chomp = 0 or state = 2{
     if newtile = 0{

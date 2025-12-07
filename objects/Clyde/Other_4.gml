@@ -23,12 +23,6 @@ housestate = 2;
 resdir = -1;
 chomped = 0;
 up = 1;
-if room = A2600_1 or room = A2600_2 or room = A2600_3 or room = A2600_4 or room = A2600_5 or room = A2600_6 or room = A2600_7{
-cornerx = 0; cornery = 448;
-}
-else{
 cornery = room_height-32;
 if room_width = 448{cornerx = 0;}else{cornerx = 432-(Fruit.c64*144);}
-}
 uppity = 1;
-

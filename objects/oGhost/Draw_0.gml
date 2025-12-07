@@ -24,7 +24,7 @@ switch (state) {
     case GHOST_STATE.CHASE:
         /// Normal mode: use ghost's primary color
         /// Child objects set this color (Blinky=red, Pinky=pink, etc.)
-        _draw_color = draw_color;
+        _draw_color = ghost_get_color(ghost_name);
         break;
 
     case GHOST_STATE.FRIGHTENED:
@@ -97,7 +97,7 @@ if (state != GHOST_STATE.EYES) {
 // ===== DRAW EYES =====
 /// Eyes are drawn separately from body
 /// Eyes use dedicated sprite with white color
-draw_sprite(spr_Eyes, direction, x, y);
+draw_sprite(spr_Eyes, dir, x, y);
 
 //var _eye_spr = spr_Eyes;  // Eyes sprite (same for all ghosts)
 

@@ -60,7 +60,6 @@ ds = color_get_saturation(make_color_rgb(global.dr,global.dg,global.db))
 
 if global.rand = 0{dv = color_get_value(make_color_rgb(global.dr,global.dg,global.db))}else{dv = 255}
 
-if room = Strange32{alarm[1] = 10;}
 
 if instance_number(Menu) = 0{
 

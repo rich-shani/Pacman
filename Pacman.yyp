@@ -1,0 +1,1751 @@
+{
+  resources: [
+    {
+      id: {
+        name: "font0",
+        path: "fonts/font0/font0.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "compatibility_report_051225_90219219",
+        path: "notes/compatibility_report_051225_90219219/compatibility_report_051225_90219219.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "notes",
+        path: "notes/notes/notes.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Blank",
+        path: "objects/Blank/Blank.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "Blinky",
+        path: "objects/Blinky/Blinky.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "Clyde",
+        path: "objects/Clyde/Clyde.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Cutscene",
+        path: "objects/Cutscene/Cutscene.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "Dot",
+        path: "objects/Dot/Dot.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "Down",
+        path: "objects/Down/Down.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Drawless",
+        path: "objects/Drawless/Drawless.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Fruit",
+        path: "objects/Fruit/Fruit.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "HanglyWall",
+        path: "objects/HanglyWall/HanglyWall.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "Inky",
+        path: "objects/Inky/Inky.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "Left",
+        path: "objects/Left/Left.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "Mac",
+        path: "objects/Mac/Mac.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "Menu",
+        path: "objects/Menu/Menu.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "NoUp",
+        path: "objects/NoUp/NoUp.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "oGhost",
+        path: "objects/oGhost/oGhost.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "Pac",
+        path: "objects/Pac/Pac.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "Pauser",
+        path: "objects/Pauser/Pauser.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "Pinky",
+        path: "objects/Pinky/Pinky.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "Power",
+        path: "objects/Power/Power.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "Right",
+        path: "objects/Right/Right.yy",
+      },
+      order: 8,
+    },
+    {
+      id: {
+        name: "Scroller",
+        path: "objects/Scroller/Scroller.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "Slow",
+        path: "objects/Slow/Slow.yy",
+      },
+      order: 9,
+    },
+    {
+      id: {
+        name: "Title",
+        path: "objects/Title/Title.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Up",
+        path: "objects/Up/Up.yy",
+      },
+      order: 10,
+    },
+    {
+      id: {
+        name: "Wall",
+        path: "objects/Wall/Wall.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "MsPacMan1",
+        path: "rooms/MsPacMan1/MsPacMan1.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "MsPacMan2",
+        path: "rooms/MsPacMan2/MsPacMan2.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "MsPacMan3",
+        path: "rooms/MsPacMan3/MsPacMan3.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "MsPacMan4",
+        path: "rooms/MsPacMan4/MsPacMan4.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "PacMan",
+        path: "rooms/PacMan/PacMan.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "rm_Cutscene",
+        path: "rooms/rm_Cutscene/rm_Cutscene.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "rm_Menu",
+        path: "rooms/rm_Menu/rm_Menu.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "rm_Title",
+        path: "rooms/rm_Title/rm_Title.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "action_another_room",
+        path: "scripts/action_another_room/action_another_room.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "action_color",
+        path: "scripts/action_color/action_color.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "action_create_object",
+        path: "scripts/action_create_object/action_create_object.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "action_current_room",
+        path: "scripts/action_current_room/action_current_room.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "action_draw_sprite",
+        path: "scripts/action_draw_sprite/action_draw_sprite.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "action_draw_variable",
+        path: "scripts/action_draw_variable/action_draw_variable.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "action_font",
+        path: "scripts/action_font/action_font.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "action_if_number",
+        path: "scripts/action_if_number/action_if_number.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "action_if_variable",
+        path: "scripts/action_if_variable/action_if_variable.yy",
+      },
+      order: 8,
+    },
+    {
+      id: {
+        name: "action_set_alarm",
+        path: "scripts/action_set_alarm/action_set_alarm.yy",
+      },
+      order: 9,
+    },
+    {
+      id: {
+        name: "action_set_relative",
+        path: "scripts/action_set_relative/action_set_relative.yy",
+      },
+      order: 10,
+    },
+    {
+      id: {
+        name: "action_sound",
+        path: "scripts/action_sound/action_sound.yy",
+      },
+      order: 11,
+    },
+    {
+      id: {
+        name: "beginstep",
+        path: "scripts/beginstep/beginstep.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "beginstep2",
+        path: "scripts/beginstep2/beginstep2.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "chase_object",
+        path: "scripts/chase_object/chase_object.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "codir_script",
+        path: "scripts/codir_script/codir_script.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "draw2",
+        path: "scripts/draw2/draw2.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "endstep",
+        path: "scripts/endstep/endstep.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "gameend",
+        path: "scripts/gameend/gameend.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "GHOST_COLORS",
+        path: "scripts/ghost_colors/GHOST_COLORS.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "GHOST_DIRECTION",
+        path: "scripts/GHOST_DIRECTION/GHOST_DIRECTION.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "GHOST_STATE",
+        path: "scripts/GHOST_STATE/GHOST_STATE.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "instance_create",
+        path: "scripts/instance_create/instance_create.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "mazer",
+        path: "scripts/mazer/mazer.yy",
+      },
+      order: 9,
+    },
+    {
+      id: {
+        name: "maze_picker",
+        path: "scripts/maze_picker/maze_picker.yy",
+      },
+      order: 10,
+    },
+    {
+      id: {
+        name: "movement2",
+        path: "scripts/movement2/movement2.yy",
+      },
+      order: 11,
+    },
+    {
+      id: {
+        name: "object_get_depth",
+        path: "scripts/object_get_depth/object_get_depth.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "random_direction",
+        path: "scripts/random_direction/random_direction.yy",
+      },
+      order: 12,
+    },
+    {
+      id: {
+        name: "sickofit",
+        path: "scripts/sickofit/sickofit.yy",
+      },
+      order: 13,
+    },
+    {
+      id: {
+        name: "sound_loop",
+        path: "scripts/sound_loop/sound_loop.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "sound_play",
+        path: "scripts/sound_play/sound_play.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "sound_stop",
+        path: "scripts/sound_stop/sound_stop.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "step",
+        path: "scripts/step/step.yy",
+      },
+      order: 14,
+    },
+    {
+      id: {
+        name: "tile_add",
+        path: "scripts/tile_add/tile_add.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "tile_delete",
+        path: "scripts/tile_delete/tile_delete.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "tile_layer_delete_at",
+        path: "scripts/tile_layer_delete_at/tile_layer_delete_at.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "tile_layer_find",
+        path: "scripts/tile_layer_find/tile_layer_find.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "tile_layer_hide",
+        path: "scripts/tile_layer_hide/tile_layer_hide.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "tile_layer_show",
+        path: "scripts/tile_layer_show/tile_layer_show.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "tile_set_alpha",
+        path: "scripts/tile_set_alpha/tile_set_alpha.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "tile_set_blend",
+        path: "scripts/tile_set_blend/tile_set_blend.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "__background_get_element",
+        path: "scripts/__background_get_element/__background_get_element.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "__background_get_internal",
+        path: "scripts/__background_get_internal/__background_get_internal.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "__background_set",
+        path: "scripts/__background_set/__background_set.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "__background_set_element",
+        path: "scripts/__background_set_element/__background_set_element.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "__background_set_internal",
+        path: "scripts/__background_set_internal/__background_set_internal.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "__global_object_depths",
+        path: "scripts/__global_object_depths/__global_object_depths.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "__init_action",
+        path: "scripts/__init_action/__init_action.yy",
+      },
+      order: 12,
+    },
+    {
+      id: {
+        name: "__init_background",
+        path: "scripts/__init_background/__init_background.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "__init_global",
+        path: "scripts/__init_global/__init_global.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "__init_view",
+        path: "scripts/__init_view/__init_view.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "__view_get",
+        path: "scripts/__view_get/__view_get.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "__view_set",
+        path: "scripts/__view_set/__view_set.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "__view_set_internal",
+        path: "scripts/__view_set_internal/__view_set_internal.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "Blue",
+        path: "sounds/Blue/Blue.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "Bonk",
+        path: "sounds/Bonk/Bonk.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "Bump",
+        path: "sounds/Bump/Bump.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "Chomp",
+        path: "sounds/Chomp/Chomp.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "Credit",
+        path: "sounds/Credit/Credit.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "Die",
+        path: "sounds/Die/Die.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "Dot0",
+        path: "sounds/Dot0/Dot0.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "Dot1",
+        path: "sounds/Dot1/Dot1.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "Flee",
+        path: "sounds/Flee/Flee.yy",
+      },
+      order: 8,
+    },
+    {
+      id: {
+        name: "Ghost1",
+        path: "sounds/Ghost1/Ghost1.yy",
+      },
+      order: 9,
+    },
+    {
+      id: {
+        name: "Ghost2",
+        path: "sounds/Ghost2/Ghost2.yy",
+      },
+      order: 10,
+    },
+    {
+      id: {
+        name: "Ghost3",
+        path: "sounds/Ghost3/Ghost3.yy",
+      },
+      order: 11,
+    },
+    {
+      id: {
+        name: "Ghost4",
+        path: "sounds/Ghost4/Ghost4.yy",
+      },
+      order: 12,
+    },
+    {
+      id: {
+        name: "Ghost5",
+        path: "sounds/Ghost5/Ghost5.yy",
+      },
+      order: 13,
+    },
+    {
+      id: {
+        name: "Int",
+        path: "sounds/Int/Int.yy",
+      },
+      order: 14,
+    },
+    {
+      id: {
+        name: "JrBlue",
+        path: "sounds/JrBlue/JrBlue.yy",
+      },
+      order: 15,
+    },
+    {
+      id: {
+        name: "JrChomp",
+        path: "sounds/JrChomp/JrChomp.yy",
+      },
+      order: 16,
+    },
+    {
+      id: {
+        name: "JrDie",
+        path: "sounds/JrDie/JrDie.yy",
+      },
+      order: 17,
+    },
+    {
+      id: {
+        name: "JrDot",
+        path: "sounds/JrDot/JrDot.yy",
+      },
+      order: 18,
+    },
+    {
+      id: {
+        name: "JrDot2",
+        path: "sounds/JrDot2/JrDot2.yy",
+      },
+      order: 19,
+    },
+    {
+      id: {
+        name: "JrFlee",
+        path: "sounds/JrFlee/JrFlee.yy",
+      },
+      order: 20,
+    },
+    {
+      id: {
+        name: "JrGhost1",
+        path: "sounds/JrGhost1/JrGhost1.yy",
+      },
+      order: 21,
+    },
+    {
+      id: {
+        name: "JrGhost2",
+        path: "sounds/JrGhost2/JrGhost2.yy",
+      },
+      order: 22,
+    },
+    {
+      id: {
+        name: "JrGhost3",
+        path: "sounds/JrGhost3/JrGhost3.yy",
+      },
+      order: 23,
+    },
+    {
+      id: {
+        name: "JrGhost4",
+        path: "sounds/JrGhost4/JrGhost4.yy",
+      },
+      order: 24,
+    },
+    {
+      id: {
+        name: "JrGhost5",
+        path: "sounds/JrGhost5/JrGhost5.yy",
+      },
+      order: 25,
+    },
+    {
+      id: {
+        name: "JrInt1",
+        path: "sounds/JrInt1/JrInt1.yy",
+      },
+      order: 26,
+    },
+    {
+      id: {
+        name: "JrInt2",
+        path: "sounds/JrInt2/JrInt2.yy",
+      },
+      order: 27,
+    },
+    {
+      id: {
+        name: "JrInt3",
+        path: "sounds/JrInt3/JrInt3.yy",
+      },
+      order: 28,
+    },
+    {
+      id: {
+        name: "JrStart",
+        path: "sounds/JrStart/JrStart.yy",
+      },
+      order: 29,
+    },
+    {
+      id: {
+        name: "Life",
+        path: "sounds/Life/Life.yy",
+      },
+      order: 30,
+    },
+    {
+      id: {
+        name: "MsBlue",
+        path: "sounds/MsBlue/MsBlue.yy",
+      },
+      order: 31,
+    },
+    {
+      id: {
+        name: "MsChomp",
+        path: "sounds/MsChomp/MsChomp.yy",
+      },
+      order: 32,
+    },
+    {
+      id: {
+        name: "MsDie",
+        path: "sounds/MsDie/MsDie.yy",
+      },
+      order: 33,
+    },
+    {
+      id: {
+        name: "MsDot",
+        path: "sounds/MsDot/MsDot.yy",
+      },
+      order: 34,
+    },
+    {
+      id: {
+        name: "MsFlee",
+        path: "sounds/MsFlee/MsFlee.yy",
+      },
+      order: 35,
+    },
+    {
+      id: {
+        name: "MsGhost1",
+        path: "sounds/MsGhost1/MsGhost1.yy",
+      },
+      order: 36,
+    },
+    {
+      id: {
+        name: "MsGhost2",
+        path: "sounds/MsGhost2/MsGhost2.yy",
+      },
+      order: 37,
+    },
+    {
+      id: {
+        name: "MsGhost3",
+        path: "sounds/MsGhost3/MsGhost3.yy",
+      },
+      order: 38,
+    },
+    {
+      id: {
+        name: "MsGhost4",
+        path: "sounds/MsGhost4/MsGhost4.yy",
+      },
+      order: 39,
+    },
+    {
+      id: {
+        name: "MsGhost5",
+        path: "sounds/MsGhost5/MsGhost5.yy",
+      },
+      order: 40,
+    },
+    {
+      id: {
+        name: "MsInt1",
+        path: "sounds/MsInt1/MsInt1.yy",
+      },
+      order: 41,
+    },
+    {
+      id: {
+        name: "MsInt2",
+        path: "sounds/MsInt2/MsInt2.yy",
+      },
+      order: 42,
+    },
+    {
+      id: {
+        name: "MsInt3",
+        path: "sounds/MsInt3/MsInt3.yy",
+      },
+      order: 43,
+    },
+    {
+      id: {
+        name: "MsStart",
+        path: "sounds/MsStart/MsStart.yy",
+      },
+      order: 44,
+    },
+    {
+      id: {
+        name: "snd_Fruit",
+        path: "sounds/snd_Fruit/snd_Fruit.yy",
+      },
+      order: 45,
+    },
+    {
+      id: {
+        name: "Start",
+        path: "sounds/Start/Start.yy",
+      },
+      order: 46,
+    },
+    {
+      id: {
+        name: "spr_Anna",
+        path: "sprites/spr_Anna/spr_Anna.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "spr_Anna2",
+        path: "sprites/spr_Anna2/spr_Anna2.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "spr_arrow",
+        path: "sprites/spr_arrow/spr_arrow.yy",
+      },
+      order: 2,
+    },
+    {
+      id: {
+        name: "spr_arrow2",
+        path: "sprites/spr_arrow2/spr_arrow2.yy",
+      },
+      order: 3,
+    },
+    {
+      id: {
+        name: "spr_balloon",
+        path: "sprites/spr_balloon/spr_balloon.yy",
+      },
+      order: 4,
+    },
+    {
+      id: {
+        name: "spr_Bexposed",
+        path: "sprites/spr_Bexposed/spr_Bexposed.yy",
+      },
+      order: 5,
+    },
+    {
+      id: {
+        name: "spr_bigpac",
+        path: "sprites/spr_bigpac/spr_bigpac.yy",
+      },
+      order: 6,
+    },
+    {
+      id: {
+        name: "spr_bkgd",
+        path: "sprites/spr_bkgd/spr_bkgd.yy",
+      },
+      order: 7,
+    },
+    {
+      id: {
+        name: "spr_board",
+        path: "sprites/spr_board/spr_board.yy",
+      },
+      order: 8,
+    },
+    {
+      id: {
+        name: "spr_board2",
+        path: "sprites/spr_board2/spr_board2.yy",
+      },
+      order: 9,
+    },
+    {
+      id: {
+        name: "spr_boostlines",
+        path: "sprites/spr_boostlines/spr_boostlines.yy",
+      },
+      order: 10,
+    },
+    {
+      id: {
+        name: "spr_Bpeg",
+        path: "sprites/spr_Bpeg/spr_Bpeg.yy",
+      },
+      order: 11,
+    },
+    {
+      id: {
+        name: "spr_Bstitch",
+        path: "sprites/spr_Bstitch/spr_Bstitch.yy",
+      },
+      order: 12,
+    },
+    {
+      id: {
+        name: "spr_bush",
+        path: "sprites/spr_bush/spr_bush.yy",
+      },
+      order: 13,
+    },
+    {
+      id: {
+        name: "spr_Chomp",
+        path: "sprites/spr_Chomp/spr_Chomp.yy",
+      },
+      order: 14,
+    },
+    {
+      id: {
+        name: "spr_clapperboard",
+        path: "sprites/spr_clapperboard/spr_clapperboard.yy",
+      },
+      order: 15,
+    },
+    {
+      id: {
+        name: "spr_clouds",
+        path: "sprites/spr_clouds/spr_clouds.yy",
+      },
+      order: 16,
+    },
+    {
+      id: {
+        name: "spr_Cyan",
+        path: "sprites/spr_Cyan/spr_Cyan.yy",
+      },
+      order: 17,
+    },
+    {
+      id: {
+        name: "spr_Dead",
+        path: "sprites/spr_Dead/spr_Dead.yy",
+      },
+      order: 18,
+    },
+    {
+      id: {
+        name: "spr_Dead2",
+        path: "sprites/spr_Dead2/spr_Dead2.yy",
+      },
+      order: 19,
+    },
+    {
+      id: {
+        name: "spr_dot",
+        path: "sprites/spr_dot/spr_dot.yy",
+      },
+      order: 20,
+    },
+    {
+      id: {
+        name: "spr_down",
+        path: "sprites/spr_down/spr_down.yy",
+      },
+      order: 21,
+    },
+    {
+      id: {
+        name: "spr_Exc",
+        path: "sprites/spr_Exc/spr_Exc.yy",
+      },
+      order: 22,
+    },
+    {
+      id: {
+        name: "spr_explosion",
+        path: "sprites/spr_explosion/spr_explosion.yy",
+      },
+      order: 23,
+    },
+    {
+      id: {
+        name: "spr_Eyes",
+        path: "sprites/spr_Eyes/spr_Eyes.yy",
+      },
+      order: 24,
+    },
+    {
+      id: {
+        name: "spr_fence",
+        path: "sprites/spr_fence/spr_fence.yy",
+      },
+      order: 25,
+    },
+    {
+      id: {
+        name: "spr_Fruit",
+        path: "sprites/spr_Fruit/spr_Fruit.yy",
+      },
+      order: 26,
+    },
+    {
+      id: {
+        name: "spr_FruitPoints",
+        path: "sprites/spr_FruitPoints/spr_FruitPoints.yy",
+      },
+      order: 27,
+    },
+    {
+      id: {
+        name: "spr_Ghost",
+        path: "sprites/spr_Ghost/spr_Ghost.yy",
+      },
+      order: 28,
+    },
+    {
+      id: {
+        name: "spr_Green",
+        path: "sprites/spr_Green/spr_Green.yy",
+      },
+      order: 29,
+    },
+    {
+      id: {
+        name: "spr_heart",
+        path: "sprites/spr_heart/spr_heart.yy",
+      },
+      order: 30,
+    },
+    {
+      id: {
+        name: "spr_heart2",
+        path: "sprites/spr_heart2/spr_heart2.yy",
+      },
+      order: 31,
+    },
+    {
+      id: {
+        name: "spr_house",
+        path: "sprites/spr_house/spr_house.yy",
+      },
+      order: 32,
+    },
+    {
+      id: {
+        name: "spr_jr",
+        path: "sprites/spr_jr/spr_jr.yy",
+      },
+      order: 33,
+    },
+    {
+      id: {
+        name: "spr_JrDead",
+        path: "sprites/spr_JrDead/spr_JrDead.yy",
+      },
+      order: 34,
+    },
+    {
+      id: {
+        name: "spr_JrDead2",
+        path: "sprites/spr_JrDead2/spr_JrDead2.yy",
+      },
+      order: 35,
+    },
+    {
+      id: {
+        name: "spr_jrintro",
+        path: "sprites/spr_jrintro/spr_jrintro.yy",
+      },
+      order: 36,
+    },
+    {
+      id: {
+        name: "spr_Jrlife",
+        path: "sprites/spr_Jrlife/spr_Jrlife.yy",
+      },
+      order: 37,
+    },
+    {
+      id: {
+        name: "spr_Jrlife2",
+        path: "sprites/spr_Jrlife2/spr_Jrlife2.yy",
+      },
+      order: 38,
+    },
+    {
+      id: {
+        name: "spr_JrMan",
+        path: "sprites/spr_JrMan/spr_JrMan.yy",
+      },
+      order: 39,
+    },
+    {
+      id: {
+        name: "spr_JrMan2",
+        path: "sprites/spr_JrMan2/spr_JrMan2.yy",
+      },
+      order: 40,
+    },
+    {
+      id: {
+        name: "spr_left",
+        path: "sprites/spr_left/spr_left.yy",
+      },
+      order: 41,
+    },
+    {
+      id: {
+        name: "spr_levelbox",
+        path: "sprites/spr_levelbox/spr_levelbox.yy",
+      },
+      order: 42,
+    },
+    {
+      id: {
+        name: "spr_Magenta",
+        path: "sprites/spr_Magenta/spr_Magenta.yy",
+      },
+      order: 43,
+    },
+    {
+      id: {
+        name: "spr_Man",
+        path: "sprites/spr_Man/spr_Man.yy",
+      },
+      order: 44,
+    },
+    {
+      id: {
+        name: "spr_Man2",
+        path: "sprites/spr_Man2/spr_Man2.yy",
+      },
+      order: 45,
+    },
+    {
+      id: {
+        name: "spr_middot",
+        path: "sprites/spr_middot/spr_middot.yy",
+      },
+      order: 46,
+    },
+    {
+      id: {
+        name: "spr_MsDead",
+        path: "sprites/spr_MsDead/spr_MsDead.yy",
+      },
+      order: 47,
+    },
+    {
+      id: {
+        name: "spr_MsDead2",
+        path: "sprites/spr_MsDead2/spr_MsDead2.yy",
+      },
+      order: 48,
+    },
+    {
+      id: {
+        name: "spr_MsMan",
+        path: "sprites/spr_MsMan/spr_MsMan.yy",
+      },
+      order: 49,
+    },
+    {
+      id: {
+        name: "spr_MsMan2",
+        path: "sprites/spr_MsMan2/spr_MsMan2.yy",
+      },
+      order: 50,
+    },
+    {
+      id: {
+        name: "spr_MsPoints",
+        path: "sprites/spr_MsPoints/spr_MsPoints.yy",
+      },
+      order: 51,
+    },
+    {
+      id: {
+        name: "spr_mud",
+        path: "sprites/spr_mud/spr_mud.yy",
+      },
+      order: 52,
+    },
+    {
+      id: {
+        name: "spr_Orange",
+        path: "sprites/spr_Orange/spr_Orange.yy",
+      },
+      order: 53,
+    },
+    {
+      id: {
+        name: "spr_OttoDead",
+        path: "sprites/spr_OttoDead/spr_OttoDead.yy",
+      },
+      order: 54,
+    },
+    {
+      id: {
+        name: "spr_OttoDead2",
+        path: "sprites/spr_OttoDead2/spr_OttoDead2.yy",
+      },
+      order: 55,
+    },
+    {
+      id: {
+        name: "spr_OttoMan",
+        path: "sprites/spr_OttoMan/spr_OttoMan.yy",
+      },
+      order: 56,
+    },
+    {
+      id: {
+        name: "spr_OttoMan2",
+        path: "sprites/spr_OttoMan2/spr_OttoMan2.yy",
+      },
+      order: 57,
+    },
+    {
+      id: {
+        name: "spr_OttoMon",
+        path: "sprites/spr_OttoMon/spr_OttoMon.yy",
+      },
+      order: 58,
+    },
+    {
+      id: {
+        name: "spr_Pac",
+        path: "sprites/spr_Pac/spr_Pac.yy",
+      },
+      order: 59,
+    },
+    {
+      id: {
+        name: "spr_peg",
+        path: "sprites/spr_peg/spr_peg.yy",
+      },
+      order: 60,
+    },
+    {
+      id: {
+        name: "spr_Pink",
+        path: "sprites/spr_Pink/spr_Pink.yy",
+      },
+      order: 61,
+    },
+    {
+      id: {
+        name: "spr_powerpellet",
+        path: "sprites/spr_powerpellet/spr_powerpellet.yy",
+      },
+      order: 62,
+    },
+    {
+      id: {
+        name: "spr_Red",
+        path: "sprites/spr_Red/spr_Red.yy",
+      },
+      order: 63,
+    },
+    {
+      id: {
+        name: "spr_right",
+        path: "sprites/spr_right/spr_right.yy",
+      },
+      order: 64,
+    },
+    {
+      id: {
+        name: "spr_river",
+        path: "sprites/spr_river/spr_river.yy",
+      },
+      order: 65,
+    },
+    {
+      id: {
+        name: "spr_stork",
+        path: "sprites/spr_stork/spr_stork.yy",
+      },
+      order: 66,
+    },
+    {
+      id: {
+        name: "spr_up",
+        path: "sprites/spr_up/spr_up.yy",
+      },
+      order: 67,
+    },
+    {
+      id: {
+        name: "spr_Wall",
+        path: "sprites/spr_Wall/spr_Wall.yy",
+      },
+      order: 68,
+    },
+    {
+      id: {
+        name: "spr_Wall2",
+        path: "sprites/spr_Wall2/spr_Wall2.yy",
+      },
+      order: 69,
+    },
+    {
+      id: {
+        name: "spr_White",
+        path: "sprites/spr_White/spr_White.yy",
+      },
+      order: 70,
+    },
+    {
+      id: {
+        name: "tile1",
+        path: "sprites/tile1/tile1.yy",
+      },
+      order: 0,
+    },
+    {
+      id: {
+        name: "tile2",
+        path: "sprites/tile2/tile2.yy",
+      },
+      order: 1,
+    },
+    {
+      id: {
+        name: "tile3",
+        path: "sprites/tile3/tile3.yy",
+      },
+      order: 2,
+    },
+  ],
+  Options: [
+    {
+      name: "Main",
+      path: "options/main/options_main.yy",
+    },
+    {
+      name: "Opera GX",
+      path: "options/operagx/options_operagx.yy",
+    },
+    {
+      name: "Windows",
+      path: "options/windows/options_windows.yy",
+    },
+  ],
+  isDnDProject: false,
+  isEcma: false,
+  tutorialPath: "",
+  configs: {
+    name: "Default",
+    children: [],
+  },
+  RoomOrderNodes: [
+    {
+      roomId: {
+        name: "MsPacMan1",
+        path: "rooms/MsPacMan1/MsPacMan1.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "MsPacMan2",
+        path: "rooms/MsPacMan2/MsPacMan2.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "MsPacMan3",
+        path: "rooms/MsPacMan3/MsPacMan3.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "MsPacMan4",
+        path: "rooms/MsPacMan4/MsPacMan4.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "PacMan",
+        path: "rooms/PacMan/PacMan.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "rm_Cutscene",
+        path: "rooms/rm_Cutscene/rm_Cutscene.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "rm_Menu",
+        path: "rooms/rm_Menu/rm_Menu.yy",
+      },
+    },
+    {
+      roomId: {
+        name: "rm_Title",
+        path: "rooms/rm_Title/rm_Title.yy",
+      },
+    },
+  ],
+  Folders: [
+    {
+      folderPath: "folders/Fonts.yy",
+      order: 0,
+      resourceVersion: "",
+      name: "Fonts",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Notes.yy",
+      order: 1,
+      resourceVersion: "",
+      name: "Notes",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Objects.yy",
+      order: 2,
+      resourceVersion: "",
+      name: "Objects",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Objects/Ghosts.yy",
+      order: 1,
+      resourceVersion: "",
+      name: "Ghosts",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Objects/Triggers.yy",
+      order: 2,
+      resourceVersion: "",
+      name: "Triggers",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Objects/Elements.yy",
+      order: 3,
+      resourceVersion: "",
+      name: "Elements",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Objects/ScreenManager.yy",
+      order: 4,
+      resourceVersion: "",
+      name: "ScreenManager",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Rooms.yy",
+      order: 3,
+      resourceVersion: "",
+      name: "Rooms",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts.yy",
+      order: 4,
+      resourceVersion: "",
+      name: "Scripts",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility.yy",
+      order: 0,
+      resourceVersion: "",
+      name: "compatibility",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/action.yy",
+      order: 0,
+      resourceVersion: "",
+      name: "action",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/GhostLogic.yy",
+      order: 8,
+      resourceVersion: "",
+      name: "GhostLogic",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/instance.yy",
+      order: 1,
+      resourceVersion: "",
+      name: "instance",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/object.yy",
+      order: 2,
+      resourceVersion: "",
+      name: "object",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/sound.yy",
+      order: 3,
+      resourceVersion: "",
+      name: "sound",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/tile.yy",
+      order: 4,
+      resourceVersion: "",
+      name: "tile",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/background.yy",
+      order: 5,
+      resourceVersion: "",
+      name: "background",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Scripts/compatibility/view.yy",
+      order: 8,
+      resourceVersion: "",
+      name: "view",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Sounds.yy",
+      order: 5,
+      resourceVersion: "",
+      name: "Sounds",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Sprites.yy",
+      order: 6,
+      resourceVersion: "",
+      name: "Sprites",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+    {
+      folderPath: "folders/Sprites/tilesets.yy",
+      order: 71,
+      resourceVersion: "",
+      name: "tilesets",
+      tags: [],
+      resourceType: "GMFolder",
+    },
+  ],
+  AudioGroups: [
+    {
+      targets: -1,
+      resourceVersion: "",
+      name: "audiogroup_default",
+      resourceType: "GMAudioGroup",
+    },
+  ],
+  TextureGroups: [
+    {
+      isScaled: true,
+      autocrop: true,
+      border: 2,
+      mipsToGenerate: 0,
+      groupParent: null,
+      targets: -1,
+      resourceVersion: "",
+      name: "Default",
+      resourceType: "GMTextureGroup",
+    },
+  ],
+  IncludedFiles: [],
+  MetaData: {
+    IDEVersion: "",
+  },
+  resourceVersion: "",
+  name: "Pacman",
+  tags: [],
+  resourceType: "GMProject",
+}

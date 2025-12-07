@@ -37,7 +37,7 @@ if dead = 0 and start = 0 and finish = 0 and stoppy = 0 and bonked = 0{
 if global.lvl > 0{
 if corner = 0 and chomp = 0{
 ///right
-    if (y > 48 and y < room_height - 48) or room = VS7{
+    if (y > 48 and y < room_height - 48){
     if keyboard_check(vk_right)=true and keyboard_check(vk_up)=false and keyboard_check(vk_left)=false and keyboard_check(vk_down)=false{
         if !collision_point(16*(round((x)/16))+17,16*(round((y)/16)),Wall,false,true){dir = 0; park = -1
             if direction = 90{//up to right  
@@ -71,7 +71,7 @@ if x>8 and x<(room_width-8) {
         }
 }
 ///left
-    if (y > 48 and y < room_height - 48) or room = VS7{
+    if (y > 48 and y < room_height - 48){
     if keyboard_check(vk_left)=true and keyboard_check(vk_up)=false and keyboard_check(vk_right)=false and keyboard_check(vk_down)=false{
         if !collision_point(16*(round((x)/16))-1,16*(round((y)/16)),Wall,false,true){dir = 2; park = -1
             if direction = 90{//up to left

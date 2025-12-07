@@ -1,5 +1,5 @@
 if global.p1lives > 0 or global.p2lives > 0{global.lvl = global.lvl + 1}
-if (global.game < 2 and room_height < 672 and (collision_point(208,528,Wall,false,true) or room = Arr_0_2)) or (global.game = 2 and ((room_width = 864 or room_width = 496) and room_height = 576)){
+if (global.game < 2 and room_height < 672 and collision_point(208,528,Wall,false,true)) or (global.game = 2 and ((room_width = 864 or room_width = 496) and room_height = 576)){
 global.dottotal = (instance_number(Dot) + instance_number(Power))
 }
 else{
@@ -217,6 +217,6 @@ dead = 0;
 deadanim = 0;
 plus = -1;
 plus2 = 0;
-if room_height = 960{if global.lvl > 0{if room = A2600_4{}else{if start = 1{visible = false}else{visible = true}}}}
+if room_height = 960{if global.lvl > 0{if start = 1{visible = false}else{visible = true}}}
 if global.lvl > 0{if Drawless.c64 = 1{if start = 1{visible = false}else{visible = true}}}
 
