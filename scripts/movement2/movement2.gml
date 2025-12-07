@@ -22,7 +22,7 @@ function movement2() {
 	if global.lvl > 0{
 	if corner2 = 0 and chomp = 0{
 	///right
-	    if (y2 > 48 and y2 < room_height - 48){
+	    if (y2 > 48 and y2 < room_height - 48) {
 	    if keyboard_check(ord("D"))=true and keyboard_check(ord("W"))=false and keyboard_check(ord("A"))=false and keyboard_check(ord("S"))=false{
 	        if !collision_point(16*(round((x2)/16))+17,16*(round((y2)/16)),Wall,false,true){dir2= 0; park2 = -1
 	            if direction2 = 90{//up to right  
@@ -56,7 +56,7 @@ function movement2() {
 	        }
 	}
 	///left
-	    if (y2 > 48 and y2 < room_height - 48){
+	    if (y2 > 48 and y2 < room_height - 48) {
 	    if keyboard_check(ord("A"))=true and keyboard_check(ord("W"))=false and keyboard_check(ord("D"))=false and keyboard_check(ord("S"))=false{
 	        if !collision_point(16*(round((x2)/16))-1-0,16*(round((y2)/16)),Wall,false,true){dir2= 2; park2 = -1
 	            if direction2 = 90{//up to left

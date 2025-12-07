@@ -28,8 +28,8 @@
   "name":"Pac",
   "overriddenProperties":[],
   "parent":{
-    "name":"Triggers",
-    "path":"folders/Objects/Triggers.yy",
+    "name":"Pacman",
+    "path":"folders/Objects/Pacman.yy",
   },
   "parentObjectId":null,
   "persistent":false,

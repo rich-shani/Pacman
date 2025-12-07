@@ -123,10 +123,9 @@ function mazer() {
 	        if global.lvl = 16{room_goto(Arr_2_1)}
 	        if global.lvl = 17{room_goto(Arr_2_2)}
 	        if global.lvl > 17{
-	            room_goto_next()
-	        }
+	            if room = PacMan{room_goto(Arr_1_2)}else{
+	        }}}
 	    }
-	}
 	if global.game = 1{
 	    if global.mode = 0{
 	    if global.lvl = 21{room_goto(MsPacMan3);global.loop = 0;}else{
@@ -210,7 +209,8 @@ function mazer() {
 	        if global.lvl = -49 +79{room_goto(Strange31Big)}
 	        if global.lvl = -49 +80{room_goto(Strange32)}
 	        if global.lvl > 31{
-	        room_goto_next()
+	        if room = Strange32{room_goto(Strange1)}
+	        else{room_goto_next()}
 	        }
 	    }
 	    if global.mode = 4{
@@ -232,10 +232,10 @@ function mazer() {
 	        if global.lvl = 15{room_goto(Champ7)}
 	        if global.lvl = 16{room_goto(Champ8)}
 	        if global.lvl = 17{room_goto(Champ9)}
-	        if global.lvl > 17{room_goto_next()}
+	        if global.lvl > 17{if room = Champ9{room_goto(Champ1)}; else{room_goto_next()}}
 	    }
 	}
-
-
-
+	
 }
+
+

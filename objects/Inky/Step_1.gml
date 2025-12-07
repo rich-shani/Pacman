@@ -66,7 +66,7 @@ pursuex = (Blinky.tilex + (((16*(round(Pac.x/16))+Pac.xdir) - Blinky.tilex)*2));
 }
 
 
-if (y > 48 and y < room_height - 48){
+if (y > 48 and y < room_height - 48) {
 
 if house = 0{
 

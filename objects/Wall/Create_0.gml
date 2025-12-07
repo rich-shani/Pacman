@@ -296,48 +296,6 @@ if x = room_width - 16 and image_index = 19{image_index = 29; extra = 1}
 
 }
 
-///Strange Level 32
-
-if false{
-
-    alarm[1] = 10
-
-    if image_index=17{image_index=3}
-
-    if image_index=18{image_index=2}
-
-    if image_index=19{image_index=1}
-
-    if image_index=20{image_index=4}
-
-    if image_index=21{image_index=36}
-
-    if image_index=22{image_index=37}
-
-    if image_index=23{image_index=38}
-
-    if image_index=24{image_index=39}
-
-    if image_index=25 or image_index=13 or image_index=14{image_index=7}
-
-    if image_index=26 or image_index=15 or image_index=16{image_index=8}
-
-    if image_index=27 or image_index=9 or image_index=10{image_index=5}
-
-    if image_index=28 or image_index=11 or image_index=12{image_index=6}
-
-    if image_index=29{image_index=40}
-
-}
-
-///2600 Mazes
-
-if room_height = 960 and y = 896 and image_index > 4{
-
-if x = 48{image_index=8}; if x = 432{image_index=5}
-
-}
-
 ///fixing the edge corners
 
 if x = 0{
