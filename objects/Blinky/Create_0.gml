@@ -1,60 +1,47 @@
 /// ===============================================================================
 /// BLINKY GHOST OBJECT - CREATE EVENT
 /// ===============================================================================
-/// Description: Initializes Blinky (Shadow/Red Ghost)
-/// Personality: Aggressive pursuer - directly chases Pac's current position
-/// Scatter Corner: Top-left (32, 32)
+/// Description: Initializes Blinky (Red Shadow Ghost)
 ///
-/// Features:
-/// - AI chase/scatter/frightened behavior
-/// - Grid-based pathfinding with tile tracking
-/// - Elroy (faster pursuit) mode when dots are low
-/// - Power pellet vulnerability
-/// - Smooth animation with sprite flashing
+/// PERSONALITY: Aggressive direct pursuer
+/// - Always chases Pac's current position in chase mode
+/// - Scatter corner: Top-left area (32, 32)
+/// - Elroy mode: Speeds up when dots are running low
+///
+/// CORE FEATURES:
+/// - State machine: Chase → Scatter → Frightened → Eyes
+/// - Grid-based pathfinding with 16-pixel tile tracking
+/// - Speed adjustments based on game state (normal, elroy, frightened)
+/// - Power pellet vulnerability with animation effects
+/// - Tunnel wrapping mechanics
 /// ===============================================================================
 
-// ===== ANIMATION VARIABLES =====
-/// Animation frame index for sprite animation
-im = 0;
-/// Flash state when frightened (for visibility toggling)
-flash = 0;
+// ===== ANIMATION & VISUAL VARIABLES =====
+im = 0;                    // Animation frame counter (increments 0-15 then resets)
+flash = 0;                 // Flash state: 0=solid, 1=transparent (used when frightened)
 
 // ===== POSITION TRACKING =====
-/// Current tile coordinates (16-pixel grid aligned)
-tilex = 0;
-tiley = 0;
-/// Starting position (for reset/respawn)
-xstart = 216;
-ystart = 224;
+tilex = 0;                 // Current tile X position (16-pixel aligned grid)
+tiley = 0;                 // Current tile Y position (16-pixel aligned grid)
+xstart = 216;              // Respawn position X (ghost house)
+ystart = 224;              // Respawn position Y (ghost house)
 
-// ===== PATHFINDING & BEHAVIOR =====
-/// Target pursuit X coordinate (calculated from Pac position or pattern)
-pursuex = 0;
-/// Target pursuit Y coordinate
-pursuey = 0;
-/// House state: 0=released, 1=in ghost house
-house = 0;
-/// New tile flag: signals when ghost reaches a new tile for pathfinding update
-newtile = 0;
-/// About-face flag: when 1, ghost reverses direction (used for power pellet mode)
-aboutface = 0;
+// ===== PATHFINDING & BEHAVIOR VARIABLES =====
+pursuex = 0;               // Target X for chase mode (Pac's position or corner)
+pursuey = 0;               // Target Y for chase mode (Pac's position or corner)
+house = 0;                 // House state: 0=released (free), 1=in ghost house
+newtile = 0;               // New tile flag: 1 when ghost reaches new tile (triggers pathfinding)
+aboutface = 0;             // Reversal flag: 1 forces ghost to reverse direction next turn
 
-// ===== AI STATE MACHINE =====
-/// Ghost state: 0=chase, 1=frightened, 2=eyes returning to house, 3+=special
-state = 0;
-/// Elroy threshold: when dots <= this value, Blinky enters faster "Elroy" pursuit mode
-elroydots = 244;
-/// Corner X for scatter mode (top-left corner)
-cornerx = 32;
-/// Corner Y for scatter mode (top-left corner)
-cornery = 32;
+// ===== BEHAVIOR STATE VARIABLES =====
+state = 0;                 // Ghost state: 0=chase/scatter, 1=frightened, 2=eyes returning home
+elroydots = 244;           // Dot threshold for Elroy mode (faster chase when dots ≤ this)
+elroydots2 = 234;          // Dot threshold for Elroy mode 2 (even faster)
+cornerx = 32;              // Scatter mode target X (top-left corner)
+cornery = 32;              // Scatter mode target Y (top-left corner)
 
-// ===== DIRECTION TRACKING =====
-/// Current direction in degrees (0=right, 90=up, 180=left, 270=down)
-direction = 0;
-/// Cardinal direction: 0=right, 1=up, 2=left, 3=down (used for pathfinding)
-dir = 0;
-/// Fruit-related direction tracking (used during fruit chase modes)
-fruity = 0;
-/// Co-direction (secondary direction used in pathfinding logic)
-codir = 0;
+// ===== DIRECTION VARIABLES =====
+direction = 0;             // Direction in degrees: 0=right, 90=up, 180=left, 270=down
+dir = 0;                   // Cardinal direction: 0=right, 1=up, 2=left, 3=down (for pathfinding)
+fruity = 0;                // Fruit-related direction (used in special fruit chase modes)
+codir = 0;                 // Co-direction: secondary direction used in pathfinding calculations
