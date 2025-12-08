@@ -15,12 +15,27 @@
 /// and is a key part of Pac-Man AI behavior
 /// ===============================================================================
 
-/// ===== REVERSE DIRECTION WHEN POWER PELLET EATEN =====
-/// Trigger: Pac eats power pellet, Pac.alarm[0] is set
-/// Effect: All free ghosts reverse direction
-/// Reason: Gameplay mechanic - makes ghosts appear to react to danger
+/// ===== HANDLE TWO SCENARIOS =====
+/// 1. Power pellet eaten: reverse direction for all free ghosts
+/// 2. Ghost eaten: set eaten ghost to Eyes state (state=2)
 
-if (house == 0 && state < GHOST_STATE.EYES) {
+/// Check if this ghost was just eaten
+if (chomped == 1) {
+    /// This ghost was just eaten by Pac
+    /// Transition to Eyes state so ghost returns to house
+    state = GHOST_STATE.EYES;
+
+    /// Reverse direction by 180° (running away)
+    direction = resdir * 90;
+
+    /// Reset pathfinding
+    newtile = 0;
+
+    /// Clear chomped flag
+    chomped = 0;
+}
+else if (house == 0 && state < GHOST_STATE.EYES) {
+    /// Power pellet eaten: reverse direction for free ghosts
     /// Ghost is free (not in house) and not already dead
     /// CHASE (0) and FRIGHTENED (1) states are affected
     /// EYES (2) and higher are NOT affected
