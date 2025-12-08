@@ -24,12 +24,12 @@ switch (state) {
     case GHOST_STATE.CHASE:
         /// Normal mode: use ghost's primary color
         /// Child objects set this color (Blinky=red, Pinky=pink, etc.)
-        _draw_color = draw_color;
+        _draw_color = ghost_get_color(ghost_name);
         break;
 
     case GHOST_STATE.FRIGHTENED:
         /// Power pellet mode: blue with white flashing
-        if (flash > 15) {
+        if (!visible) {
             _draw_color = c_white;  // White (flashing)
         } else {
             _draw_color = ghost_color_frightened();  // Dark blue
@@ -55,7 +55,7 @@ switch (state) {
 /// Different sprites for different game modes
 /// Game mode affects which sprite set is used
 
-var _spr = spr_GhostBlue;  // Default placeholder
+var _spr = spr_Ghost;  // Default placeholder
 
 /// Child ghosts override draw event to set correct sprite
 
@@ -71,54 +71,50 @@ if (state != GHOST_STATE.EYES) {
     // Draw at current position
     draw_sprite_ext(
         _spr,              // Sprite index
-        im,                // Animation frame (0-15)
+        floor(im/8),		// Animation frame (0-15)
         x, y,              // Position
         1, 1,              // Scale (1x = normal)
         0,                 // Rotation
         _draw_color,       // Color tint
         1                  // Alpha (1 = fully opaque)
     );
-
-    // ===== WRAPAROUND RENDERING =====
-    /// In some rooms, ghosts wrap around vertically
-    /// Must draw at multiple Y positions when wrapping
-
-    if (y < 64) {
-        // Ghost near top: also draw at bottom (wrapped position)
-        draw_sprite_ext(_spr, im, x, y + 512, 1, 1, 0, _draw_color, 1);
-    }
-
-    if (y > room_height - 64) {
-        // Ghost near bottom: also draw at top (wrapped position)
-        draw_sprite_ext(_spr, im, x, y - 512, 1, 1, 0, _draw_color, 1);
-    }
 }
 
-// ===== DRAW EYES =====
-/// Eyes are drawn separately from body
-/// Eyes use dedicated sprite with white color
-
-var _eye_spr = spr_GhostEyes;  // Eyes sprite (same for all ghosts)
-
-// Draw eyes at current position
-draw_sprite_ext(
-    _eye_spr,          // Eyes sprite
-    im,                // Animation frame (same as body)
-    x, y,              // Position
-    1, 1,              // Scale
-    0,                 // Rotation
-    ghost_color_eyes(), // Always white
-    1                  // Alpha
-);
-
-// Wraparound rendering for eyes
-if (y < 64) {
-    draw_sprite_ext(_eye_spr, im, x, y + 512, 1, 1, 0, ghost_color_eyes(), 1);
+if (state == GHOST_STATE.FRIGHTENED) {
+	// ===== DRAW EYES =====
+	/// Eyes are drawn separately from body
+	/// Eyes use dedicated sprite with white color
+	var eye_offset = (visible ? 0:1);
+	draw_sprite(spr_Eyes, 4+eye_offset, x, y);	
+}
+else {
+	// ===== DRAW EYES =====
+	/// Eyes are drawn separately from body
+	/// Eyes use dedicated sprite with white color
+	draw_sprite(spr_Eyes, dir, x, y);
 }
 
-if (y > room_height - 64) {
-    draw_sprite_ext(_eye_spr, im, x, y - 512, 1, 1, 0, ghost_color_eyes(), 1);
-}
+//var _eye_spr = spr_Eyes;  // Eyes sprite (same for all ghosts)
+
+//// Draw eyes at current position
+//draw_sprite_ext(
+//    _eye_spr,          // Eyes sprite
+//    im,                // Animation frame (same as body)
+//    x, y,              // Position
+//    1, 1,              // Scale
+//    0,                 // Rotation
+//    ghost_color_eyes(), // Always white
+//    1                  // Alpha
+//);
+
+//// Wraparound rendering for eyes
+//if (y < 64) {
+//    draw_sprite_ext(_eye_spr, im, x, y + 512, 1, 1, 0, ghost_color_eyes(), 1);
+//}
+
+//if (y > room_height - 64) {
+//    draw_sprite_ext(_eye_spr, im, x, y - 512, 1, 1, 0, ghost_color_eyes(), 1);
+//}
 
 // ===== ELROY INDICATOR (Optional Debug/Visual) =====
 /// Show visual indicator when in Elroy mode (faster pursuit)

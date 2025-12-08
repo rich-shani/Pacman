@@ -171,7 +171,7 @@ function draw_ghost_sprite(_sprite, _subimg, _x, _y, _state, _color, _flash) {
         case GHOST_STATE.EYES:
             // Eyes only: drawn separately, skip body
             return;  // Don't draw body in eyes mode
-            break;
+            //break;
 
         case GHOST_STATE.IN_HOUSE:
             // In house: draw with normal color while exiting

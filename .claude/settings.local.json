@@ -16,7 +16,9 @@
       "Bash(git config:*)",
       "Bash(git add:*)",
       "Bash(powershell -Command:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

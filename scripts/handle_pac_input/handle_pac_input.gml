@@ -1,0 +1,489 @@
+/// ===============================================================================
+/// handle_pac_input() - PAC INPUT HANDLING & CORNER MECHANICS
+/// ===============================================================================
+/// Purpose: Process keyboard input and manage smooth corner turning for Pac
+/// Called from: Pac Step_1 event
+/// Returns: Nothing (modifies Pac variables directly)
+///
+/// Responsibilities:
+/// 1. Check keyboard input (arrow keys)
+/// 2. Validate movement direction (no wall collisions)
+/// 3. Handle corner transitions for smooth turning
+/// 4. Set buffered direction for next intersection
+/// 5. Apply immediate movement if aligned and direction valid
+///
+/// This script consolidates all input handling logic, reducing Step_1 complexity
+/// and making the code reusable if needed by other objects.
+///
+/// Corner Mechanics Explained:
+/// When Pac presses a direction key while already moving, he doesn't instantly
+/// turn. Instead, a corner state (1-8) is set based on:
+/// - Current direction (which way he's moving)
+/// - Desired direction (which key was pressed)
+/// - Current offset (how far off-grid he is)
+///
+/// This creates smooth, continuous turning instead of jerky direction changes.
+/// ===============================================================================
+
+function handle_pac_input() {
+
+    // Only process input if:
+    // - Pac is alive or in corner transition
+    // - No ghost collision happened this frame
+    // - Pac is not in chomp animation
+    // - Level is in progress (not starting/ending)
+    if (dead >= PAC_STATE.DEAD || chomp > 0 || start > 0) {
+        return;  // Input disabled, skip processing
+    }
+
+    // ===== INPUT VALIDATION CHECK =====
+    /// Only allow input changes when in playable room (level > 0)
+    if (global.lvl == 0) {
+        return;  // Menu/cutscene - no input needed
+    }
+
+    // ===== CHECK BOUNDARIES =====
+    /// Some directions require boundary checks to prevent collision
+    var _at_vertical_bounds = (y > 48 && y < room_height - 48);
+    var _at_horizontal_bounds = (x > 8 && x < room_width - 8);
+
+    // ===== DIRECTION = RIGHT =====
+    /// Player pressed right arrow key
+    if (_at_vertical_bounds) {
+        if (keyboard_check(vk_right) == true && keyboard_check(vk_up) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
+
+            // Check if path to right is clear (no wall collision)
+            if (!collision_point(16 * (round((x) / 16)) + 17, 16 * (round((y) / 16)), Wall, false, true)) {
+                dir = PAC_DIRECTION.RIGHT;
+                park = -1;  // Clear buffered input
+
+                // Handle corner turning if currently moving vertically
+                if (direction == 90 && vspeed != 0) {
+                    /// Currently moving UP, turning RIGHT
+                    if (y > 16 * round((y) / 16)) {
+                        corner = PAC_CORNER.UP_TO_RIGHT_PRE;  // Pre-alignment
+                        hspeed = sp;    // Move right
+                        vspeed = -sp;   // Continue up momentum while also moving right (cutting corner)
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.UP_TO_RIGHT_POST;  // Post-alignment (or aligned)
+                        hspeed = sp;    // Move right
+                        vspeed = sp;    // Reverse up momentum, continue down
+                        exit;
+                    }
+                }
+                else if (direction == 270 && vspeed != 0) {
+                    /// Currently moving DOWN, turning RIGHT
+                    if (y < 16 * round((y) / 16)) {
+                        corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;  // Pre-alignment
+                        hspeed = sp;    // Move right
+                        vspeed = sp;    // Continue down momentum while also moving right (cutting corner)
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.DOWN_TO_RIGHT_POST;  // Post-alignment (or aligned)
+                        hspeed = sp;    // Move right
+                        vspeed = -sp;   // Reverse down momentum, continue up
+                        exit;
+                    }
+                }
+                else {
+                    /// Not moving vertically, or moving horizontally - just continue/start right
+                    hspeed = sp;
+                    vspeed = 0;
+                }
+            }
+            else {
+                // Wall in the way, buffer the direction for later
+                park = PAC_DIRECTION.RIGHT;
+            }
+        }
+    }
+
+    // ===== DIRECTION = UP =====
+    /// Player pressed up arrow key
+    if (_at_horizontal_bounds) {
+        if (keyboard_check(vk_up) == true && keyboard_check(vk_right) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
+
+            // Check if path upward is clear
+            if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) - 1, Wall, false, true)) {
+                dir = PAC_DIRECTION.UP;
+                park = -1;
+
+                // Handle corner turning if currently moving horizontally
+                if (direction == 0 && hspeed != 0) {
+                    /// Currently moving RIGHT, turning UP
+                    if (x < 16 * round((x) / 16)) {
+                        corner = PAC_CORNER.RIGHT_TO_UP_PRE;  // Pre-alignment
+                        hspeed = sp;
+                        vspeed = -sp;
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.RIGHT_TO_UP_POST;  // Post-alignment (or aligned)
+                        hspeed = -sp;
+                        vspeed = -sp;
+                        exit;
+                    }
+                }
+                else if (direction == 180 && hspeed != 0) {
+                    /// Currently moving LEFT, turning UP
+                    if (x > 16 * round((x) / 16)) {
+                        corner = PAC_CORNER.LEFT_TO_UP_PRE;  // Pre-alignment
+                        hspeed = -sp;   // Continue left momentum while also moving up (cutting corner)
+                        vspeed = -sp;
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.LEFT_TO_UP_POST;  // Post-alignment (or aligned)
+                        hspeed = sp;    // Reverse left momentum, continue right
+                        vspeed = -sp;
+                        exit;
+                    }
+                }
+                else {
+                    /// Not moving horizontally, or moving vertically - just continue/start up
+                    hspeed = 0;
+                    vspeed = -sp;
+                }
+            }
+            else {
+                // Wall in the way, buffer the direction
+                park = PAC_DIRECTION.UP;
+            }
+        }
+    }
+
+    // ===== DIRECTION = LEFT =====
+    /// Player pressed left arrow key
+    if (_at_vertical_bounds) {
+        if (keyboard_check(vk_left) == true && keyboard_check(vk_up) == false &&
+            keyboard_check(vk_right) == false && keyboard_check(vk_down) == false) {
+
+            // Check if path to left is clear
+            if (!collision_point(16 * (round((x) / 16)) - 1, 16 * (round((y) / 16)), Wall, false, true)) {
+                dir = PAC_DIRECTION.LEFT;
+                park = -1;
+
+                // Handle corner turning if currently moving vertically
+                if (direction == 90 && vspeed != 0) {
+                    /// Currently moving UP, turning LEFT
+                    if (y > 16 * round((y) / 16)) {
+                        corner = PAC_CORNER.UP_TO_LEFT_PRE;  // Pre-alignment
+                        hspeed = -sp;   // Move left
+                        vspeed = -sp;   // Continue up momentum while also moving left (cutting corner)
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.UP_TO_LEFT_POST;  // Post-alignment (or aligned)
+                        hspeed = -sp;   // Move left
+                        vspeed = sp;    // Reverse up momentum, continue down
+                        exit;
+                    }
+                }
+                else if (direction == 270 && vspeed != 0) {
+                    /// Currently moving DOWN, turning LEFT
+                    if (y < 16 * round((y) / 16)) {
+                        corner = PAC_CORNER.DOWN_TO_LEFT_PRE;  // Pre-alignment
+                        hspeed = -sp;   // Move left
+                        vspeed = sp;    // Continue down momentum while also moving left (cutting corner)
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.DOWN_TO_LEFT_POST;  // Post-alignment (or aligned)
+                        hspeed = -sp;   // Move left
+                        vspeed = -sp;   // Reverse down momentum, continue up
+                        exit;
+                    }
+                }
+                else {
+                    /// Not moving vertically, or moving horizontally - just continue/start left
+                    hspeed = -sp;
+                    vspeed = 0;
+                }
+            }
+            else {
+                // Wall in the way, buffer the direction
+                park = PAC_DIRECTION.LEFT;
+            }
+        }
+    }
+
+    // ===== DIRECTION = DOWN =====
+    /// Player pressed down arrow key
+    if (_at_horizontal_bounds) {
+        if (keyboard_check(vk_down) == true && keyboard_check(vk_right) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_up) == false) {
+
+            // Check if path downward is clear
+            if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) + 17, Wall, false, true)) {
+                dir = PAC_DIRECTION.DOWN;
+                park = -1;
+
+                // Handle corner turning if currently moving horizontally
+                if (direction == 0 && hspeed != 0) {
+                    /// Currently moving RIGHT, turning DOWN
+                    if (x < 16 * round((x) / 16)) {
+                        corner = PAC_CORNER.RIGHT_TO_DOWN_PRE;  // Pre-alignment
+                        hspeed = sp;  // Continue right momentum while also moving down
+                        vspeed = sp;  // Allows cutting corner before grid alignment
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.RIGHT_TO_DOWN_POST;  // Post-alignment (or aligned)
+                        hspeed = -sp;  // Reverse right momentum, continue left
+                        vspeed = sp;   // Still moving down
+                        exit;
+                    }
+                }
+                else if (direction == 180 && hspeed != 0) {
+                    /// Currently moving LEFT, turning DOWN
+                    if (x > 16 * round((x) / 16)) {
+                        corner = PAC_CORNER.LEFT_TO_DOWN_PRE;  // Pre-alignment
+                        hspeed = -sp;  // Continue left momentum while also moving down
+                        vspeed = sp;   // Allows cutting corner before grid alignment
+                        exit;
+                    }
+                    else {
+                        corner = PAC_CORNER.LEFT_TO_DOWN_POST;  // Post-alignment (or aligned)
+                        hspeed = sp;   // Reverse left momentum, continue right
+                        vspeed = sp;   // Still moving down
+                        exit;
+                    }
+                }
+                else {
+                    /// Not moving horizontally, or moving vertically - just continue/start down
+                    hspeed = 0;
+                    vspeed = sp;
+                }
+            }
+            else {
+                // Wall in the way, buffer the direction
+                park = PAC_DIRECTION.DOWN;
+            }
+        }
+    }
+
+    // ===== CORNER TRANSITION HANDLING =====
+    /// If already in a corner transition, check for re-entry during transition
+    /// CRITICAL: Use speed NEGATION to preserve momentum, not absolute reassignment
+    if (corner > PAC_CORNER.NONE && chomp == 0) {
+        if (cornercheck < 2) {  // Allow re-entry for first 2 frames of corner
+
+            // Attempting RIGHT during corner transition
+            if (keyboard_check(vk_right) == true && keyboard_check(vk_up) == false &&
+                keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)) + 17, 16 * (round((y) / 16)), Wall, false, true)) {
+                    switch(corner) {
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
+                            corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.UP_TO_RIGHT_POST;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.UP_TO_RIGHT_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
+                            corner = PAC_CORNER.DOWN_TO_RIGHT_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                    }
+                }
+            }
+
+            // Attempting UP during corner transition
+            if (keyboard_check(vk_up) == true && keyboard_check(vk_right) == false &&
+                keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) - 1, Wall, false, true)) {
+                    switch(corner) {
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                    }
+                }
+            }
+
+            // Attempting LEFT during corner transition
+            if (keyboard_check(vk_left) == true && keyboard_check(vk_up) == false &&
+                keyboard_check(vk_right) == false && keyboard_check(vk_down) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)) - 1, 16 * (round((y) / 16)), Wall, false, true)) {
+                    switch(corner) {
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                    }
+                }
+            }
+
+            // Attempting DOWN during corner transition
+            if (keyboard_check(vk_down) == true && keyboard_check(vk_right) == false &&
+                keyboard_check(vk_left) == false && keyboard_check(vk_up) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) + 17, Wall, false, true)) {
+                    switch(corner) {
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// ===============================================================================
+/// END handle_pac_input() FUNCTION
+/// ===============================================================================

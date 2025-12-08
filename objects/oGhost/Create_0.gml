@@ -12,71 +12,133 @@
 /// - Scatter corner (cornerx, cornery)
 /// - Speed thresholds (elroydots, elroydots2)
 ///
-/// Key Design Principle: event_inherited() is NOT called here because this IS
-/// the base initialization. Child ghosts call event_inherited() to use this code.
+/// Child ghosts call event_inherited() to use this code.
 /// ===============================================================================
 
-// ===== IDENTIFICATION =====
-/// Ghost name: "Blinky", "Pinky", "Inky", or "Clyde" (set by child object)
-ghost_name = "";
+// ===== IDENTIFICATION & NAMING =====
+/// Ghost identifier used for debugging and personality-based logic
+/// Each ghost instance sets this to their name:
+/// - "Blinky": Red, direct chaser (fearless leader)
+/// - "Pinky": Pink, ambush predator (anticipates 4 ahead)
+/// - "Inky": Cyan, geometric ambusher (double vector algorithm)
+/// - "Clyde": Orange, ambiguous pursuer (distance-based personality)
 
-// ===== ANIMATION VARIABLES =====
-/// Animation frame index (0-15, cycles through sprite frames)
-/// Incremented each frame: im = (im + 1) % 16
-im = 0;
+ghost_name = "";  // Set by child object in their Create_0 BEFORE event_inherited()
 
-/// Flash state counter for frightened mode (flashing effect)
-/// When state == FRIGHTENED and flash > 15, ghost becomes white
-flash = 0;
+// ===== ANIMATION STATE VARIABLES =====
+/// Frame counter for sprite animation (0-15 continuous cycle)
+/// This variable controls sprite frame progression manually
+/// Incremented each frame in BEGIN_STEP: im = (im + 1) % 16
+/// Range: 0-15 (16 frames per cycle, resets to 0 after 15)
 
-/// Elroy mode counter (0=off, 1=mode1 faster, 2=mode2 fastest)
-/// Used to display visual effect (red eyes)
-elroy = 0;
+im = 0;  // Animation frame index
 
-// ===== POSITION TRACKING (16-pixel grid aligned) =====
-/// Current tile X coordinate (grid position, not pixel position)
+/// Power pellet flashing effect counter (frightened mode only)
+/// Controls the white flashing visual warning near end of power pellet
+/// Cycles 0-29 continuously when state == FRIGHTENED
+/// Used to create flashing effect (visible/invisible alternation)
+/// When flash < 15: ghost visible
+/// When flash >= 15: ghost invisible (flashing warning)
+
+flash = 0;  // Flashing counter
+
+/// Elroy mode speed indicator (0=normal, 1=fast, 2=fastest)
+/// Tracks which Elroy speed mode ghost is currently in
+/// Set based on remaining dot count (aggressive hunting when dots low)
+/// - 0: Normal speed (plenty of dots remain)
+/// - 1: Elroy mode 1 (dots below first threshold)
+/// - 2: Elroy mode 2 (dots below second threshold)
+/// Used by Draw event to show visual indicator (red eyes)
+
+elroy = 0;  // Elroy mode (0-2)
+
+// ===== POSITION TRACKING (16-PIXEL GRID ALIGNED) =====
+/// Grid-aligned X position (snapped to 16-pixel cells)
+/// This is calculated from actual x position each frame
 /// Updated each frame: tilex = 16 * round(x / 16)
-tilex = 0;
+/// Used by pathfinding to determine which grid cell ghost is in
+/// Range: Multiples of 16 (0, 16, 32, 48, ... 432, 448)
 
-/// Current tile Y coordinate (grid position, not pixel position)
+tilex = 0;  // Current tile X (grid coordinate)
+
+/// Grid-aligned Y position (snapped to 16-pixel cells)
+/// This is calculated from actual y position each frame
 /// Updated each frame: tiley = 16 * round(y / 16)
-tiley = 0;
+/// Used by pathfinding to check valid directions at intersections
+/// Range: Multiples of 16 (0, 16, 32, 48, ...)
 
-/// Starting X position (pixel coordinate)
-/// Set by child object, used for respawning
-xstart = 0;
+tiley = 0;  // Current tile Y (grid coordinate)
 
-/// Starting Y position (pixel coordinate)
-/// Set by child object, used for respawning
-ystart = 0;
+/// Starting/respawn position X (pixel coordinate, not grid)
+/// Set by child ghost object based on its personality
+/// Used to reset ghost position when eaten (returns to house)
+/// Typical values: 216 (Blinky), etc.
 
-// ===== PATHFINDING & BEHAVIOR =====
-/// Target pursuit X coordinate (where ghost is chasing)
-/// Calculated in Step_1 based on ghost personality
-pursuex = 0;
+xstart = 0;  // Spawn point X
 
-/// Target pursuit Y coordinate
-/// Calculated in Step_1 based on ghost personality
-pursuey = 0;
+/// Starting/respawn position Y (pixel coordinate, not grid)
+/// Set by child ghost object based on its personality
+/// Used to reset ghost position when eaten (returns to house)
+/// Typical value: 224 (standard ghost house entrance Y)
 
-/// House state: 0 = released, 1 = in ghost house
-/// Determines if ghost is contained or free to roam
-house = 0;
+ystart = 0;  // Spawn point Y
 
-/// House state machine (varies by ghost type)
-/// Blinky: 0=bouncing, 1=exiting
-/// Pinky: 0=waiting, 1=dot-counting, 2=bouncing, 3=exiting
-/// Inky: 0-4 complex exit sequence
-/// Clyde: 0-4 complex exit sequence
-housestate = 0;
+// ===== PATHFINDING & TARGET TRACKING =====
+/// Target X coordinate for current chase/behavior
+/// Calculated in Step_1 event based on ghost personality and state
+/// Used by pathfinding (chase_object script) to determine best direction
+/// Set to different values based on state:
+/// - CHASE: Pac's position (or variation for personality)
+/// - FRIGHTENED: Not used (random movement)
+/// - EYES: House entrance (216)
 
-/// New tile flag: 1 when ghost reaches a new grid tile
-/// Used to trigger pathfinding update (turning decision)
-newtile = 0;
+pursuex = 0;  // Pursuit target X
 
-/// About-face flag: 1 when ghost should reverse direction
-/// Used in power pellet mode to make ghosts reverse
-aboutface = 0;
+/// Target Y coordinate for current chase/behavior
+/// Calculated in Step_1 event based on ghost personality and state
+/// Used by pathfinding (chase_object script) to determine best direction
+/// Set to different values based on state:
+/// - CHASE: Pac's Y (or variation for personality)
+/// - FRIGHTENED: Not used (random movement)
+/// - EYES: House entrance (240)
+
+pursuey = 0;  // Pursuit target Y
+
+/// House containment status flag
+/// Determines if ghost is in house or free in maze
+/// - 0: FREE - Ghost roaming the maze, normal behavior
+/// - 1: IN_HOUSE - Ghost inside ghost house, exiting sequence
+/// When eaten (state=EYES), ghost eyes return to house
+/// Then house=1, housestate handles exit bounce sequence
+
+house = 0;  // House containment (0=free, 1=in_house)
+
+/// House state machine progress tracker
+/// Sub-state within the IN_HOUSE state, varies by ghost type
+/// Controls the bounce-down and bounce-up exit sequence
+/// Different ghosts may have different house sequences
+/// Blinky: 0=entering, 1=bouncing down, 2=bouncing up, 3=exiting
+/// Pinky: Similar with dot-counting phase
+/// Inky/Clyde: More complex sequences (0-4)
+
+housestate = 0;  // House state machine (sub-state)
+
+/// New tile intersection flag for pathfinding decision
+/// Triggers ONCE when ghost reaches a new 16x16 grid cell
+/// Controls when pathfinding/turning decisions are made
+/// - 0: Not at intersection, continue moving straight
+/// - 1: Just reached intersection, make turning decision
+/// Set to 1 when tilex/tiley changes, set to 0 after decision
+
+newtile = 0;  // Intersection flag (0=moving, 1=reached tile)
+
+/// About-face/reverse direction flag for power pellet
+/// When Pac eats power pellet, ghosts should reverse direction immediately
+/// Rather than making a new decision, they 180° flip
+/// - 0: Normal behavior, use pathfinding decision
+/// - 1: REVERSE! Flip to opposite direction
+
+aboutface = 0;  // Reversal flag (0=normal, 1=reverse)
 
 // ===== AI STATE MACHINE =====
 /// Current ghost behavioral state (uses GHOST_STATE enum)
@@ -108,80 +170,198 @@ cornerx = 0;
 cornery = 0;
 
 // ===== DIRECTION TRACKING =====
-/// Current direction in degrees (0=right, 90=up, 180=left, 270=down)
-/// Used by physics system for movement
-direction = 0;
+/// Current movement direction in DEGREES (physics engine format)
+/// Used by GML's built-in physics: direction + speed = motion
+/// Values: 0° = right, 90° = up, 180° = left, 270° = down
+/// Technically continuous (0-360 degrees possible for diagonal movement)
+/// Updated by pathfinding logic based on chosen direction
 
-/// Cardinal direction: 0=right, 1=up, 2=left, 3=down
-/// Used by pathfinding and turning logic
-dir = GHOST_DIRECTION.RIGHT;
+direction = 0;  // Movement angle in degrees
 
-/// Reverse direction (opposite of current direction)
-/// Used when power pellet makes ghosts reverse
-resdir = GHOST_DIRECTION.LEFT;
+/// Current direction in CARDINAL format (0-3)
+/// Discrete direction representation used by pathfinding
+/// - 0 = RIGHT (direction = 0°)
+/// - 1 = UP (direction = 90°)
+/// - 2 = LEFT (direction = 180°)
+/// - 3 = DOWN (direction = 270°)
+/// Set by pathfinding scripts (chase_object, random_direction)
+/// Converted to degree direction by Step_2 turning logic
 
-/// Fruit-related direction tracking
-/// Used in special game modes
-fruity = 0;
+dir = GHOST_DIRECTION.RIGHT;  // Cardinal direction (0-3)
 
-/// Co-direction for pathfinding (secondary direction choice)
-/// Used when multiple paths are equally short
-codir = 0;
+/// Reverse/opposite direction (for reversal logic)
+/// Automatically calculated as opposite of current direction
+/// Used in about-face maneuvers (power pellet reversal)
+/// Value = (dir + 2) % 4  (rotated 180 degrees)
 
-// ===== SPEED VARIABLES =====
-/// Normal speed (varies by level and game mode)
-sp = 1.875;
+resdir = GHOST_DIRECTION.LEFT;  // Opposite direction
 
-/// Slow area speed (tunnels and special zones)
-spslow = 1.0;
+/// Fruit direction tracking (unused in current implementation)
+/// Reserved for future special game modes/bonuses
+/// Some Pacman variants have moving fruit bonuses
 
-/// Frightened mode speed (slower when power pellet active)
-spfright = 1.25;
+fruity = 0;  // Fruit direction
 
-/// Elroy mode 1 speed (faster pursuit)
-spelroy = 2.0;
+/// Co-direction/secondary direction option (unused)
+/// Reserved for pathfinding enhancements
+/// Could be used when multiple paths are equally optimal
 
-/// Elroy mode 2 speed (maximum speed)
-spelroy2 = 2.125;
+codir = 0;  // Co-direction
 
-/// Eyes speed (very fast when returning to house)
-speyes = 4.0;
+// ===== SPEED CONFIGURATION VARIABLES =====
+/// Normal pursuit speed (pixels per frame)
+/// Used in CHASE mode when not in tunnel and no Elroy
+/// Adjusted per level (varies from 1.8 to 2.0)
+/// Standard value: 1.875 pixels/frame
+
+sp = 1.875;  // Normal speed
+
+/// Tunnel/slow area speed (pixels per frame)
+/// Reduced speed when ghost is in tunnel zone
+/// Makes escape through tunnel more viable
+/// Used in both CHASE and FRIGHTENED modes in tunnels
+/// Standard value: 1.0 pixels/frame (33% slower)
+
+spslow = 1.0;  // Tunnel speed
+
+/// Frightened mode speed (pixels per frame)
+/// Speed when power pellet active, making ghost slower
+/// Reduces from normal 1.875 to more manageable 1.25
+/// Gives player chance to catch/flee from vulnerable ghosts
+/// Standard value: 1.25 pixels/frame
+
+spfright = 1.25;  // Power pellet speed
+
+/// Elroy mode 1 speed (pixels per frame)
+/// Faster hunting speed when dots below first threshold
+/// Makes ghosts more dangerous in late game
+/// Triggered when dotcount <= elroydots (varies by ghost)
+/// Standard value: 2.0 pixels/frame (6.7% faster)
+
+spelroy = 2.0;  // Elroy mode 1 (faster)
+
+/// Elroy mode 2 speed (pixels per frame)
+/// Maximum hunting speed when dots below second threshold
+/// Most aggressive ghost speed, hardest to escape
+/// Triggered when dotcount <= elroydots2 (usually ~150 dots left)
+/// Standard value: 2.125 pixels/frame (13% faster than normal)
+
+spelroy2 = 2.125;  // Elroy mode 2 (fastest)
+
+/// Eyes return speed (pixels per frame)
+/// Very fast speed for ghost eyes returning to house
+/// Makes resurrection quick and avoids dead-time
+/// Used only in EYES state (after being eaten)
+/// Standard value: 4.0 pixels/frame (over 2x normal speed)
+
+speyes = 4.0;  // Eyes return speed
 
 // ===== DRAW/RENDER VARIABLES =====
-/// Current draw color (primary ghost color)
-draw_color = c_white;
+/// Base draw color for ghost sprite
+/// Tinted by Draw event based on ghost type and state
+/// Child objects set their own ghost color (red, pink, cyan, orange)
+/// Overridden during frightened mode to blue/white flashing
 
-// ===== SPRITE VARIABLES =====
-/// Image index (sprite animation frame)
-image_index = 0;
+draw_color = c_white;  // Base color (overridden by child ghosts)
 
-/// Image speed (animation speed)
-image_speed = 0;
+// ===== SPRITE ANIMATION VARIABLES =====
+/// Current sprite frame index (GML built-in)
+/// Set to 0 at start, incremented by animation system
+/// Not used for ghost animation (im variable handles it)
+/// Keep at 0 to avoid confusion with manual im control
 
-// ===== PHYSICS =====
-/// Horizontal speed (pixels per frame)
-hspeed = 0;
+image_index = 0;  // Sprite frame (unused, we use im instead)
 
-/// Vertical speed (pixels per frame)
-vspeed = 0;
+/// Sprite animation speed setting (GML built-in)
+/// Set to 0 to DISABLE automatic animation
+/// Allows manual control via im variable
+/// If set to > 0, GML auto-increments image_index (conflicts with im)
 
-// ===== DEBUG/OPTIONAL =====
-/// Elroy visual indicator (for debugging)
-elroy_display = 0;
+image_speed = 0;  // DISABLED - we control animation manually
 
-// ===== CHILD OBJECT OVERRIDE POINT =====
-/// Child objects should set these before calling event_inherited():
+// ===== PHYSICS SYSTEM VARIABLES =====
+/// Horizontal velocity (pixels per frame)
+/// Set based on current direction and speed
+/// Positive = rightward, Negative = leftward
+/// Updated each frame based on direction/speed values
+
+hspeed = 0;  // Horizontal velocity
+
+/// Vertical velocity (pixels per frame)
+/// Set based on current direction and speed
+/// Positive = downward, Negative = upward
+/// Updated each frame based on direction/speed values
+
+vspeed = 0;  // Vertical velocity
+
+// ===== ELROY DISPLAY VARIABLE =====
+/// Visual indicator for debug/tuning (rarely used)
+/// Could display Elroy state in debug output
+/// Currently unused in main implementation
+
+elroy_display = 0;  // Debug indicator
+
+// ===== INITIALIZATION COMPLETE =====
+/// At this point, basic variables are initialized
+/// Child ghost objects now call event_inherited() to execute this code
+/// After event_inherited(), child sets its unique properties
+
+/// ═══════════════════════════════════════════════════════════════════════════════
+/// CRITICAL: How Child Ghosts Use This Create_0 Event
+/// ═══════════════════════════════════════════════════════════════════════════════
 ///
-/// In child Create_0.gml (before event_inherited()):
-///   ghost_name = "Blinky";
-///   xstart = 216;
-///   ystart = 224;
-///   cornerx = 32;
-///   cornery = 32;
-///   elroydots = 244;
-///   event_inherited();
+/// Child ghost objects (Blinky, Pinky, Inky, Clyde) follow this pattern:
 ///
-/// This ensures child-specific values are set before base initialization completes.
+/// EXAMPLE - Blinky's Create_0.gml:
+/// ───────────────────────────────────
+/// /// Set Blinky-specific properties BEFORE inheriting base initialization
+/// ghost_name = "Blinky";           // Unique identifier
+/// xstart = 216;                    // Spawn position X
+/// ystart = 224;                    // Spawn position Y
+/// cornerx = 32;                    // Scatter corner (top-left)
+/// cornery = 32;
+/// elroydots = 244;                 // Elroy threshold 1 (dots remaining)
+/// elroydots2 = 0;                  // Elroy threshold 2 (disabled for Blinky)
+///
+/// event_inherited();               // Call THIS Create_0 to init all base variables
+///
+/// /// Optional: Set Blinky-specific overrides AFTER inheritance
+/// draw_color = c_red;              // Blinky's color
+///
+///
+/// EXAMPLE - Pinky's Create_0.gml:
+/// ────────────────────────────────
+/// ghost_name = "Pinky";
+/// xstart = 208;                    // Slightly left of center
+/// ystart = 240;                    // In front house
+/// cornerx = 400;                   // Scatter corner (top-right)
+/// cornery = 32;
+/// elroydots = 240;
+/// elroydots2 = 0;
+///
+/// event_inherited();               // Initialize base
+///
+/// draw_color = c_fuchsia;          // Pinky's color (magenta)
+///
+///
+/// KEY DESIGN NOTES:
+/// ─────────────────
+/// 1. Child sets properties BEFORE event_inherited()
+///    → Ensures base initialization uses child's custom values
+///
+/// 2. Child can override properties AFTER event_inherited()
+///    → Can customize colors, or other visual elements
+///
+/// 3. Each ghost instance has UNIQUE spawn position
+///    → xstart/ystart positions them differently in house
+///
+/// 4. Scatter corners are DIFFERENT for each personality
+///    → Blinky: Top-left (32, 32) - defensive
+///    → Pinky: Top-right (400, 32) - offensive
+///    → Inky: Bottom-right (closest to Pac start)
+///    → Clyde: Bottom-left (far from Pac start)
+///
+/// ═══════════════════════════════════════════════════════════════════════════════
 
 /// ===============================================================================
 /// END oGHOST CREATE EVENT

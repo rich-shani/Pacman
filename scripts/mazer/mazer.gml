@@ -124,11 +124,8 @@ function mazer() {
 	        if global.lvl = 17{room_goto(Arr_2_2)}
 	        if global.lvl > 17{
 	            if room = PacMan{room_goto(Arr_1_2)}else{
-	            if room = Arr_0_2{room_goto(PacMan)}else{
-	            if room = Arr_5_2{room_goto(Arr_0_1)}else{room_goto_next()}
 	        }}}
 	    }
-	}
 	if global.game = 1{
 	    if global.mode = 0{
 	    if global.lvl = 21{room_goto(MsPacMan3);global.loop = 0;}else{
@@ -238,7 +235,7 @@ function mazer() {
 	        if global.lvl > 17{if room = Champ9{room_goto(Champ1)}; else{room_goto_next()}}
 	    }
 	}
-
-
-
+	
 }
+
+

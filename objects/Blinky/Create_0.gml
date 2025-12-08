@@ -1,60 +1,33 @@
-/// ===============================================================================
-/// BLINKY GHOST OBJECT - CREATE EVENT
-/// ===============================================================================
-/// Description: Initializes Blinky (Shadow/Red Ghost)
-/// Personality: Aggressive pursuer - directly chases Pac's current position
-/// Scatter Corner: Top-left (32, 32)
+/// ===== BLINKY CREATE_0.GML =====
+/// Blinky ghost initialization with oGhost inheritance
 ///
-/// Features:
-/// - AI chase/scatter/frightened behavior
-/// - Grid-based pathfinding with tile tracking
-/// - Elroy (faster pursuit) mode when dots are low
-/// - Power pellet vulnerability
-/// - Smooth animation with sprite flashing
-/// ===============================================================================
+/// This event runs when Blinky instance is created at room start.
+/// event_inherited() loads all shared ghost variables from oGhost.
+/// Then we override with Blinky-specific settings only.
 
-// ===== ANIMATION VARIABLES =====
-/// Animation frame index for sprite animation
-im = 0;
-/// Flash state when frightened (for visibility toggling)
-flash = 0;
+/// ===== PARENT INITIALIZATION (MUST BE FIRST!) =====
+/// Load all shared ghost variables from oGhost parent
+/// This includes: animation, position, pathfinding, state, direction, speeds
+event_inherited();
 
-// ===== POSITION TRACKING =====
-/// Current tile coordinates (16-pixel grid aligned)
-tilex = 0;
-tiley = 0;
-/// Starting position (for reset/respawn)
-xstart = 216;
-ystart = 224;
+/// ===== BLINKY IDENTITY =====
+/// Set Blinky's name and color (unique identity)
+ghost_name = "Blinky";                      // Ghost identifier string
+ghost_color = ghost_color_blinky();         // Red color: RGB(255, 0, 0)
 
-// ===== PATHFINDING & BEHAVIOR =====
-/// Target pursuit X coordinate (calculated from Pac position or pattern)
-pursuex = 0;
-/// Target pursuit Y coordinate
-pursuey = 0;
-/// House state: 0=released, 1=in ghost house
-house = 0;
-/// New tile flag: signals when ghost reaches a new tile for pathfinding update
-newtile = 0;
-/// About-face flag: when 1, ghost reverses direction (used for power pellet mode)
-aboutface = 0;
+/// ===== STARTING POSITION & SPAWN LOCATION =====
+/// Set where Blinky spawns (center of ghost house)
+xstart = 216;                               // Spawn X coordinate (pixel)
+ystart = 224;                               // Spawn Y coordinate (pixel)
+x = xstart;                                 // Place instance at spawn X
+y = ystart;                                 // Place instance at spawn Y
 
-// ===== AI STATE MACHINE =====
-/// Ghost state: 0=chase, 1=frightened, 2=eyes returning to house, 3+=special
-state = 0;
-/// Elroy threshold: when dots <= this value, Blinky enters faster "Elroy" pursuit mode
-elroydots = 244;
-/// Corner X for scatter mode (top-left corner)
-cornerx = 32;
-/// Corner Y for scatter mode (top-left corner)
-cornery = 32;
+/// ===== SCATTER MODE TARGET =====
+/// When in scatter mode (not chasing), Blinky targets the top-right corner
+cornerx = 416;                               // Scatter target X coordinate
+cornery = 32;                               // Scatter target Y coordinate
 
-// ===== DIRECTION TRACKING =====
-/// Current direction in degrees (0=right, 90=up, 180=left, 270=down)
-direction = 0;
-/// Cardinal direction: 0=right, 1=up, 2=left, 3=down (used for pathfinding)
-dir = 0;
-/// Fruit-related direction tracking (used during fruit chase modes)
-fruity = 0;
-/// Co-direction (secondary direction used in pathfinding logic)
-codir = 0;
+/// ===== INITIAL STATE & DIRECTION =====
+/// Set Blinky's starting state and facing direction
+state = GHOST_STATE.CHASE;                  // Start in chase/scatter mode
+dir = GHOST_DIRECTION.LEFT;                 // Start facing left

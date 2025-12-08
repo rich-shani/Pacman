@@ -1,5 +1,4 @@
 c64 = 0;
-if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_04 or room = C64_05 or room = C64_06{c64 = 1};
 
 //if room = Extended1 or room = Extended2 or room = Extended3 or room = Extended4 or room = Extended5 or room = Extended6 or room = Extended7{extend = 1};
 extend = 0;
