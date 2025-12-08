@@ -1,36 +1,37 @@
-action_set_relative(1);
+/// ===============================================================================
+/// KEYPRESS_16 (SHIFT KEY) - ADD CREDIT & MENU ACCESS
+/// ===============================================================================
+/// Purpose: Add one credit and return to menu (with special handling for ongoing games)
+/// Called: When Shift key is pressed
+///
+/// Triggers:
+/// - Increment credit counter
+/// - Play credit sound effect
+/// - If ongoing game with one player dead, trigger recovery countdown
+/// - At level 0, reset game mode and return to menu
+/// ===============================================================================
+
+/// Add one credit
 global.credit += 1;
+
+/// Play credit addition sound
 action_sound(Credit, 0);
-if ((global.p1lives = 0 and global.p2gameover = 1) or (global.p1gameover = 1 and global.p2lives = 0)) and global.lvl > 0 and countdown > -1{
-countdown = 10; alarm[11] = 1;
+
+/// Check if one player is dead and game is in progress
+if (((global.p1lives == 0 && global.p2gameover == 1) ||
+     (global.p1gameover == 1 && global.p2lives == 0)) &&
+    global.lvl > 0 && countdown > -1) {
+    /// Trigger recovery countdown
+    countdown = 10;
+    alarm[11] = 1;
 }
 
-var __b__;
-__b__ = action_if_variable(global.lvl, 0, 0);
-if __b__
-{
-{
-{
-action_set_relative(0);
-global.game = 0;
-action_set_relative(1);
+/// Return to menu if at level 0 (title screen)
+if (global.lvl == 0) {
+    /// Reset all game modes and settings to defaults
+    global.game = 0;        /// Standard Pac-Man
+    global.plus = 0;        /// Standard mode (not Plus)
+    global.rand = 0;        /// Fixed mazes (not random)
+    global.mode = 0;        /// Default mode
+    room_goto(rm_Menu);
 }
-{
-action_set_relative(0);
-global.plus = 0;
-action_set_relative(1);
-}
-{
-action_set_relative(0);
-global.rand = 0;
-action_set_relative(1);
-}
-{
-action_set_relative(0);
-global.mode = 0;
-action_set_relative(1);
-}
-action_another_room(rm_Menu, 0);
-}
-}
-action_set_relative(0);

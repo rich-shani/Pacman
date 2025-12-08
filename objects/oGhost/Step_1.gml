@@ -1,5 +1,5 @@
 /// ===============================================================================
-/// oGHOST - BASE GHOST OBJECT - STEP_0 EVENT
+/// oGHOST - BASE GHOST OBJECT - BEGIN_STEP EVENT
 /// ===============================================================================
 /// Purpose: Handle animation updates and common state management
 /// Called: Every frame (first step event for ghosts)
@@ -16,73 +16,83 @@
 /// ===============================================================================
 
 // ===== ANIMATION FRAME UPDATE =====
-/// Animate sprite by cycling through frames 0-15
-/// Frame 16 resets to 0, creating smooth looping animation
-/// Speed: Completes cycle every 16 frames
+/// Animate sprite by cycling through frames 0-15 based on ghost state
+/// Creates smooth walking animation for ghostlike movement
 ///
-/// Note: image_speed is set to 0 in Create event, so we control animation manually
-if state != GHOST_STATE.EYES {
-    /// Normal animation: cycle through frames
-    im = (im + 1) % 16;
+/// Animation logic:
+/// - Frames 0-15 cycle smoothly (16 frames per full cycle)
+/// - Cycle repeats every 16 frames (approximately every 267ms at 60fps)
+/// - In eyes mode: animation frozen (eyes don't animate like body)
+///
+/// Technical note: image_speed is set to 0 in Create event
+/// This forces MANUAL animation control (im variable) instead of automatic
+
+if (state != GHOST_STATE.EYES) {
+    /// Normal states (Chase, Frightened, In_House): Animate
+    /// Ghost body walks/moves, so animate the sprite
+    im = (im + 1) % 16;  // Increment frame counter, wrap at 16 (0-15 cycle)
 }
-/// Eyes mode: keep animation frozen (only eye sprites, no body animation)
+else {
+    /// Eyes mode: Frozen animation
+    /// Eyes don't animate (no body to animate)
+    /// Keep im at current value (effectively frozen)
+}
 
 // ===== FRIGHTENED MODE FLASHING EFFECT =====
-/// When power pellet is active, ghost flashes white and blue near end
-/// This creates a visual warning that power pellet is about to expire
+/// Create visual warning when power pellet is about to expire
+/// Ghost flashes between visible and invisible for visual feedback
 ///
-/// Flash pattern:
-/// - flash 0-14: Dark blue (frightened color)
-/// - flash 15-29: White (flashing effect)
-/// - flash 30+: Cycles back to 0
-/// - Creates flashing effect: approximately every 30 frames
+/// Flashing mechanics:
+/// - flash counter cycles 0-29 (30 frames per cycle)
+/// - flash 0-14: Ghost visible (blue/dark frightened color)
+/// - flash 15-29: Ghost invisible (appears to flash/wink out)
+/// - Cycle repeats for continuous flashing effect
 ///
-/// Note: Ghost is always visible during chase and eyes mode
-/// Only visible becomes false during frightened flashing (flash > 15)
+/// Flashing is only active near the END of power pellet
+/// - First ~2 seconds: ghost stays visible (early in power pellet)
+/// - Last ~2 seconds: ghost flashes on/off (warning effect)
+/// - Pac.alarm[0] tracks remaining frames (120 frames = ~2 seconds)
 
-if state == GHOST_STATE.FRIGHTENED {
-    /// Increment flash counter (used by Draw event for white flashing)
-    flash = (flash + 1) % 30;
+if (state == GHOST_STATE.FRIGHTENED) {
+    /// Power pellet ACTIVE: Handle flashing
 
-    /// Visibility toggling: flash white near end of power pellet
-    /// When Pac.alarm[0] gets low (near power pellet expiration),
-    /// ghost flashes white to warn it's running out of time
-    if Pac.alarm[0] < 121 {
-        /// Near end of power pellet: flash effect
-        visible = (flash < 15);  /// Invisible when flash >= 15
+    // Increment flash counter for flashing animation
+    flash = (flash + 1) % 30;  // Cycles 0-29 continuously
+
+    // Check if power pellet is near expiration (less than 2 seconds left)
+    if (Pac.alarm[0] < 121) {
+        /// FLASHING PHASE: Power pellet about to expire
+        /// Create warning effect: ghost appears/disappears
+        visible = (flash < 15);  // Visible for first 15 frames, invisible for next 15
+        /// Result: Ghost flashes white/invisible alternating every ~250ms
     } else {
-        /// Early in power pellet: always visible
-        visible = true;
+        /// STABLE PHASE: Power pellet has plenty of time left
+        /// Ghost stays visible (no flashing) for steadier appearance
+        visible = true;  // Always visible when time remaining > 2 seconds
     }
-} else {
-    /// Non-frightened states: always visible
+}
+else if (!visible) {
+    /// Non-frightened states (Chase, Eyes, In_House): Always visible
+    /// Ghost is not vulnerable, no need to flash
     visible = true;
-    flash = 0;  /// Reset flash counter when state changes
+    flash = 0;  // Reset flash counter when entering non-frightened state
+    /// (Ensures smooth transition when exiting frightened mode)
 }
 
 // ===== TILE COORDINATE TRACKING =====
-/// Update tile position every frame for pathfinding
-/// Converts pixel position to 16-pixel grid coordinates
-/// Used by pathfinding scripts to check valid moves
-tilex = 16 * round(x / 16);
-tiley = 16 * round(y / 16);
+/// Update grid position for pathfinding and collision detection
+/// Converts actual pixel position to 16-pixel grid coordinates
+/// This is used by pathfinding scripts to determine valid moves
+///
+/// Why tile coordinates matter:
+/// - Ghosts move on 16x16 pixel grid (standard Pacman maze)
+/// - During movement, ghosts drift between grid cells due to speed
+/// - Pathfinding needs GRID coordinates to determine directions
+/// - tilex/tiley are snapped to grid; x/y are sub-pixel
 
-// ===== WRAPAROUND CHECK FOR VERTICAL (Not tunnel wraparound) =====
-/// Some rooms have wraparound at top/bottom (not just left/right tunnel)
-/// This handles vertical wraparound for tall rooms
-/// Different from Other_0 event which handles horizontal tunnel wraparound
-
-if direction == 90 and y < 32 {
-    /// Moving up out of top: wrap to bottom
-    y = 544;
-    tiley = 16 * (round(y / 16));
-}
-
-if direction == 270 and y > room_height - 32 {
-    /// Moving down out of bottom: wrap to top
-    y = 32;
-    tiley = 16 * (round(y / 16));
-}
+tilex = 16 * round(x / 16);  // Snap x to nearest 16-pixel grid cell
+tiley = 16 * round(y / 16);  // Snap y to nearest 16-pixel grid cell
+/// Example: If x=217.5, tilex becomes 16*round(217.5/16) = 16*14 = 224
 
 /// ===============================================================================
 /// END oGHOST STEP_0 EVENT

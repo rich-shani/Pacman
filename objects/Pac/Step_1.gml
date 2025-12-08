@@ -1,963 +1,1772 @@
-script_execute(beginstep);
+/// ===============================================================================
+/// PAC STEP_1 - ANIMATION UPDATES, INPUT HANDLING, & COLLISION DETECTION
+/// ===============================================================================
+/// Purpose: Handle keyboard input, manage collisions, and update animations
+/// Called: SECOND each frame (after Step_0 direction sync)
+///
+/// Main Responsibilities:
+/// 1. Execute support scripts (beginstep, movement2, beginstep2)
+/// 2. Manage animation frame updates (Pac mouth opening/closing)
+/// 3. Handle keyboard input for movement direction changes
+/// 4. Detect and process dot collection
+/// 5. Detect and process power pellet collection
+/// 6. Detect and process fruit collection
+/// 7. Detect ghost collisions (eating or being eaten)
+/// 8. Check level completion (all dots collected)
+/// 9. Manage background audio/ambience based on game state
+///
+/// This is a large event (1000+ lines) - eventually should be split into
+/// multiple script functions for better maintainability.
+/// ===============================================================================
 
-script_execute(movement2);
+// ===== EXECUTE SUPPORT SCRIPTS =====
+/// Run external step functions for specialized logic
+script_execute(beginstep);    // Handle player 1 startup logic
+script_execute(movement2);    // Handle player 2 movement
+script_execute(beginstep2);   // Handle player 2 startup logic
 
-script_execute(beginstep2);
+// ===== ANIMATION FRAME UPDATES =====
+/// Update Pac's mouth animation (im = image index for sprite animation)
+/// Only animate when Pac is alive or dying (not dead yet)
 
+if (dead < PAC_STATE.DEAD && finish >= 0) {
 
-if dead < 2 or finish < 0{
-
-if start = 1{
-
-    if global.game = 0{im = 0;}
-
-    else{im = 1;}
-
-}
-
-else{
-
-if (hspeed = 0 and vspeed = 0) or (chomp = 1) or (hspeed = 0 and vspeed = 0 and chomp = 1){}
-
-else{if global.boost = 0{im = im+1}; else{im = im+2}; if im > 7{im = 0}}
-
-}
-
-}
-
-if dead = 2{
-
-if deadanim < 12{deadanim = deadanim + 0.125}
-
-}
-
-if start = 0 and finish = 0{im2 = im2 + 0.5; if im2 = 4{im2 = 0}}
-
-global.color = global.color + 2; if global.color > 239{global.color = 0};
-
-
-if global.lvl > 0{
-
-if corner = 0{
-
-tilex = 16*(round(x/16))
-
-tiley = 16*(round(y/16))
-
-}
-
-else{
-
-if tilex = 16*(round(x/16)){}else{
-
-cornercheck = cornercheck + 1;
-
-}
-
-if tiley = 16*(round(y/16)){}else{
-
-cornercheck = cornercheck + 1;
-
-}
-
-}
-
-}
-
-
-if dead = 0 and start = 0 and finish = 0 and stoppy = 0 and bonked = 0{
-
-if global.lvl > 0{
-
-if corner = 0 and chomp = 0{
-
-///right
-
-    if (y > 48 and y < room_height - 48) {
-
-    if keyboard_check(vk_right)=true and keyboard_check(vk_up)=false and keyboard_check(vk_left)=false and keyboard_check(vk_down)=false{
-
-        if !collision_point(16*(round((x)/16))+17,16*(round((y)/16)),Wall,false,true){dir = 0; park = -1
-
-            if direction = 90{//up to right  
-
-                if y > 16*round((y)/16){corner = 1; hspeed = sp; vspeed = -sp; exit} // preturn up
-
-                else{corner = 2; hspeed = sp; vspeed = sp; exit} // postturn up
-
+    if (start == 1) {
+        /// Level starting: reset animation frame
+        /// Different reset based on game mode
+        if (global.game == 0) {
+            im = 0;  // Standard Pacman
+        }
+        else {
+            im = 1;  // Ms. Pacman or other variant
+        }
+    }
+    else {
+        /// Normal animation progression
+        /// Only animate if moving or eating (not stopped)
+        if ((hspeed != 0 || vspeed != 0) && chomp != 1) {
+            // Increment animation frame
+            if (global.boost == 0) {
+                im = im + 1;  // Normal speed
             }
-
-            else{if direction = 270{//down to right
-
-                if y < 16*round((y)/16){corner = 2; hspeed = sp; vspeed = sp; exit} // preturn down
-
-                else{corner = 1; hspeed = sp; vspeed = -sp; exit} // postturn down
-
+            else {
+                im = im + ANIM_BOOST_MULTIPLIER;  // Faster during boost
             }
+            // Loop animation (0-7)
+            if (im > PAC_ANIM_MAX_FRAME) {
+                im = 0;
+            }
+        }
+    }
+}
 
-            else{hspeed = sp; vspeed = 0} //left or right to right
+// ===== DEATH ANIMATION PROGRESSION =====
+/// When Pac is fully dead (eaten), play dissolution animation
+if (dead == PAC_STATE.DEAD) {
+    /// Advance death animation frame (0 to ~12)
+    if (deadanim < 12) {
+        deadanim = deadanim + 0.125;
+    }
+}
 
-        }}
+// ===== LEVEL INTERMISSION ANIMATION =====
+/// When level starts or finishes, show blinking effect
+if (start == 0 && finish == 0) {
+    im2 = im2 + 0.5;  // Slow blink animation
+    if (im2 >= 4) {
+        im2 = 0;  // Loop blink
+    }
+}
 
-        else{park = 0}
+// ===== GLOBAL COLOR CYCLING =====
+/// Color effect for visual polish (cycles through palette)
+global.color = global.color + 2;
+if (global.color > 239) {
+    global.color = 0;  // Loop color cycling
+}
+
+
+// ===== TILE COORDINATE TRACKING =====
+/// Update grid-aligned position for collision and pathfinding
+if (global.lvl > 0) {
+
+    if (corner == PAC_CORNER.NONE) {
+        /// Not in corner transition: snap to grid normally
+        tilex = 16 * (round(x / 16));
+        tiley = 16 * (round(y / 16));
+    }
+    else {
+        /// In corner transition: track if position is aligning to grid
+        /// Increment counter for each axis that hasn't aligned yet
+        if (tilex != 16 * (round(x / 16))) {
+            cornercheck = cornercheck + 1;
+        }
+        if (tiley != 16 * (round(y / 16))) {
+            cornercheck = cornercheck + 1;
+        }
+    }
+}
+
+// ===== INPUT & COLLISION PROCESSING =====
+/// Only process input and collisions when:
+/// - Pac is alive (not dead or in death animation)
+/// - Level has started (not in intro delay)
+/// - Level not finished (not waiting for level completion)
+/// - Pac not stopped (not paused from dot collection)
+/// - Not collided with Player 2
+
+if (dead == PAC_STATE.ALIVE && start == 0 && finish == 0 && stoppy == 0 && bonked == 0) {
+
+    if (global.lvl > 0) {
+
+        if (corner == PAC_CORNER.NONE && chomp == 0) {
+            /// Only accept input when:
+            /// - Not in corner transition (one direction at a time)
+            /// - Not currently eating ghost (chomp animation in progress)
+            /// Process input through dedicated function
+            /// This handles all 4 directions with corner mechanics
+            handle_pac_input();
 
     }
 
-    }
+    // ===== CORNER RE-ENTRY DURING TRANSITION =====
+    /// Allow re-input while already in a corner transition (first 2 frames only)
+    /// This enables quick direction changes mid-turn if path is clear
+    if (corner > PAC_CORNER.NONE && chomp == 0 && cornercheck < 2) {
 
-///up
+        /// Attempting to continue RIGHT during corner transition
+        if (keyboard_check(vk_right) == true && keyboard_check(vk_up) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
 
-if x>8 and x<(room_width-8) {
+            if (!collision_point(16 * (round((x) / 16)) + 17, 16 * (round((y) / 16)), Wall, false, true)) {
+                /// Path to right is clear - flip direction vectors based on current corner state
 
-    if keyboard_check(vk_up)=true and keyboard_check(vk_right)=false and keyboard_check(vk_left)=false and keyboard_check(vk_down)=false{
-
-        if !collision_point(16*(round((x)/16)),16*(round((y)/16))-1,Wall,false,true){dir = 1; park = -1
-
-            if direction = 0 and !hspeed = 0{ //right to up
-
-                if x < 16*round((x)/16){corner = 3; hspeed = sp; vspeed = -sp; exit} // preturn right
-
-                else{corner = 4; hspeed = -sp; vspeed = -sp; exit} // postturn right
-
+                if (corner == PAC_CORNER.LEFT_TO_DOWN_POST) {
+                    corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_UP_POST) {
+                    corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.LEFT_TO_UP_PRE) {
+                    corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_DOWN_PRE) {
+                    corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_LEFT_PRE) {
+                    corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.UP_TO_LEFT_POST) {
+                    corner = PAC_CORNER.UP_TO_RIGHT_POST;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.RIGHT;
+                    exit;
+                }
             }
-
-            else{if direction = 180{//left to up
-
-                if x > 16*round((x)/16){corner = 4; hspeed = -sp; vspeed = -sp; exit} // preturn left
-
-                else{corner = 3; hspeed = sp; vspeed = -sp; exit} // postturn left
-
-            }
-
-            else{hspeed = 0; vspeed = -sp} //down or up to up
-
-        }}
-
-        else{park = 1}
-
         }
 
-}
+        /// Attempting to continue UP during corner transition
+        if (keyboard_check(vk_up) == true && keyboard_check(vk_right) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
 
-///left
+            if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) - 1, Wall, false, true)) {
+                /// Path upward is clear
 
-    if (y > 48 and y < room_height - 48) {
-
-    if keyboard_check(vk_left)=true and keyboard_check(vk_up)=false and keyboard_check(vk_right)=false and keyboard_check(vk_down)=false{
-
-        if !collision_point(16*(round((x)/16))-1,16*(round((y)/16)),Wall,false,true){dir = 2; park = -1
-
-            if direction = 90{//up to left
-
-                if y > 16*round((y)/16){corner = 5; hspeed = -sp; vspeed = -sp; exit} // preturn up
-
-                else{corner = 6; hspeed = -sp; vspeed = sp; exit} // postturn up
-
+                if (corner == PAC_CORNER.UP_TO_LEFT_POST) {
+                    corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_RIGHT_POST) {
+                    corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_LEFT_PRE) {
+                    corner = PAC_CORNER.LEFT_TO_UP_PRE;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_RIGHT_PRE) {
+                    corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
+                if (corner == PAC_CORNER.LEFT_TO_DOWN_PRE) {
+                    corner = PAC_CORNER.LEFT_TO_UP_PRE;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_DOWN_POST) {
+                    corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.UP;
+                    exit;
+                }
             }
-
-            else{if direction = 270{//down to left
-
-                if y < 16*round((y)/16){corner = 6; hspeed = -sp; vspeed = sp; exit} // preturn down
-
-                else{corner = 5; hspeed = -sp; vspeed = -sp; exit} // postturn down
-
-            }
-
-            else{hspeed = -sp; vspeed = 0} //left or right to left
-
-        }}
-
-        else{park = 2}
-
         }
 
+        /// Attempting to continue LEFT during corner transition
+        if (keyboard_check(vk_left) == true && keyboard_check(vk_up) == false &&
+            keyboard_check(vk_right) == false && keyboard_check(vk_down) == false) {
+
+            if (!collision_point(16 * (round((x) / 16)) - 1, 16 * (round((y) / 16)), Wall, false, true)) {
+                /// Path to left is clear
+
+                if (corner == PAC_CORNER.LEFT_TO_DOWN_PRE) {
+                    corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_UP_PRE) {
+                    corner = PAC_CORNER.UP_TO_LEFT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_DOWN_POST) {
+                    corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_UP_POST) {
+                    corner = PAC_CORNER.UP_TO_LEFT_POST;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.UP_TO_RIGHT_PRE) {
+                    corner = PAC_CORNER.UP_TO_LEFT_PRE;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_RIGHT_POST) {
+                    corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.LEFT;
+                    exit;
+                }
+            }
         }
 
-///down
+        /// Attempting to continue DOWN during corner transition
+        if (keyboard_check(vk_down) == true && keyboard_check(vk_right) == false &&
+            keyboard_check(vk_left) == false && keyboard_check(vk_up) == false) {
 
-if x>8 and x<(room_width-8){
+            if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) + 17, Wall, false, true)) {
+                /// Path downward is clear
 
-    if keyboard_check(vk_down)=true and keyboard_check(vk_right)=false and keyboard_check(vk_left)=false and keyboard_check(vk_up)=false{
-
-        if !collision_point(16*(round((x)/16)),16*(round((y)/16))+17,Wall,false,true){dir = 3; park = -1
-
-            if direction = 0 and !hspeed = 0{ //right to down
-
-                if x < 16*round((x)/16){corner = 7; hspeed = sp; vspeed = sp; exit} // preturn right
-
-                else{corner = 8; hspeed = -sp; vspeed = sp; exit} // postturn right
-
+                if (corner == PAC_CORNER.DOWN_TO_LEFT_PRE) {
+                    corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
+                if (corner == PAC_CORNER.UP_TO_RIGHT_PRE) {
+                    corner = PAC_CORNER.RIGHT_TO_DOWN_PRE;
+                    hspeed = -hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
+                if (corner == PAC_CORNER.UP_TO_LEFT_POST) {
+                    corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
+                if (corner == PAC_CORNER.DOWN_TO_RIGHT_POST) {
+                    corner = PAC_CORNER.RIGHT_TO_DOWN_POST;
+                    hspeed = -hspeed;
+                    vspeed = vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_UP_PRE) {
+                    corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
+                if (corner == PAC_CORNER.RIGHT_TO_UP_POST) {
+                    corner = PAC_CORNER.RIGHT_TO_DOWN_POST;
+                    hspeed = hspeed;
+                    vspeed = -vspeed;
+                    dir = PAC_DIRECTION.DOWN;
+                    exit;
+                }
             }
+        }
+    }
+}
 
-            else{if direction = 180{//left to down
+}
 
-                if x > 16*round((x)/16){corner = 8; hspeed = -sp; vspeed = sp; exit} // preturn left
-
-                else{corner = 7; hspeed = sp; vspeed = sp; exit} // postturn left
-
+// ===== DOT COLLECTION LOGIC =====
+/// Detect when Pac moves to a new grid tile during menu navigation
+/// (This section only runs when not in an active level)
+if (dead == PAC_STATE.ALIVE) {
+    if (global.lvl == 0) {
+        if (speed > 0 && Pac.chomp == 0) {
+            /// Check if we've reached a new tile
+            if (newtile == 0) {
+                if (tilex == (16 * (round(x / 16))) && tiley == (16 * (round(y / 16)))) {
+                    // Already aligned with grid
+                }
+                else {
+                    /// Moving to new tile - set flag and choose new direction
+                    newtile = 1;
+                    tilex = (16 * (round(x / 16)));
+                    tiley = (16 * (round(y / 16)));
+                    script_execute(random_direction);
+                }
             }
+        }
+    }
+}
 
-            else{hspeed = 0; vspeed = sp} //down or up to down
+// ===== DOT COLLECTION (ACTIVE LEVEL) =====
+/// Detect collision with dot pellets during gameplay
+/// Only triggers when Pac is alive, level has started, and not currently eating ghost
+if (dead == PAC_STATE.ALIVE && start == 0 && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
 
-        }}
+    if (place_meeting((16 * (round(x / 16))), (16 * (round(y / 16))), Dot)) {
 
-        else{park = 3}
+        with (Dot) {
+            if (place_meeting(x, y, Pac)) {
 
+                /// Check if dot is a smashed power dot (jr mode)
+                if (smashed == true) {
+                    global.smashno = global.smashno - 1;
+                    if (global.boost == 0) {
+                        Pac.pause = 1;
+                        Pac.stoppy = 1;
+                    }
+                    if (global.lvl > 0) {
+                        global.p1score = global.p1score + 40;
+                        sound_play(JrDot2);
+                    }
+                }
+                else {
+                    if (global.game == 2 && global.lvl > 0) {
+                        sound_play(JrDot);
+                    }
+                }
+                instance_destroy();
+            }
         }
 
-}
-
-}
-
-if !corner = 0{if chomp = 0{if cornercheck < 2{
-
-///right
-
-    if keyboard_check(vk_right)=true and keyboard_check(vk_up)=false and keyboard_check(vk_left)=false and keyboard_check(vk_down)=false{
-
-    if !collision_point(16*(round((x)/16))+17,16*(round((y)/16)),Wall,false,true){
-
-    if corner = 8{corner = 1; hspeed = -hspeed; vspeed = -vspeed; dir = 0; exit}
-
-    if corner = 4{corner = 2; hspeed = -hspeed; vspeed = -vspeed; dir = 0; exit}
-
-    if corner = 7{corner = 1; hspeed = hspeed; vspeed = -vspeed; dir = 0; exit}
-
-    if corner = 3{corner = 2; hspeed = hspeed; vspeed = -vspeed; dir = 0; exit}
-
-    if corner = 5{corner = 1; hspeed = -hspeed; vspeed = vspeed; dir = 0; exit}
-
-    if corner = 6{corner = 2; hspeed = -hspeed; vspeed = vspeed; dir = 0; exit}
-
-}}
-
-///up
-
-    if keyboard_check(vk_up)=true and keyboard_check(vk_right)=false and keyboard_check(vk_left)=false and keyboard_check(vk_down)=false{
-
-    if !collision_point(16*(round((x)/16)),16*(round((y)/16))-1,Wall,false,true){
-
-    if corner = 6{corner = 3; hspeed = -hspeed; vspeed = -vspeed; dir = 1; exit}
-
-    if corner = 2{corner = 4; hspeed = -hspeed; vspeed = -vspeed; dir = 1; exit}
-
-    if corner = 5{corner = 3; hspeed = -hspeed; vspeed = vspeed; dir = 1; exit}
-
-    if corner = 1{corner = 4; hspeed = -hspeed; vspeed = vspeed; dir = 1; exit}
-
-    if corner = 7{corner = 3; hspeed = hspeed; vspeed = -vspeed; dir = 1; exit}
-
-    if corner = 8{corner = 4; hspeed = hspeed; vspeed = -vspeed; dir = 1; exit}
-
-}}
-
-///left
-
-    if keyboard_check(vk_left)=true and keyboard_check(vk_up)=false and keyboard_check(vk_right)=false and keyboard_check(vk_down)=false{
-
-    if !collision_point(16*(round((x)/16))-1,16*(round((y)/16)),Wall,false,true){
-
-    if corner = 7{corner = 5; hspeed = -hspeed; vspeed = -vspeed; dir = 2; exit}
-
-    if corner = 3{corner = 6; hspeed = -hspeed; vspeed = -vspeed; dir = 2; exit}
-
-    if corner = 8{corner = 5; hspeed = hspeed; vspeed = -vspeed; dir = 2; exit}
-
-    if corner = 4{corner = 6; hspeed = hspeed; vspeed = -vspeed; dir = 2; exit}
-
-    if corner = 1{corner = 5; hspeed = -hspeed; vspeed = vspeed; dir = 2; exit}
-
-    if corner = 2{corner = 6; hspeed = -hspeed; vspeed = vspeed; dir = 2; exit}
-
-}}
-
-///down
-
-    if keyboard_check(vk_down)=true and keyboard_check(vk_right)=false and keyboard_check(vk_left)=false and keyboard_check(vk_up)=false{
-
-    if !collision_point(16*(round((x)/16)),16*(round((y)/16))+17,Wall,false,true){
-
-    if corner = 5{corner = 7; hspeed = -hspeed; vspeed = -vspeed; dir = 3; exit}
-
-    if corner = 1{corner = 8; hspeed = -hspeed; vspeed = -vspeed; dir = 3; exit}
-
-    if corner = 6{corner = 7; hspeed = -hspeed; vspeed = vspeed; dir = 3; exit}
-
-    if corner = 2{corner = 8; hspeed = -hspeed; vspeed = vspeed; dir = 3; exit}
-
-    if corner = 3{corner = 7; hspeed = hspeed; vspeed = -vspeed; dir = 3; exit}
-
-    if corner = 4{corner = 8; hspeed = hspeed; vspeed = -vspeed; dir = 3; exit}
-
-}}
-
-}}}
-
-}
-
-}
-
-
-if dead = 0{
-
-if global.lvl = 0{if speed > 0{if Pac.chomp = 0{
-
-    if newtile = 0{
-
-        if tilex = (16*(round(x/16))) and tiley = (16*(round(y/16))){}
-
-        else{
-
-            newtile = 1; tilex = (16*(round(x/16))); tiley = (16*(round(y/16))); script_execute(random_direction);
-
+        /// Handle dot eating state
+        if (global.boost == 0) {
+            eatdir = direction / 45;
+            direction = direction;
+            speed = 0;
+        }
+        if (global.lvl > 0) {
+            global.p1score = global.p1score + 10;
         }
 
-    }
-
-}}}
-
-}
-
-
-if dead = 0 and start = 0 and (prohibit = 0 or prohibit = 2){
-
-if place_meeting((16*(round(x/16))),(16*(round(y/16))),Dot){
-
-    with Dot{if place_meeting(x,y,Pac){
-
-    if smashed = true{global.smashno = global.smashno - 1; if global.boost = 0{Pac.pause = 1; Pac.stoppy = 1;}; if global.lvl > 0{global.p1score = global.p1score + 40; sound_play(JrDot2);}}
-
-    else{if global.game = 2 and global.lvl > 0{sound_play(JrDot)}}; instance_destroy();}}
-
-    if global.boost = 0{eatdir = direction/45; direction = direction; speed = 0;} if global.lvl > 0{global.p1score = global.p1score + 10;}
-
-    if global.boost = 0{timer = timerstart + 1;}
-
-    bonked = 0;
-
-if global.lvl > 0{
-
-    if global.game = 1{
-
-    sound_play(MsDot);exit
-
-    }
-
-    if global.game = 0{
-
-    if dot = 0{sound_play(Dot0); dot = 1;exit}
-
-    if dot = 1{sound_play(Dot1); dot = 0;exit}
-
-    }
-
-}
-
-}
-
-}
-
-
-if dead = 0{
-
-if place_meeting((16*(round(x/16))),(16*(round(y/16))),Power){
-
-    with Power{if place_meeting(x,y,Pac){instance_destroy()}}
-
-    if global.boost = 0{eatdir = direction/45; direction = direction; speed = 0;}
-
-    if global.boost = 0{pause = 1; stoppy = 1;} if frighttime > 0{
-
-    if global.players = 2{if prohibit = 1{prohibit = 0;}else{prohibit = 2;}} fright = 1; alarm[0] = frighttime; chompcount = 0;
-
-    }
-
-    Blinky.visible = true; Pinky.visible = true; Inky.visible = true; Clyde.visible = true; Pac.pluseat = 0;
-
-    plus = -1; plus2 = 0;
-
-    timer = timerstart + 1; if global.plus = 1{plus = irandom(7); if frighttime > 0 and (global.game < 2 and global.lvl > 2) or (global.game = 2 and global.lvl > 1){plus2 = irandom(1);}}
-
-    with Blinky{aboutface = 1; if state<2 and Pac.frighttime > 0{if Pac.plus = 0{if state=1{state=0}}else{state = 1}}}
-
-    with Pinky{aboutface = 1; if state<2 and Pac.frighttime > 0{if Pac.plus = 1{if state=1{state=0}}else{state = 1}}}
-
-    with Inky{aboutface = 1; if state<2 and Pac.frighttime > 0{if Pac.plus = 2{if state=1{state=0}}else{state = 1}}}
-
-    with Clyde{aboutface = 1; if state<2 and Pac.frighttime > 0{if Pac.plus = 3{if state=1{state=0}}else{state = 1}}}
-
-    plus = -1;
-
-    bonked = 0;
-
-if global.lvl > 0{
-
-    global.p1score = global.p1score + 50;
-
-    if global.game = 2{sound_play(JrDot2)}
-
-    if global.game = 1{sound_play(MsDot)}
-
-    if global.game = 0{
-
-    if dot = 0{sound_play(Dot0); dot = 1;exit}
-
-    if dot = 1{sound_play(Dot1); dot = 0;exit}
-
-    }
-
-}
-
-}
-
-}
-
-
-if global.lvl > 0{if start = 0{if dead = 0{
-
-if (dotcount = global.dottotal or dotcount > global.dottotal) and finish = 0{
-
-finish = 1; alarm[11] = 60; alarm[1] = -1; Blinky.aboutface = 0; Pinky.aboutface = 0; Inky.aboutface = 0; Clyde.aboutface = 0;
-
-Blinky.speed = 0; Pinky.speed = 0; Inky.speed = 0; Clyde.speed = 0; Pac.speed = 0;
-
-}}}}
-
-
-if dead = 0 and (prohibit = 0 or prohibit = 2){
-
-if place_meeting((16*(round(x/16))),(16*(round(y/16))),Fruit) and speed > 0{
-
-    with Fruit{if place_meeting(x,y,Pac){points = true; alarm[1] = 60; if global.lvl > 0{sound_play(snd_Fruit);}
-
-    if state > -1{xstart = x; ystart = y;} x = -32; y = -32; tilex = 16*(round(x/16)); tiley = 16*(round(y/16)); newtile = 0; alarm[0] = -1; state = -1; direction = 0; speed = 0; dir = -1;
-
-    if global.lvl > 0{
-
-    if global.game = 0{
-
-        if value = 0{global.p1score = global.p1score + 100;}
-
-        if value = 1{global.p1score = global.p1score + 300;}
-
-        if value = 2{global.p1score = global.p1score + 500;}
-
-        if value = 3{global.p1score = global.p1score + 700;}
-
-        if value = 4{global.p1score = global.p1score + 1000;}
-
-        if value = 5{global.p1score = global.p1score + 2000;}
-
-        if value = 6{global.p1score = global.p1score + 3000;}
-
-        if value = 7{global.p1score = global.p1score + 5000;}
-
-    }
-
-    else{
-
-        if value = 0{global.p1score = global.p1score + 100;}
-
-        if value = 1{global.p1score = global.p1score + 200;}
-
-        if value = 2{global.p1score = global.p1score + 500;}
-
-        if value = 3{global.p1score = global.p1score + 700;}
-
-        if value = 4{global.p1score = global.p1score + 1000;}
-
-        if value = 5{global.p1score = global.p1score + 2000;}
-
-        if value = 6{global.p1score = global.p1score + 5000;}
-
-    }
-
-    }
-
-if global.plus = true{
-
-    if Pac.bonustime > 0{
-
-    if global.players = 2{if prohibit = 1{prohibit = 0;}else{prohibit = 2;}}
-
-    Pac.fright = 1; Pac.alarm[0] = Pac.bonustime; Pac.chompcount = 0; Pac.plus2 = 0; Pac.pluseat = 1;
-
-    with Blinky{if state < 2{visible = false}}
-
-    with Pinky{if state < 2{visible = false}}
-
-    with Inky{if state < 2{visible = false}}
-
-    with Clyde{if state < 2{visible = false}}
-
-    }
-
-    Pac.timer = Pac.timerstart + 1;
-
-    with Blinky{aboutface = 1; if state<2 and Pac.bonustime > 0{state = 1}}
-
-    with Pinky{aboutface = 1; if state<2 and Pac.bonustime > 0{state = 1}}
-
-    with Inky{aboutface = 1; if state<2 and Pac.bonustime > 0{state = 1}}
-
-    with Clyde{aboutface = 1; if state<2 and Pac.bonustime > 0{state = 1}}
-
-} 
-
-    exit}}
-
-}
-
-}
-
-
-if finish = 0{
-
-if chomp = 0{if dead = 0{
-
-if ((16*(round(x/16)) = Blinky.tilex and 16*(round(y/16)) = Blinky.tiley) or (abs(x - Blinky.x) < 5 and abs(y - Blinky.y) < 5)) and Blinky.house = 0{
-
-    with Blinky{
-
-        if Pac.prohibit = 1{}else{if state = 1 and Pac.chomp = 0{Pac.bonked = 0; Pac.chomper = 1; if global.lvl > 0{if global.game = 0{sound_play(Chomp)};if global.game = 1{sound_play(MsChomp)};if global.game = 2{sound_play(JrChomp)}}; with Pac{script_execute(sickofit)}; Pac.chompcount = Pac.chompcount + 1; Pac.chomp = 1; alarm[0] = 60; chomped = 1; ; if !Pac.speed = 0{if Pac.eatdir = -1{Pac.eatdir = Pac.direction/45}}; if Pac.hspeed2 = 0 and Pac.vspeed2 = 0{}else{if Pac.eatdir2 = -1{Pac.eatdir2 = Pac.direction2/45}};
-
-        with Blinky{if state<2{resdir=direction/90;}};with Pinky{if state<2{resdir=direction/90;}};with Inky{if state<2{resdir=direction/90;}};with Clyde{if state<2{resdir=direction/90;}};with Fruit{if state>-1{resdir=direction/90;}};
-
-        if global.lvl > 0{
-
-            if Pac.chompcount = 1{global.p1score = global.p1score + (200+(200*Pac.pluseat))}
-
-            if Pac.chompcount = 2{global.p1score = global.p1score + (400+(400*Pac.pluseat))}
-
-            if Pac.chompcount = 3{global.p1score = global.p1score + (800+(800*Pac.pluseat))}
-
-            if Pac.chompcount = 4{global.p1score = global.p1score + (1600+(1600*Pac.pluseat))}
-
+        if (global.boost == 0) {
+            timer = timerstart + 1;
         }
 
-        }}
+        bonked = 0;
 
-        if state = 0 and Pac.dead = 0{Pac.deader = 1; Pac.dead = 1; Pac.alarm[11] = 60; bounce = -2; uppity = 1; okidoki = 1
+        /// Play appropriate eating sound based on game variant
+        if (global.lvl > 0) {
 
-        Pac.alarm[1] = -1; Blinky.aboutface = 0; Pinky.aboutface = 0; Inky.aboutface = 0; Clyde.aboutface = 0;
+            if (global.game == 1) {
+                sound_play(MsDot);
+                exit;
+            }
 
-        Blinky.tilex = 16*(round(Blinky.x/16)); Blinky.tiley = 16*(round(Blinky.y/16));
+            if (global.game == 0) {
+                if (dot == 0) {
+                    sound_play(Dot0);
+                    dot = 1;
+                    exit;
+                }
 
-        Pinky.tilex = 16*(round(Pinky.x/16)); Pinky.tiley = 16*(round(Pinky.y/16));
-
-        Inky.tilex = 16*(round(Inky.x/16)); Inky.tiley = 16*(round(Inky.y/16));
-
-        Clyde.tilex = 16*(round(Clyde.x/16)); Clyde.tiley = 16*(round(Clyde.y/16));
-
-        Blinky.newtile = 0; Pinky.newtile = 0; Inky.newtile = 0; Clyde.newtile = 0;}
-
+                if (dot == 1) {
+                    sound_play(Dot1);
+                    dot = 0;
+                    exit;
+                }
+            }
+        }
     }
+}
 
-}}}
+// ===== POWER PELLET COLLECTION =====
+/// Detect collision with power pellets - activates fright mode
+/// Allows Pac to eat ghosts and gives speed boost
+if (dead == PAC_STATE.ALIVE) {
 
-if chomp = 0{if dead = 0{
+    if (place_meeting((16 * (round(x / 16))), (16 * (round(y / 16))), Power)) {
 
-if ((16*(round(x/16)) = Pinky.tilex and 16*(round(y/16)) = Pinky.tiley) or (abs(x - Pinky.x) < 5 and abs(y - Pinky.y) < 5)) and Pinky.house = 0{
-
-    with Pinky{
-
-        if Pac.prohibit = 1{}else{if state = 1 and Pac.chomp = 0{Pac.bonked = 0; Pac.chomper = 1; if global.lvl > 0{if global.game = 0{sound_play(Chomp)};if global.game = 1{sound_play(MsChomp)};if global.game = 2{sound_play(JrChomp)}}; with Pac{script_execute(sickofit)}; Pac.chompcount = Pac.chompcount + 1; Pac.chomp = 1; alarm[0] = 60; chomped = 1; ; if !Pac.speed = 0{if Pac.eatdir = -1{Pac.eatdir = Pac.direction/45}}; if Pac.hspeed2 = 0 and Pac.vspeed2 = 0{}else{if Pac.eatdir2 = -1{Pac.eatdir2 = Pac.direction2/45}};
-
-        with Blinky{if state<2{resdir=direction/90;}};with Pinky{if state<2{resdir=direction/90;}};with Inky{if state<2{resdir=direction/90;}};with Clyde{if state<2{resdir=direction/90;}}with Fruit{if state>-1{resdir=direction/90;}};
-
-        if global.lvl > 0{
-
-            if Pac.chompcount = 1{global.p1score = global.p1score + (200+(200*Pac.pluseat))}
-
-            if Pac.chompcount = 2{global.p1score = global.p1score + (400+(400*Pac.pluseat))}
-
-            if Pac.chompcount = 3{global.p1score = global.p1score + (800+(800*Pac.pluseat))}
-
-            if Pac.chompcount = 4{global.p1score = global.p1score + (1600+(1600*Pac.pluseat))}
-
+        /// Destroy the power pellet sprite
+        with (Power) {
+            if (place_meeting(x, y, Pac)) {
+                instance_destroy();
+            }
         }
 
-        }}
-
-        if state = 0 and Pac.dead = 0{Pac.deader = 1; Pac.dead = 1; Pac.alarm[11] = 60; bounce = -2; uppity = 1; okidoki = 1
-
-        Pac.alarm[1] = -1; Blinky.aboutface = 0; Pinky.aboutface = 0; Inky.aboutface = 0; Clyde.aboutface = 0;
-
-        Blinky.tilex = 16*(round(Blinky.x/16)); Blinky.tiley = 16*(round(Blinky.y/16));
-
-        Pinky.tilex = 16*(round(Pinky.x/16)); Pinky.tiley = 16*(round(Pinky.y/16));
-
-        Inky.tilex = 16*(round(Inky.x/16)); Inky.tiley = 16*(round(Inky.y/16));
-
-        Clyde.tilex = 16*(round(Clyde.x/16)); Clyde.tiley = 16*(round(Clyde.y/16));
-
-        Blinky.newtile = 0; Pinky.newtile = 0; Inky.newtile = 0; Clyde.newtile = 0;}
-
-    }
-
-}}}
-
-if chomp = 0{if dead = 0{
-
-if ((16*(round(x/16)) = Inky.tilex and 16*(round(y/16)) = Inky.tiley) or (abs(x - Inky.x) < 5 and abs(y - Inky.y) < 5)) and Inky.house = 0{
-
-    with Inky{
-
-        if Pac.prohibit = 1{}else{if state = 1 and Pac.chomp = 0{Pac.bonked = 0; Pac.chomper = 1; if global.lvl > 0{if global.game = 0{sound_play(Chomp)};if global.game = 1{sound_play(MsChomp)};if global.game = 2{sound_play(JrChomp)}}; with Pac{script_execute(sickofit)}; Pac.chompcount = Pac.chompcount + 1; Pac.chomp = 1; alarm[0] = 60; chomped = 1; ; if !Pac.speed = 0{if Pac.eatdir = -1{Pac.eatdir = Pac.direction/45}}; if Pac.hspeed2 = 0 and Pac.vspeed2 = 0{}else{if Pac.eatdir2 = -1{Pac.eatdir2 = Pac.direction2/45}};
-
-        with Blinky{if state<2{resdir=direction/90;}};with Pinky{if state<2{resdir=direction/90;}};with Inky{if state<2{resdir=direction/90;}};with Clyde{if state<2{resdir=direction/90;}}with Fruit{if state>-1{resdir=direction/90;}}; 
-
-        if global.lvl > 0{
-
-            if Pac.chompcount = 1{global.p1score = global.p1score + (200+(200*Pac.pluseat))}
-
-            if Pac.chompcount = 2{global.p1score = global.p1score + (400+(400*Pac.pluseat))}
-
-            if Pac.chompcount = 3{global.p1score = global.p1score + (800+(800*Pac.pluseat))}
-
-            if Pac.chompcount = 4{global.p1score = global.p1score + (1600+(1600*Pac.pluseat))}
-
+        /// Handle Pac's animation state
+        if (global.boost == 0) {
+            eatdir = direction / 45;
+            direction = direction;
+            speed = 0;
         }
 
-        }}
-
-        if state = 0 and Pac.dead = 0{Pac.deader = 1; Pac.dead = 1; Pac.alarm[11] = 60; bounce = -2; uppity = 1; okidoki = 1
-
-        Pac.alarm[1] = -1; Blinky.aboutface = 0; Pinky.aboutface = 0; Inky.aboutface = 0; Clyde.aboutface = 0;
-
-        Blinky.tilex = 16*(round(Blinky.x/16)); Blinky.tiley = 16*(round(Blinky.y/16));
-
-        Pinky.tilex = 16*(round(Pinky.x/16)); Pinky.tiley = 16*(round(Pinky.y/16));
-
-        Inky.tilex = 16*(round(Inky.x/16)); Inky.tiley = 16*(round(Inky.y/16));
-
-        Clyde.tilex = 16*(round(Clyde.x/16)); Clyde.tiley = 16*(round(Clyde.y/16));
-
-        Blinky.newtile = 0; Pinky.newtile = 0; Inky.newtile = 0; Clyde.newtile = 0;}
-
-    }
-
-}}}
-
-if chomp = 0{if dead = 0{
-
-if ((16*(round(x/16)) = Clyde.tilex and 16*(round(y/16)) = Clyde.tiley) or (abs(x - Clyde.x) < 5 and abs(y - Clyde.y) < 5)) and Clyde.house = 0{
-
-    with Clyde{
-
-        if Pac.prohibit = 1{}else{if state = 1 and Pac.chomp = 0{Pac.bonked = 0; Pac.chomper = 1; if global.lvl > 0{if global.game = 0{sound_play(Chomp)};if global.game = 1{sound_play(MsChomp)};if global.game = 2{sound_play(JrChomp)}}; with Pac{script_execute(sickofit)}; Pac.chompcount = Pac.chompcount + 1; Pac.chomp = 1; alarm[0] = 60; chomped = 1; ; if !Pac.speed = 0{if Pac.eatdir = -1{Pac.eatdir = Pac.direction/45}}; if Pac.hspeed2 = 0 and Pac.vspeed2 = 0{}else{if Pac.eatdir2 = -1{Pac.eatdir2 = Pac.direction2/45}};
-
-        with Blinky{if state<2{resdir=direction/90;}};with Pinky{if state<2{resdir=direction/90;}};with Inky{if state<2{resdir=direction/90;}};with Clyde{if state<2{resdir=direction/90;}}with Fruit{if state>-1{resdir=direction/90;}};
-
-        if global.lvl > 0{
-
-            if Pac.chompcount = 1{global.p1score = global.p1score + (200+(200*Pac.pluseat))}
-
-            if Pac.chompcount = 2{global.p1score = global.p1score + (400+(400*Pac.pluseat))}
-
-            if Pac.chompcount = 3{global.p1score = global.p1score + (800+(800*Pac.pluseat))}
-
-            if Pac.chompcount = 4{global.p1score = global.p1score + (1600+(1600*Pac.pluseat))}
-
+        /// Activate fright mode if timer is set
+        if (global.boost == 0) {
+            pause = 1;
+            stoppy = 1;
+        }
+        if (frighttime > 0) {
+            /// In 2-player mode, toggle which player can eat ghosts
+            if (global.players == 2) {
+                if (prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+                    prohibit = GHOST_PROHIBIT.ALLOWED;
+                }
+                else {
+                    prohibit = GHOST_PROHIBIT.PLAYER2_BLOCKED;
+                }
+            }
+            /// Activate fright mode and set duration
+            fright = PAC_FRIGHT.ACTIVE;
+            alarm[0] = frighttime;
+            chompcount = 0;
         }
 
-        }}
+        /// Make all ghosts visible again
+        Blinky.visible = true;
+        Pinky.visible = true;
+        Inky.visible = true;
+        Clyde.visible = true;
+        Pac.pluseat = 0;
 
-        if state = 0 and Pac.dead = 0{Pac.deader = 1; Pac.dead = 1; Pac.alarm[11] = 60; bounce = -2; uppity = 1; okidoki = 1
+        plus = -1;
+        plus2 = 0;
 
-        Pac.alarm[1] = -1; Blinky.aboutface = 0; Pinky.aboutface = 0; Inky.aboutface = 0; Clyde.aboutface = 0;
+        timer = timerstart + 1;
+        if (global.plus == 1) {
+            plus = irandom(7);
+            if (frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
+                plus2 = irandom(1);
+            }
+        }
 
-        Blinky.tilex = 16*(round(Blinky.x/16)); Blinky.tiley = 16*(round(Blinky.y/16));
+        /// All ghosts reverse direction
+        with (Blinky) {
+            aboutface = 1;
+            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
+                if (Pac.plus == 0) {
+                    if (state == GHOST_STATE.FRIGHTENED) {
+                        state = GHOST_STATE.CHASE;
+                    }
+                }
+                else {
+                    state = GHOST_STATE.FRIGHTENED;
+                }
+            }
+        }
 
-        Pinky.tilex = 16*(round(Pinky.x/16)); Pinky.tiley = 16*(round(Pinky.y/16));
+        with (Pinky) {
+            aboutface = 1;
+            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
+                if (Pac.plus == 1) {
+                    if (state == GHOST_STATE.FRIGHTENED) {
+                        state = GHOST_STATE.CHASE;
+                    }
+                }
+                else {
+                    state = GHOST_STATE.FRIGHTENED;
+                }
+            }
+        }
 
-        Inky.tilex = 16*(round(Inky.x/16)); Inky.tiley = 16*(round(Inky.y/16));
+        with (Inky) {
+            aboutface = 1;
+            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
+                if (Pac.plus == 2) {
+                    if (state == GHOST_STATE.FRIGHTENED) {
+                        state = GHOST_STATE.CHASE;
+                    }
+                }
+                else {
+                    state = GHOST_STATE.FRIGHTENED;
+                }
+            }
+        }
 
-        Clyde.tilex = 16*(round(Clyde.x/16)); Clyde.tiley = 16*(round(Clyde.y/16));
+        with (Clyde) {
+            aboutface = 1;
+            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
+                if (Pac.plus == 3) {
+                    if (state == GHOST_STATE.FRIGHTENED) {
+                        state = GHOST_STATE.CHASE;
+                    }
+                }
+                else {
+                    state = GHOST_STATE.FRIGHTENED;
+                }
+            }
+        }
 
-        Blinky.newtile = 0; Pinky.newtile = 0; Inky.newtile = 0; Clyde.newtile = 0;}
+        plus = -1;
+        bonked = 0;
 
+        /// Award points and play sound
+        if (global.lvl > 0) {
+            global.p1score = global.p1score + 50;
+
+            if (global.game == 2) {
+                sound_play(JrDot2);
+            }
+
+            if (global.game == 1) {
+                sound_play(MsDot);
+            }
+
+            if (global.game == 0) {
+                if (dot == 0) {
+                    sound_play(Dot0);
+                    dot = 1;
+                    exit;
+                }
+
+                if (dot == 1) {
+                    sound_play(Dot1);
+                    dot = 0;
+                    exit;
+                }
+            }
+        }
+    }
+}
+
+
+// ===== LEVEL COMPLETION CHECK =====
+/// Detect when all dots have been collected
+/// If so, trigger level completion sequence
+if (global.lvl > 0 && start == 0 && dead == PAC_STATE.ALIVE) {
+
+    if ((dotcount == global.dottotal || dotcount > global.dottotal) && finish == 0) {
+        /// All dots collected - level complete!
+        finish = 1;
+        alarm[11] = 60;  // Level completion sequence timer
+        alarm[1] = -1;   // Cancel fright alarm
+
+        /// Stop all ghosts from moving
+        Blinky.aboutface = 0;
+        Pinky.aboutface = 0;
+        Inky.aboutface = 0;
+        Clyde.aboutface = 0;
+
+        Blinky.speed = 0;
+        Pinky.speed = 0;
+        Inky.speed = 0;
+        Clyde.speed = 0;
+        Pac.speed = 0;
+    }
+}
+
+
+// ===== FRUIT COLLECTION =====
+/// Detect collision with bonus fruits during gameplay
+/// Fruits award varying points based on level
+if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
+
+    if (place_meeting((16 * (round(x / 16))), (16 * (round(y / 16))), Fruit) && speed > 0) {
+
+        with (Fruit) {
+            if (place_meeting(x, y, Pac)) {
+                points = true;
+                alarm[1] = 60;  // Fruit point display timer
+                if (global.lvl > 0) {
+                    sound_play(snd_Fruit);
+                }
+
+                /// Move fruit off-screen and reset state
+                if (state > -1) {
+                    xstart = x;
+                    ystart = y;
+                }
+                x = -32;
+                y = -32;
+                tilex = 16 * (round(x / 16));
+                tiley = 16 * (round(y / 16));
+                newtile = 0;
+                alarm[0] = -1;
+                state = -1;
+                direction = 0;
+                speed = 0;
+                dir = -1;
+
+                /// Award points based on fruit type (value) and game mode
+                if (global.lvl > 0) {
+
+                    if (global.game == 0) {
+                        /// Standard Pacman point values
+                        if (value == 0) { global.p1score = global.p1score + 100; }
+                        if (value == 1) { global.p1score = global.p1score + 300; }
+                        if (value == 2) { global.p1score = global.p1score + 500; }
+                        if (value == 3) { global.p1score = global.p1score + 700; }
+                        if (value == 4) { global.p1score = global.p1score + 1000; }
+                        if (value == 5) { global.p1score = global.p1score + 2000; }
+                        if (value == 6) { global.p1score = global.p1score + 3000; }
+                        if (value == 7) { global.p1score = global.p1score + 5000; }
+                    }
+                    else {
+                        /// Ms. Pacman / Jr. Pacman point values (slightly different)
+                        if (value == 0) { global.p1score = global.p1score + 100; }
+                        if (value == 1) { global.p1score = global.p1score + 200; }
+                        if (value == 2) { global.p1score = global.p1score + 500; }
+                        if (value == 3) { global.p1score = global.p1score + 700; }
+                        if (value == 4) { global.p1score = global.p1score + 1000; }
+                        if (value == 5) { global.p1score = global.p1score + 2000; }
+                        if (value == 6) { global.p1score = global.p1score + 5000; }
+                    }
+                }
+
+                /// Check if bonus power fruit (grants extended fright mode)
+                if (global.plus == true) {
+
+                    if (Pac.bonustime > 0) {
+                        /// In 2-player mode, toggle which player can eat ghosts
+                        if (global.players == 2) {
+                            if (prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+                                prohibit = GHOST_PROHIBIT.ALLOWED;
+                            }
+                            else {
+                                prohibit = GHOST_PROHIBIT.PLAYER2_BLOCKED;
+                            }
+                        }
+
+                        /// Activate extended fright mode
+                        Pac.fright = PAC_FRIGHT.ACTIVE;
+                        Pac.alarm[0] = Pac.bonustime;
+                        Pac.chompcount = 0;
+                        Pac.plus2 = 0;
+                        Pac.pluseat = 1;
+
+                        /// Hide ghosts during bonus fright period
+                        with (Blinky) {
+                            if (state < GHOST_STATE.EYES) {
+                                visible = false;
+                            }
+                        }
+
+                        with (Pinky) {
+                            if (state < GHOST_STATE.EYES) {
+                                visible = false;
+                            }
+                        }
+
+                        with (Inky) {
+                            if (state < GHOST_STATE.EYES) {
+                                visible = false;
+                            }
+                        }
+
+                        with (Clyde) {
+                            if (state < GHOST_STATE.EYES) {
+                                visible = false;
+                            }
+                        }
+                    }
+
+                    Pac.timer = Pac.timerstart + 1;
+
+                    /// All ghosts reverse and go frightened
+                    with (Blinky) {
+                        aboutface = 1;
+                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                            state = GHOST_STATE.FRIGHTENED;
+                        }
+                    }
+
+                    with (Pinky) {
+                        aboutface = 1;
+                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                            state = GHOST_STATE.FRIGHTENED;
+                        }
+                    }
+
+                    with (Inky) {
+                        aboutface = 1;
+                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                            state = GHOST_STATE.FRIGHTENED;
+                        }
+                    }
+
+                    with (Clyde) {
+                        aboutface = 1;
+                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                            state = GHOST_STATE.FRIGHTENED;
+                        }
+                    }
+                }
+
+                exit;
+            }
+        }
+    }
+}
+
+
+// ===== GHOST COLLISION DETECTION =====
+/// Detect collisions between Pac and ghosts
+/// Determine whether Pac eats ghost (if ghost is frightened) or Pac dies
+/// This section checks all 4 ghosts for collision
+
+if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
+
+    // ===== BLINKY COLLISION =====
+    /// Detect collision with Blinky (Red ghost)
+    if (((16 * (round(x / 16)) == Blinky.tilex && 16 * (round(y / 16)) == Blinky.tiley) ||
+        (abs(x - Blinky.x) < 5 && abs(y - Blinky.y) < 5)) && Blinky.house == 0) {
+
+        with (Blinky) {
+            /// Only process collision if Pac can interact with ghosts
+            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+
+                /// Ghost is frightened - Pac eats it!
+                if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
+                    Pac.bonked = 0;
+                    Pac.chomper = 1;
+
+                    /// Play eating sound based on game variant
+                    if (global.lvl > 0) {
+                        if (global.game == 0) {
+                            sound_play(Chomp);
+                        }
+                        if (global.game == 1) {
+                            sound_play(MsChomp);
+                        }
+                        if (global.game == 2) {
+                            sound_play(JrChomp);
+                        }
+                    }
+
+                    with (Pac) {
+                        script_execute(sickofit);
+                    }
+
+                    Pac.chompcount = Pac.chompcount + 1;
+                    Pac.chomp = 1;
+                    alarm[0] = 60;  // Eating animation duration
+                    chomped = 1;
+
+                    /// Store eating direction for animation
+                    if (Pac.speed != 0) {
+                        if (Pac.eatdir == -1) {
+                            Pac.eatdir = Pac.direction / 45;
+                        }
+                    }
+                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
+                        // Player 2 not moving
+                    }
+                    else {
+                        if (Pac.eatdir2 == -1) {
+                            Pac.eatdir2 = Pac.direction2 / 45;
+                        }
+                    }
+
+                    /// All ghosts reverse direction
+                    with (Blinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Pinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Inky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Clyde) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Fruit) {
+                        if (state > -1) {
+                            resdir = direction / 90;
+                        }
+                    }
+
+                    /// Award points based on ghost count eaten
+                    if (global.lvl > 0) {
+                        if (Pac.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        }
+                    }
+                }
+
+                /// Ghost is not frightened - Pac dies!
+                if (state == GHOST_STATE.CHASE && Pac.dead == PAC_STATE.ALIVE) {
+                    Pac.deader = 1;
+                    Pac.dead = PAC_STATE.DYING;
+                    Pac.alarm[11] = 60;  // Death animation duration
+                    bounce = -2;
+                    uppity = 1;
+                    okidoki = 1;
+
+                    Pac.alarm[1] = -1;  // Cancel fright timer
+                    Blinky.aboutface = 0;
+                    Pinky.aboutface = 0;
+                    Inky.aboutface = 0;
+                    Clyde.aboutface = 0;
+
+                    /// Snap all ghosts to grid
+                    Blinky.tilex = 16 * (round(Blinky.x / 16));
+                    Blinky.tiley = 16 * (round(Blinky.y / 16));
+
+                    Pinky.tilex = 16 * (round(Pinky.x / 16));
+                    Pinky.tiley = 16 * (round(Pinky.y / 16));
+
+                    Inky.tilex = 16 * (round(Inky.x / 16));
+                    Inky.tiley = 16 * (round(Inky.y / 16));
+
+                    Clyde.tilex = 16 * (round(Clyde.x / 16));
+                    Clyde.tiley = 16 * (round(Clyde.y / 16));
+
+                    Blinky.newtile = 0;
+                    Pinky.newtile = 0;
+                    Inky.newtile = 0;
+                    Clyde.newtile = 0;
+                }
+            }
+        }
+    }
+}
+
+    // ===== PINKY COLLISION =====
+    /// Detect collision with Pinky (Pink ghost)
+    if (((16 * (round(x / 16)) == Pinky.tilex && 16 * (round(y / 16)) == Pinky.tiley) ||
+        (abs(x - Pinky.x) < 5 && abs(y - Pinky.y) < 5)) && Pinky.house == 0) {
+
+        with (Pinky) {
+            /// Only process collision if Pac can interact with ghosts
+            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+
+                /// Ghost is frightened - Pac eats it!
+                if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
+                    Pac.bonked = 0;
+                    Pac.chomper = 1;
+
+                    /// Play eating sound based on game variant
+                    if (global.lvl > 0) {
+                        if (global.game == 0) {
+                            sound_play(Chomp);
+                        }
+                        if (global.game == 1) {
+                            sound_play(MsChomp);
+                        }
+                        if (global.game == 2) {
+                            sound_play(JrChomp);
+                        }
+                    }
+
+                    with (Pac) {
+                        script_execute(sickofit);
+                    }
+
+                    Pac.chompcount = Pac.chompcount + 1;
+                    Pac.chomp = 1;
+                    alarm[0] = 60;
+                    chomped = 1;
+
+                    if (Pac.speed != 0) {
+                        if (Pac.eatdir == -1) {
+                            Pac.eatdir = Pac.direction / 45;
+                        }
+                    }
+                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
+                        // Player 2 not moving
+                    }
+                    else {
+                        if (Pac.eatdir2 == -1) {
+                            Pac.eatdir2 = Pac.direction2 / 45;
+                        }
+                    }
+
+                    /// All ghosts reverse direction
+                    with (Blinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Pinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Inky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Clyde) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Fruit) {
+                        if (state > -1) {
+                            resdir = direction / 90;
+                        }
+                    }
+
+                    /// Award points based on ghost count eaten
+                    if (global.lvl > 0) {
+                        if (Pac.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        }
+                    }
+                }
+
+                /// Ghost is not frightened - Pac dies!
+                if (state == GHOST_STATE.CHASE && Pac.dead == PAC_STATE.ALIVE) {
+                    Pac.deader = 1;
+                    Pac.dead = PAC_STATE.DYING;
+                    Pac.alarm[11] = 60;
+                    bounce = -2;
+                    uppity = 1;
+                    okidoki = 1;
+
+                    Pac.alarm[1] = -1;
+                    Blinky.aboutface = 0;
+                    Pinky.aboutface = 0;
+                    Inky.aboutface = 0;
+                    Clyde.aboutface = 0;
+
+                    Blinky.tilex = 16 * (round(Blinky.x / 16));
+                    Blinky.tiley = 16 * (round(Blinky.y / 16));
+
+                    Pinky.tilex = 16 * (round(Pinky.x / 16));
+                    Pinky.tiley = 16 * (round(Pinky.y / 16));
+
+                    Inky.tilex = 16 * (round(Inky.x / 16));
+                    Inky.tiley = 16 * (round(Inky.y / 16));
+
+                    Clyde.tilex = 16 * (round(Clyde.x / 16));
+                    Clyde.tiley = 16 * (round(Clyde.y / 16));
+
+                    Blinky.newtile = 0;
+                    Pinky.newtile = 0;
+                    Inky.newtile = 0;
+                    Clyde.newtile = 0;
+                }
+            }
+        }
     }
 
-}}}
+    // ===== INKY COLLISION =====
+    /// Detect collision with Inky (Cyan ghost)
+    if (((16 * (round(x / 16)) == Inky.tilex && 16 * (round(y / 16)) == Inky.tiley) ||
+        (abs(x - Inky.x) < 5 && abs(y - Inky.y) < 5)) && Inky.house == 0) {
 
+        with (Inky) {
+            /// Only process collision if Pac can interact with ghosts
+            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+
+                /// Ghost is frightened - Pac eats it!
+                if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
+                    Pac.bonked = 0;
+                    Pac.chomper = 1;
+
+                    if (global.lvl > 0) {
+                        if (global.game == 0) {
+                            sound_play(Chomp);
+                        }
+                        if (global.game == 1) {
+                            sound_play(MsChomp);
+                        }
+                        if (global.game == 2) {
+                            sound_play(JrChomp);
+                        }
+                    }
+
+                    with (Pac) {
+                        script_execute(sickofit);
+                    }
+
+                    Pac.chompcount = Pac.chompcount + 1;
+                    Pac.chomp = 1;
+                    alarm[0] = 60;
+                    chomped = 1;
+
+                    if (Pac.speed != 0) {
+                        if (Pac.eatdir == -1) {
+                            Pac.eatdir = Pac.direction / 45;
+                        }
+                    }
+                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
+                        // Player 2 not moving
+                    }
+                    else {
+                        if (Pac.eatdir2 == -1) {
+                            Pac.eatdir2 = Pac.direction2 / 45;
+                        }
+                    }
+
+                    with (Blinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Pinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Inky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Clyde) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Fruit) {
+                        if (state > -1) {
+                            resdir = direction / 90;
+                        }
+                    }
+
+                    if (global.lvl > 0) {
+                        if (Pac.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        }
+                    }
+                }
+
+                /// Ghost is not frightened - Pac dies!
+                if (state == GHOST_STATE.CHASE && Pac.dead == PAC_STATE.ALIVE) {
+                    Pac.deader = 1;
+                    Pac.dead = PAC_STATE.DYING;
+                    Pac.alarm[11] = 60;
+                    bounce = -2;
+                    uppity = 1;
+                    okidoki = 1;
+
+                    Pac.alarm[1] = -1;
+                    Blinky.aboutface = 0;
+                    Pinky.aboutface = 0;
+                    Inky.aboutface = 0;
+                    Clyde.aboutface = 0;
+
+                    Blinky.tilex = 16 * (round(Blinky.x / 16));
+                    Blinky.tiley = 16 * (round(Blinky.y / 16));
+
+                    Pinky.tilex = 16 * (round(Pinky.x / 16));
+                    Pinky.tiley = 16 * (round(Pinky.y / 16));
+
+                    Inky.tilex = 16 * (round(Inky.x / 16));
+                    Inky.tiley = 16 * (round(Inky.y / 16));
+
+                    Clyde.tilex = 16 * (round(Clyde.x / 16));
+                    Clyde.tiley = 16 * (round(Clyde.y / 16));
+
+                    Blinky.newtile = 0;
+                    Pinky.newtile = 0;
+                    Inky.newtile = 0;
+                    Clyde.newtile = 0;
+                }
+            }
+        }
+    }
+
+    // ===== CLYDE COLLISION =====
+    /// Detect collision with Clyde (Orange ghost)
+    if (((16 * (round(x / 16)) == Clyde.tilex && 16 * (round(y / 16)) == Clyde.tiley) ||
+        (abs(x - Clyde.x) < 5 && abs(y - Clyde.y) < 5)) && Clyde.house == 0) {
+
+        with (Clyde) {
+            /// Only process collision if Pac can interact with ghosts
+            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+
+                /// Ghost is frightened - Pac eats it!
+                if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
+                    Pac.bonked = 0;
+                    Pac.chomper = 1;
+
+                    if (global.lvl > 0) {
+                        if (global.game == 0) {
+                            sound_play(Chomp);
+                        }
+                        if (global.game == 1) {
+                            sound_play(MsChomp);
+                        }
+                        if (global.game == 2) {
+                            sound_play(JrChomp);
+                        }
+                    }
+
+                    with (Pac) {
+                        script_execute(sickofit);
+                    }
+
+                    Pac.chompcount = Pac.chompcount + 1;
+                    Pac.chomp = 1;
+                    alarm[0] = 60;
+                    chomped = 1;
+
+                    if (Pac.speed != 0) {
+                        if (Pac.eatdir == -1) {
+                            Pac.eatdir = Pac.direction / 45;
+                        }
+                    }
+                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
+                        // Player 2 not moving
+                    }
+                    else {
+                        if (Pac.eatdir2 == -1) {
+                            Pac.eatdir2 = Pac.direction2 / 45;
+                        }
+                    }
+
+                    with (Blinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Pinky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Inky) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Clyde) {
+                        if (state < GHOST_STATE.EYES) {
+                            resdir = direction / 90;
+                        }
+                    }
+                    with (Fruit) {
+                        if (state > -1) {
+                            resdir = direction / 90;
+                        }
+                    }
+
+                    if (global.lvl > 0) {
+                        if (Pac.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        }
+                        if (Pac.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        }
+                    }
+                }
+
+                /// Ghost is not frightened - Pac dies!
+                if (state == GHOST_STATE.CHASE && Pac.dead == PAC_STATE.ALIVE) {
+                    Pac.deader = 1;
+                    Pac.dead = PAC_STATE.DYING;
+                    Pac.alarm[11] = 60;
+                    bounce = -2;
+                    uppity = 1;
+                    okidoki = 1;
+
+                    Pac.alarm[1] = -1;
+                    Blinky.aboutface = 0;
+                    Pinky.aboutface = 0;
+                    Inky.aboutface = 0;
+                    Clyde.aboutface = 0;
+
+                    Blinky.tilex = 16 * (round(Blinky.x / 16));
+                    Blinky.tiley = 16 * (round(Blinky.y / 16));
+
+                    Pinky.tilex = 16 * (round(Pinky.x / 16));
+                    Pinky.tiley = 16 * (round(Pinky.y / 16));
+
+                    Inky.tilex = 16 * (round(Inky.x / 16));
+                    Inky.tiley = 16 * (round(Inky.y / 16));
+
+                    Clyde.tilex = 16 * (round(Clyde.x / 16));
+                    Clyde.tiley = 16 * (round(Clyde.y / 16));
+
+                    Blinky.newtile = 0;
+                    Pinky.newtile = 0;
+                    Inky.newtile = 0;
+                    Clyde.newtile = 0;
+                }
+            }
+        }
+    }
+
+
+// ===== MOVEMENT STATE OVERRIDES =====
+/// When Pac is eating a ghost (chomp), freeze all movement
+if (chomp == true) {
+    direction = direction;
+    speed = 0;
+    alarm[0] = alarm[0] + 1;
+
+    /// Freeze all ghosts except eyes mode
+    with (Blinky) {
+        if (state < GHOST_STATE.EYES) {
+            hspeed = 0;
+            vspeed = 0;
+        }
+    }
+    with (Pinky) {
+        if (state < GHOST_STATE.EYES) {
+            hspeed = 0;
+            vspeed = 0;
+        }
+    }
+    with (Inky) {
+        if (state < GHOST_STATE.EYES) {
+            hspeed = 0;
+            vspeed = 0;
+        }
+    }
+    with (Clyde) {
+        if (state < GHOST_STATE.EYES) {
+            hspeed = 0;
+            vspeed = 0;
+        }
+    }
+    with (Fruit) {
+        if (state > -1) {
+            hspeed = 0;
+            vspeed = 0;
+        }
+    }
+}
+
+/// When level is starting, freeze all actors
+if (start == true) {
+    hspeed = 0;
+    vspeed = 0;
+    alarm[0] = alarm[0] + 1;
+
+    plus2 = 0;
+
+    with (Blinky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Pinky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Inky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Clyde) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Fruit) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+}
+
+/// When Pac is dead, freeze all actors
+if (dead > PAC_STATE.ALIVE) {
+    hspeed = 0;
+    vspeed = 0;
+    alarm[0] = alarm[0] + 1;
+
+    plus2 = 0;
+
+    with (Blinky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Pinky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Inky) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Clyde) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+    with (Fruit) {
+        hspeed = 0;
+        vspeed = 0;
+    }
+}
+
+// ===== FRIGHT MODE END CONDITION =====
+/// When all ghosts have returned to chase mode, fright ends
+if (fright == PAC_FRIGHT.ACTIVE) {
+    if (Blinky.state == GHOST_STATE.CHASE && Pinky.state == GHOST_STATE.CHASE &&
+        Inky.state == GHOST_STATE.CHASE && Clyde.state == GHOST_STATE.CHASE) {
+
+        /// Fright mode complete - reset to normal
+        alarm[0] = -1;
+        fright = PAC_FRIGHT.OFF;
+        prohibit = GHOST_PROHIBIT.ALLOWED;
+        plus2 = 0;
+
+        /// Reset speeds to normal (not boosted)
+        if (bonked == 0) {
+            if (hspeed > 0) {
+                hspeed = sp;
+            }
+            if (hspeed < 0) {
+                hspeed = -sp;
+            }
+            if (vspeed > 0) {
+                vspeed = sp;
+            }
+            if (vspeed < 0) {
+                vspeed = -sp;
+            }
+        }
+
+        /// Reset Player 2 speeds
+        if (bonked2 == 0) {
+            if (hspeed2 > 0) {
+                hspeed2 = sp;
+            }
+            if (hspeed2 < 0) {
+                hspeed2 = -sp;
+            }
+            if (vspeed2 > 0) {
+                vspeed2 = sp;
+            }
+            if (vspeed2 < 0) {
+                vspeed2 = -sp;
+            }
+        }
+
+        chompcount = 0;
+        Pac.pluseat = 0;
+    }
 }
 
 
-if chomp = true{direction = direction; speed = 0; alarm[0] = alarm[0] + 1
+// ===== AUDIO & AMBIENCE MANAGEMENT =====
+/// Control background music based on game state
+if (global.lvl > 0) {
 
-with Blinky{if state<2{hspeed = 0; vspeed = 0;}}
+    /// Stop all ambience when not playing
+    if (dead > PAC_STATE.ALIVE || finish > 0 || start == 1) {
+        sound_stop(Ghost1);
+        sound_stop(Ghost2);
+        sound_stop(Ghost3);
+        sound_stop(Ghost4);
+        sound_stop(Ghost5);
+        sound_stop(Blue);
+        sound_stop(Flee);
 
-with Pinky{if state<2{hspeed = 0; vspeed = 0;}}
+        sound_stop(MsGhost1);
+        sound_stop(MsGhost2);
+        sound_stop(MsGhost3);
+        sound_stop(MsGhost4);
+        sound_stop(MsGhost5);
+        sound_stop(MsBlue);
+        sound_stop(MsFlee);
 
-with Inky{if state<2{hspeed = 0; vspeed = 0;}}
+        sound_stop(JrGhost1);
+        sound_stop(JrGhost2);
+        sound_stop(JrGhost3);
+        sound_stop(JrGhost4);
+        sound_stop(JrGhost5);
+        sound_stop(JrBlue);
+        sound_stop(JrFlee);
+    }
 
-with Clyde{if state<2{hspeed = 0; vspeed = 0;}}
+    /// Only manage ambience during active gameplay
+    if (dead == PAC_STATE.ALIVE && finish == 0 && start == 0) {
 
-with Fruit{if state>-1{hspeed = 0; vspeed = 0;}}
+        /// ===== SIREN PROGRESSION =====
+        /// Update siren level based on remaining dot count
+        /// Different thresholds for different level sizes
+        if (room_width == 448) {
+            /// Small level (classic Pacman)
+            if (siren == 0 && dotcount > 111) {
+                siren = 1;
+            }
+            if (siren == 1 && dotcount > 179) {
+                siren = 2;
+            }
+            if (siren == 2 && dotcount > 211) {
+                siren = 3;
+            }
+            if (siren == 3 && dotcount > 227) {
+                siren = 4;
+            }
+        }
+        else {
+            /// Large level
+            if (siren == 0 && dotcount > 229) {
+                siren = 1;
+            }
+            if (siren == 1 && dotcount > 357) {
+                siren = 2;
+            }
+            if (siren == 2 && dotcount > 421) {
+                siren = 3;
+            }
+            if (siren == 3 && dotcount > 453) {
+                siren = 4;
+            }
+        }
 
+        /// ===== AUDIO PLAYBACK =====
+        /// Select appropriate music based on game state and game variant
+        if (global.game == 0) {
+            /// STANDARD PACMAN SOUNDS
+
+            /// Check if any ghost is in flee (frightened) mode
+            if (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
+                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES) {
+
+                if (ambience != 6) {
+                    sound_loop(Flee);
+                    ambience = 6;
+                    exit;
+                }
+            }
+            else {
+                /// Check fright mode
+                if (fright == PAC_FRIGHT.ACTIVE) {
+                    if (ambience != 5) {
+                        sound_loop(Blue);
+                        ambience = 5;
+                        exit;
+                    }
+                }
+                else {
+                    /// Play siren based on dot progression
+                    if (siren == 4) {
+                        if (ambience != SIREN_LEVEL.LEVEL_4) {
+                            sound_loop(Ghost5);
+                            ambience = SIREN_LEVEL.LEVEL_4;
+                            exit;
+                        }
+                    }
+                    else if (siren == 3) {
+                        if (ambience != SIREN_LEVEL.LEVEL_3) {
+                            sound_loop(Ghost4);
+                            ambience = SIREN_LEVEL.LEVEL_3;
+                            exit;
+                        }
+                    }
+                    else if (siren == 2) {
+                        if (ambience != SIREN_LEVEL.LEVEL_2) {
+                            sound_loop(Ghost3);
+                            ambience = SIREN_LEVEL.LEVEL_2;
+                            exit;
+                        }
+                    }
+                    else if (siren == 1) {
+                        if (ambience != SIREN_LEVEL.LEVEL_1) {
+                            sound_loop(Ghost2);
+                            ambience = SIREN_LEVEL.LEVEL_1;
+                            exit;
+                        }
+                    }
+                    else {
+                        if (ambience != SIREN_LEVEL.LEVEL_0) {
+                            sound_loop(Ghost1);
+                            ambience = SIREN_LEVEL.LEVEL_0;
+                            exit;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (global.game == 1) {
+            /// MS. PACMAN SOUNDS
+
+            if (global.otto == 0 && (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
+                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES)) {
+
+                if (ambience != 6) {
+                    sound_loop(MsFlee);
+                    ambience = 6;
+                    exit;
+                }
+            }
+            else {
+                if (fright == PAC_FRIGHT.ACTIVE) {
+                    if (ambience != 5) {
+                        sound_loop(MsBlue);
+                        ambience = 5;
+                        exit;
+                    }
+                }
+                else {
+                    if (siren == 4) {
+                        if (ambience != SIREN_LEVEL.LEVEL_4) {
+                            sound_loop(MsGhost5);
+                            ambience = SIREN_LEVEL.LEVEL_4;
+                            exit;
+                        }
+                    }
+                    else if (siren == 3) {
+                        if (ambience != SIREN_LEVEL.LEVEL_3) {
+                            sound_loop(MsGhost4);
+                            ambience = SIREN_LEVEL.LEVEL_3;
+                            exit;
+                        }
+                    }
+                    else if (siren == 2) {
+                        if (ambience != SIREN_LEVEL.LEVEL_2) {
+                            sound_loop(MsGhost3);
+                            ambience = SIREN_LEVEL.LEVEL_2;
+                            exit;
+                        }
+                    }
+                    else if (siren == 1) {
+                        if (ambience != SIREN_LEVEL.LEVEL_1) {
+                            sound_loop(MsGhost2);
+                            ambience = SIREN_LEVEL.LEVEL_1;
+                            exit;
+                        }
+                    }
+                    else {
+                        if (ambience != SIREN_LEVEL.LEVEL_0) {
+                            sound_loop(MsGhost1);
+                            ambience = SIREN_LEVEL.LEVEL_0;
+                            exit;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (global.game == 2) {
+            /// JR. PACMAN SOUNDS
+
+            if (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
+                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES) {
+
+                if (ambience != 6) {
+                    sound_loop(JrFlee);
+                    ambience = 6;
+                    exit;
+                }
+            }
+            else {
+                if (fright == PAC_FRIGHT.ACTIVE) {
+                    if (ambience != 5) {
+                        sound_loop(JrBlue);
+                        ambience = 5;
+                        exit;
+                    }
+                }
+                else {
+                    if (siren == 4) {
+                        if (ambience != SIREN_LEVEL.LEVEL_4) {
+                            sound_loop(JrGhost5);
+                            ambience = SIREN_LEVEL.LEVEL_4;
+                            exit;
+                        }
+                    }
+                    else if (siren == 3) {
+                        if (ambience != SIREN_LEVEL.LEVEL_3) {
+                            sound_loop(JrGhost4);
+                            ambience = SIREN_LEVEL.LEVEL_3;
+                            exit;
+                        }
+                    }
+                    else if (siren == 2) {
+                        if (ambience != SIREN_LEVEL.LEVEL_2) {
+                            sound_loop(JrGhost3);
+                            ambience = SIREN_LEVEL.LEVEL_2;
+                            exit;
+                        }
+                    }
+                    else if (siren == 1) {
+                        if (ambience != SIREN_LEVEL.LEVEL_1) {
+                            sound_loop(JrGhost2);
+                            ambience = SIREN_LEVEL.LEVEL_1;
+                            exit;
+                        }
+                    }
+                    else {
+                        if (ambience != SIREN_LEVEL.LEVEL_0) {
+                            sound_loop(JrGhost1);
+                            ambience = SIREN_LEVEL.LEVEL_0;
+                            exit;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-if start = true{hspeed = 0; vspeed = 0; alarm[0] = alarm[0] + 1
 
-plus2 = 0;
-
-with Blinky{{hspeed = 0; vspeed = 0;}}
-
-with Pinky{{hspeed = 0; vspeed = 0;}}
-
-with Inky{{hspeed = 0; vspeed = 0;}}
-
-with Clyde{{hspeed = 0; vspeed = 0;}}
-
-with Fruit{{hspeed = 0; vspeed = 0;}}
-
-}
-
-if dead > 0{hspeed = 0; vspeed = 0; alarm[0] = alarm[0] + 1
-
-plus2 = 0;
-
-with Blinky{{hspeed = 0; vspeed = 0;}}
-
-with Pinky{{hspeed = 0; vspeed = 0;}}
-
-with Inky{{hspeed = 0; vspeed = 0;}}
-
-with Clyde{{hspeed = 0; vspeed = 0;}}
-
-with Fruit{{hspeed = 0; vspeed = 0;}}
-
-}
-
-
-if fright = 1{if Blinky.state = 0 and Pinky.state = 0 and Inky.state = 0 and Clyde.state = 0{
-
-alarm[0] = -1; fright = 0; prohibit = 0; plus2 = 0;
-
-if bonked = 0{
-
-if hspeed > 0{hspeed = sp}
-
-if hspeed < 0{hspeed = -sp}
-
-if vspeed > 0{vspeed = sp}
-
-if vspeed < 0{vspeed = -sp}
-
-}
-
-if bonked2 = 0{
-
-if hspeed2 > 0{hspeed2 = sp}
-
-if hspeed2 < 0{hspeed2 = -sp}
-
-if vspeed2 > 0{vspeed2 = sp}
-
-if vspeed2 < 0{vspeed2 = -sp}
-
-}
-
-chompcount = 0; Pac.pluseat = 0;
-
-}}
-
-
-if global.lvl > 0{
-
-if dead > 0 or finish > 0 or start = 1{
-
-sound_stop(Ghost1); sound_stop(Ghost2); sound_stop(Ghost3); sound_stop(Ghost4); sound_stop(Ghost5); sound_stop(Blue); sound_stop(Flee);
-
-sound_stop(MsGhost1); sound_stop(MsGhost2); sound_stop(MsGhost3); sound_stop(MsGhost4); sound_stop(MsGhost5); sound_stop(MsBlue); sound_stop(MsFlee);
-
-sound_stop(JrGhost1); sound_stop(JrGhost2); sound_stop(JrGhost3); sound_stop(JrGhost4); sound_stop(JrGhost5); sound_stop(JrBlue); sound_stop(JrFlee);
-
-}
-
-if dead = 0 and finish = 0 and start = 0{
-
-if room_width = 448{
-
-    if siren = 0 and dotcount > 111{siren = 1;} 
-
-    if siren = 1 and dotcount > 179{siren = 2;} 
-
-    if siren = 2 and dotcount > 211{siren = 3;} 
-
-    if siren = 3 and dotcount > 227{siren = 4;} 
-
-}
-
-else{
-
-    if siren = 0 and dotcount > 229{siren = 1;}
-
-    if siren = 1 and dotcount > 357{siren = 2;}
-
-    if siren = 2 and dotcount > 421{siren = 3;}
-
-    if siren = 3 and dotcount > 453{siren = 4;}
-
-}
-
-if global.game = 0{
-
-    if (Blinky.state = 2 or Pinky.state = 2 or Inky.state = 2 or Clyde.state = 2){if ambience = 6{}else{sound_loop(Flee); ambience = 6; exit}}
-
-    else{
-
-    if fright = 1{if ambience = 5{}else{sound_loop(Blue); ambience = 5; exit}}
-
-    else{
-
-    if siren = 4{if ambience = 4{}else{sound_loop(Ghost5); ambience = 4; exit}}
-
-    else{
-
-    if siren = 3{if ambience = 3{}else{sound_loop(Ghost4); ambience = 3; exit}}
-
-    else{
-
-    if siren = 2{if ambience = 2{}else{sound_loop(Ghost3); ambience = 2; exit}}
-
-    else{
-
-    if siren = 1{if ambience = 1{}else{sound_loop(Ghost2); ambience = 1; exit}}
-
-    else{
-
-    if siren = 0{if ambience = 0{}else{sound_loop(Ghost1); ambience = 0; exit}}
-
-    }}}}}}
-
-}
-
-if global.game = 1{
-
-    if global.otto = 0 and (Blinky.state = 2 or Pinky.state = 2 or Inky.state = 2 or Clyde.state = 2){if ambience = 6{}else{sound_loop(MsFlee); ambience = 6; exit}}
-
-    else{
-
-    if fright = 1{if ambience = 5{}else{sound_loop(MsBlue); ambience = 5; exit}}
-
-    else{
-
-    if siren = 4{if ambience = 4{}else{sound_loop(MsGhost5); ambience = 4; exit}}
-
-    else{
-
-    if siren = 3{if ambience = 3{}else{sound_loop(MsGhost4); ambience = 3; exit}}
-
-    else{
-
-    if siren = 2{if ambience = 2{}else{sound_loop(MsGhost3); ambience = 2; exit}}
-
-    else{
-
-    if siren = 1{if ambience = 1{}else{sound_loop(MsGhost2); ambience = 1; exit}}
-
-    else{
-
-    if siren = 0{if ambience = 0{}else{sound_loop(MsGhost1); ambience = 0; exit}}
-
-    }}}}}}
-
-}
-
-if global.game = 2{
-
-    if (Blinky.state = 2 or Pinky.state = 2 or Inky.state = 2 or Clyde.state = 2){if ambience = 6{}else{sound_loop(JrFlee); ambience = 6; exit}}
-
-    else{
-
-    if fright = 1{if ambience = 5{}else{sound_loop(JrBlue); ambience = 5; exit}}
-
-    else{
-
-    if siren = 4{if ambience = 4{}else{sound_loop(JrGhost5); ambience = 4; exit}}
-
-    else{
-
-    if siren = 3{if ambience = 3{}else{sound_loop(JrGhost4); ambience = 3; exit}}
-
-    else{
-
-    if siren = 2{if ambience = 2{}else{sound_loop(JrGhost3); ambience = 2; exit}}
-
-    else{
-
-    if siren = 1{if ambience = 1{}else{sound_loop(JrGhost2); ambience = 1; exit}}
-
-    else{
-
-    if siren = 0{if ambience = 0{}else{sound_loop(JrGhost1); ambience = 0; exit}}
-
-    }}}}}}
-
-}
-
-}
-
-}
-
-
-if global.p1gameover = 0 and global.p2gameover = 0 and chomp = 0 and start = 0 and dead = 0 and finish = 0{
-
-    if corner = 0 and corner2 = 0{
-
-        if (tilex = tilex2 or (abs(x2 - x)) < 4) and (tiley = tiley2 or (abs(y2 - y)) < 4) and !bonked = 1 and !bonked2 = 1{
-
-            bonked = 1; bonked2 = 1; alarm[4] = 10; sound_play(Bonk);
-
-            ///P1 relative position to P2
-
-            if speed = 0{bonked = 0}else{
-
-            if dir = 0 or dir = 2{
-
-            if x > x2{hspeed = 4};else{hspeed = -4};
-
+// ===== PLAYER 2 COLLISION (2-PLAYER MODE) =====
+/// Detect collision between Player 1 and Player 2
+if (global.p1gameover == 0 && global.p2gameover == 0 && chomp == 0 && start == 0 && dead == PAC_STATE.ALIVE && finish == 0) {
+
+    if (corner == PAC_CORNER.NONE && corner2 == PAC_CORNER.NONE) {
+
+        if ((tilex == tilex2 || (abs(x2 - x)) < 4) && (tiley == tiley2 || (abs(y2 - y)) < 4) && bonked != 1 && bonked2 != 1) {
+
+            bonked = 1;
+            bonked2 = 1;
+            alarm[4] = 10;
+            sound_play(Bonk);
+
+            /// Player 1 relative position to Player 2
+            if (speed == 0) {
+                bonked = 0;
+            }
+            else {
+                if (dir == PAC_DIRECTION.RIGHT || dir == PAC_DIRECTION.LEFT) {
+                    if (x > x2) {
+                        hspeed = 4;
+                    }
+                    else {
+                        hspeed = -4;
+                    }
+                }
+
+                if (dir == PAC_DIRECTION.UP || dir == PAC_DIRECTION.DOWN) {
+                    if (y > y2) {
+                        vspeed = 4;
+                    }
+                    else {
+                        vspeed = -4;
+                    }
+                }
             }
 
-            if dir = 1 or dir = 3{
+            /// Player 2 relative position to Player 1
+            if (hspeed2 == 0 && vspeed2 == 0) {
+                bonked2 = 0;
+            }
+            else {
+                if (dir2 == PAC_DIRECTION.RIGHT || dir2 == PAC_DIRECTION.LEFT) {
+                    if (x > x2) {
+                        hspeed2 = -4;
+                    }
+                    else {
+                        hspeed2 = 4;
+                    }
+                }
 
-            if y > y2{vspeed = 4};else{vspeed = -4};
-
+                if (dir2 == PAC_DIRECTION.UP || dir2 == PAC_DIRECTION.DOWN) {
+                    if (y > y2) {
+                        vspeed2 = -4;
+                    }
+                    else {
+                        vspeed2 = 4;
+                    }
+                }
             }
 
-            }
+            /// Snap both players to grid and apply direction updates
+            x = tilex;
+            y = tiley;
+            x2 = tilex2;
+            y2 = tiley2;
 
-            ///P2 relative position to P1
+            if (hspeed == 4) { dir = PAC_DIRECTION.RIGHT; }
+            if (hspeed == -4) { dir = PAC_DIRECTION.LEFT; }
+            if (vspeed == 4) { dir = PAC_DIRECTION.DOWN; }
+            if (vspeed == -4) { dir = PAC_DIRECTION.UP; }
 
-            if hspeed2 = 0 and vspeed2 = 0{bonked2 = 0}else{
-
-            if dir2 = 0 or dir2 = 2{
-
-            if x > x2{hspeed2 = -4};else{hspeed2 = 4};
-
-            }
-
-            if dir2 = 1 or dir2 = 3{
-
-            if y > y2{vspeed2 = -4};else{vspeed2 = 4};
-
-            }
-
-            }
-
-            ///
-
-            x = tilex; y = tiley; x2 = tilex2; y2 = tiley2;
-
-            if hspeed = 4{dir = 0}; if hspeed = -4{dir = 2};
-
-            if vspeed = 4{dir = 3}; if vspeed = -4{dir = 1};
-
-            if hspeed2 = 4{dir2 = 0}; if hspeed2 = -4{dir2 = 2};
-
-            if vspeed2 = 4{dir2 = 3}; if vspeed2 = -4{dir2 = 1};
+            if (hspeed2 == 4) { dir2 = PAC_DIRECTION.RIGHT; }
+            if (hspeed2 == -4) { dir2 = PAC_DIRECTION.LEFT; }
+            if (vspeed2 == 4) { dir2 = PAC_DIRECTION.DOWN; }
+            if (vspeed2 == -4) { dir2 = PAC_DIRECTION.UP; }
 
         }
 

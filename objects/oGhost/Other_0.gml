@@ -27,6 +27,9 @@ if (direction == 180 && x < -24) {
 
     /// Update tile position after wraparound
     tilex = 16 * (round(x / 16));
+	
+	/// change direction
+	direction = 0;
 }
 
 /// ===== RIGHT TUNNEL WRAPAROUND =====
@@ -42,22 +45,10 @@ if (direction == 0 && x > (room_width + 24)) {
 
     /// Update tile position after wraparound
     tilex = 16 * (round(x / 16));
+	
+	/// change direction
+	direction = 180;
 }
-
-/// ===============================================================================
-/// TRIGGERING EXPLANATION
-/// ===============================================================================
-/// This event (Other_0) is part of GameMaker's Collision system.
-/// It fires when this instance (oGhost) touches a collision object.
-///
-/// In this codebase, Other_0 is likely triggered by:
-/// - A Wall or Block object with a collision event
-/// - That sends "other.event_perform(ev_other, 0);" to adjacent objects
-///
-/// When ghost touches wall: parent wall's collision = trigger Other_0 on ghost
-/// This allows walls to notify ghosts about wraparound
-///
-/// ===============================================================================
 
 /// ===============================================================================
 /// END oGHOST OTHER_0 EVENT

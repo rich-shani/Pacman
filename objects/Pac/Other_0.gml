@@ -1,32 +1,122 @@
-if direction = 180 and x < -24
-{x = (room_width + 24) - (x + 24); tilex = 16*(round(x/16)); bonked = 0;
-if fright = 1{
-            if dir = 0{hspeed = spfright; vspeed = 0;}
-            if dir = 1{hspeed = 0; vspeed = -spfright;}
-            if dir = 2{hspeed = -spfright; vspeed = 0;}
-            if dir = 3{hspeed = 0; vspeed = spfright;}
-            }
-            else{ 
-            if dir = 0{hspeed = sp; vspeed = 0;}
-            if dir = 1{hspeed = 0; vspeed = -sp;}
-            if dir = 2{hspeed = -sp; vspeed = 0;}
-            if dir = 3{hspeed = 0; vspeed = sp;}
-            }
-}
-if direction = 0 and x > (room_width + 24)
-{x = -24 + (x - (room_width + 24)); tilex = 16*(round(x/16)); bonked = 0;
-if fright = 1{
-            if dir = 0{hspeed = spfright; vspeed = 0;}
-            if dir = 1{hspeed = 0; vspeed = -spfright;}
-            if dir = 2{hspeed = -spfright; vspeed = 0;}
-            if dir = 3{hspeed = 0; vspeed = spfright;}
-            }
-            else{ 
-            if dir = 0{hspeed = sp; vspeed = 0;}
-            if dir = 1{hspeed = 0; vspeed = -sp;}
-            if dir = 2{hspeed = -sp; vspeed = 0;}
-            if dir = 3{hspeed = 0; vspeed = sp;}
-            }
+/// ===============================================================================
+/// OTHER_0 - TUNNEL WRAPPING (LEFT/RIGHT EDGES)
+/// ===============================================================================
+/// Purpose: Handle Pac wrapping through horizontal tunnels at room edges
+/// Called: Every frame
+///
+/// Triggers:
+/// - When Pac moves left past x = -24, wraps to right side
+/// - When Pac moves right past x = room_width + 24, wraps to left side
+/// - Resets tile alignment and bonk state after wrapping
+/// - Adjusts speed based on fright mode
+/// ===============================================================================
+
+/// ===============================================================================
+/// LEFT EDGE WRAP: Pac exits left and re-enters from right
+/// ===============================================================================
+if (direction == 180 && x < -24) {
+    /// Wrap x position: calculate distance past edge and place on opposite side
+    x = (room_width + 24) - (x + 24);
+
+    /// Re-align to 16x16 grid
+    tilex = 16 * (round(x / 16));
+
+    /// Clear bonk state so Pac can move immediately
+    bonked = 0;
+
+    /// ===============================================================================
+    /// Re-apply speed based on current direction and fright mode
+    /// ===============================================================================
+    if (fright == PAC_FRIGHT.ACTIVE) {
+        /// FRIGHT MODE: Faster speeds
+        if (dir == PAC_DIRECTION.RIGHT) {
+            hspeed = spfright;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.UP) {
+            hspeed = 0;
+            vspeed = -spfright;
+        }
+        if (dir == PAC_DIRECTION.LEFT) {
+            hspeed = -spfright;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.DOWN) {
+            hspeed = 0;
+            vspeed = spfright;
+        }
+    } else {
+        /// NORMAL MODE: Standard speeds
+        if (dir == PAC_DIRECTION.RIGHT) {
+            hspeed = sp;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.UP) {
+            hspeed = 0;
+            vspeed = -sp;
+        }
+        if (dir == PAC_DIRECTION.LEFT) {
+            hspeed = -sp;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.DOWN) {
+            hspeed = 0;
+            vspeed = sp;
+        }
+    }
 }
 
+/// ===============================================================================
+/// RIGHT EDGE WRAP: Pac exits right and re-enters from left
+/// ===============================================================================
+if (direction == 0 && x > (room_width + 24)) {
+    /// Wrap x position: calculate distance past edge and place on opposite side
+    x = -24 + (x - (room_width + 24));
 
+    /// Re-align to 16x16 grid
+    tilex = 16 * (round(x / 16));
+
+    /// Clear bonk state so Pac can move immediately
+    bonked = 0;
+
+    /// ===============================================================================
+    /// Re-apply speed based on current direction and fright mode
+    /// ===============================================================================
+    if (fright == PAC_FRIGHT.ACTIVE) {
+        /// FRIGHT MODE: Faster speeds
+        if (dir == PAC_DIRECTION.RIGHT) {
+            hspeed = spfright;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.UP) {
+            hspeed = 0;
+            vspeed = -spfright;
+        }
+        if (dir == PAC_DIRECTION.LEFT) {
+            hspeed = -spfright;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.DOWN) {
+            hspeed = 0;
+            vspeed = spfright;
+        }
+    } else {
+        /// NORMAL MODE: Standard speeds
+        if (dir == PAC_DIRECTION.RIGHT) {
+            hspeed = sp;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.UP) {
+            hspeed = 0;
+            vspeed = -sp;
+        }
+        if (dir == PAC_DIRECTION.LEFT) {
+            hspeed = -sp;
+            vspeed = 0;
+        }
+        if (dir == PAC_DIRECTION.DOWN) {
+            hspeed = 0;
+            vspeed = sp;
+        }
+    }
+}
