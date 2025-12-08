@@ -269,40 +269,56 @@ function handle_pac_input() {
 
     // ===== CORNER TRANSITION HANDLING =====
     /// If already in a corner transition, check for re-entry during transition
+    /// CRITICAL: Use speed NEGATION to preserve momentum, not absolute reassignment
     if (corner > PAC_CORNER.NONE && chomp == 0) {
         if (cornercheck < 2) {  // Allow re-entry for first 2 frames of corner
-
-            // Handle each possible corner re-entry based on new input
 
             // Attempting RIGHT during corner transition
             if (keyboard_check(vk_right) == true && keyboard_check(vk_up) == false &&
                 keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
 
                 if (!collision_point(16 * (round((x) / 16)) + 17, 16 * (round((y) / 16)), Wall, false, true)) {
-                    // Flip direction vectors based on current corner state
                     switch(corner) {
-                        case PAC_CORNER.DOWN_TO_LEFT_POST:
-                            corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
-                            hspeed = sp;
-                            vspeed = sp;
-                            dir = PAC_DIRECTION.RIGHT;
-                            exit;
-                        case PAC_CORNER.UP_TO_LEFT_POST:
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
                             corner = PAC_CORNER.UP_TO_RIGHT_PRE;
-                            hspeed = sp;
-                            vspeed = -sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
-                        case PAC_CORNER.UP_TO_LEFT_PRE:
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
                             corner = PAC_CORNER.UP_TO_RIGHT_POST;
-                            hspeed = sp;
-                            vspeed = -sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.UP_TO_RIGHT_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.UP_TO_RIGHT_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
                         case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
                             corner = PAC_CORNER.DOWN_TO_RIGHT_POST;
-                            hspeed = sp;
-                            vspeed = sp;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
                     }
@@ -315,28 +331,46 @@ function handle_pac_input() {
 
                 if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) - 1, Wall, false, true)) {
                     switch(corner) {
-                        case PAC_CORNER.RIGHT_TO_DOWN_POST:
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
                             corner = PAC_CORNER.RIGHT_TO_UP_PRE;
-                            hspeed = sp;
-                            vspeed = -sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.UP;
                             exit;
-                        case PAC_CORNER.LEFT_TO_DOWN_POST:
-                            corner = PAC_CORNER.LEFT_TO_UP_PRE;
-                            hspeed = -sp;
-                            vspeed = -sp;
-                            dir = PAC_DIRECTION.UP;
-                            exit;
-                        case PAC_CORNER.RIGHT_TO_DOWN_PRE:
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
                             corner = PAC_CORNER.RIGHT_TO_UP_POST;
-                            hspeed = sp;
-                            vspeed = -sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.UP;
                             exit;
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
                         case PAC_CORNER.LEFT_TO_DOWN_PRE:
-                            corner = PAC_CORNER.LEFT_TO_UP_POST;
-                            hspeed = -sp;
-                            vspeed = -sp;
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.UP;
                             exit;
                     }
@@ -349,28 +383,46 @@ function handle_pac_input() {
 
                 if (!collision_point(16 * (round((x) / 16)) - 1, 16 * (round((y) / 16)), Wall, false, true)) {
                     switch(corner) {
-                        case PAC_CORNER.DOWN_TO_RIGHT_POST:
+                        // Original corner 7 (LEFT_TO_DOWN_PRE)
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
                             corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
-                            hspeed = -sp;
-                            vspeed = sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.LEFT;
                             exit;
-                        case PAC_CORNER.UP_TO_RIGHT_POST:
-                            corner = PAC_CORNER.UP_TO_LEFT_PRE;
-                            hspeed = -sp;
-                            vspeed = -sp;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.LEFT;
                             exit;
-                        case PAC_CORNER.DOWN_TO_RIGHT_PRE:
+                        // Original corner 8 (LEFT_TO_DOWN_POST)
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
                             corner = PAC_CORNER.DOWN_TO_LEFT_POST;
-                            hspeed = -sp;
-                            vspeed = sp;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.LEFT;
                             exit;
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
                         case PAC_CORNER.UP_TO_RIGHT_PRE:
-                            corner = PAC_CORNER.UP_TO_LEFT_POST;
-                            hspeed = -sp;
-                            vspeed = -sp;
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
                             dir = PAC_DIRECTION.LEFT;
                             exit;
                     }
@@ -383,28 +435,46 @@ function handle_pac_input() {
 
                 if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) + 17, Wall, false, true)) {
                     switch(corner) {
-                        case PAC_CORNER.RIGHT_TO_UP_POST:
-                            corner = PAC_CORNER.RIGHT_TO_DOWN_PRE;
-                            hspeed = sp;
-                            vspeed = sp;
-                            dir = PAC_DIRECTION.DOWN;
-                            exit;
-                        case PAC_CORNER.LEFT_TO_UP_POST:
+                        // Original corner 5 (DOWN_TO_LEFT_PRE)
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
                             corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
-                            hspeed = -sp;
-                            vspeed = sp;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.DOWN;
                             exit;
-                        case PAC_CORNER.RIGHT_TO_UP_PRE:
-                            corner = PAC_CORNER.RIGHT_TO_DOWN_POST;
-                            hspeed = sp;
-                            vspeed = sp;
+                        // Original corner 1 (UP_TO_RIGHT_PRE)
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = -hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.DOWN;
                             exit;
-                        case PAC_CORNER.LEFT_TO_UP_PRE:
+                        // Original corner 6 (DOWN_TO_LEFT_POST)
+                        case PAC_CORNER.DOWN_TO_LEFT_POST:
                             corner = PAC_CORNER.LEFT_TO_DOWN_POST;
-                            hspeed = -sp;
-                            vspeed = sp;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 2 (UP_TO_RIGHT_POST)
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = -hspeed;
+                            vspeed = vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 3 (RIGHT_TO_UP_PRE)
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        // Original corner 4 (RIGHT_TO_UP_POST)
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = hspeed;
+                            vspeed = -vspeed;
                             dir = PAC_DIRECTION.DOWN;
                             exit;
                     }
