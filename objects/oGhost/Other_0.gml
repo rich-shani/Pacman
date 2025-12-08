@@ -18,7 +18,7 @@
 /// When ghost exits left side of tunnel, wrap to right side
 /// Check if moving LEFT (hspeed < 0) and went past left edge
 
-if (hspeed < 0 && x < -24) {
+if (hspeed < 0) {
     /// Moving left and went off left edge
     /// Teleport to right side
 
@@ -29,9 +29,6 @@ if (hspeed < 0 && x < -24) {
     /// Update tile position after wraparound
     tilex = 16 * (round(x / 16));
 
-	/// Change direction to RIGHT (0 degrees) after wrapping left
-	direction = 0;
-
 	/// Clear pathfinding to recalculate path from new position
 	newtile = 0;
 }
@@ -40,7 +37,7 @@ if (hspeed < 0 && x < -24) {
 /// When ghost exits right side of tunnel, wrap to left side
 /// Check if moving RIGHT (hspeed > 0) and went past right edge
 
-if (hspeed > 0 && x > (room_width + 24)) {
+if (hspeed > 0) {
     /// Moving right and went off right edge
     /// Teleport to left side
 
@@ -50,9 +47,6 @@ if (hspeed > 0 && x > (room_width + 24)) {
 
     /// Update tile position after wraparound
     tilex = 16 * (round(x / 16));
-
-	/// Change direction to LEFT (180 degrees) after wrapping right
-	direction = 180;
 
 	/// Clear pathfinding to recalculate path from new position
 	newtile = 0;
