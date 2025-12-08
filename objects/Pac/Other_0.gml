@@ -14,7 +14,8 @@
 /// ===============================================================================
 /// LEFT EDGE WRAP: Pac exits left and re-enters from right
 /// ===============================================================================
-if (direction == 180 && x < -24) {
+/// Check if moving LEFT (hspeed < 0) and went past left edge
+if (hspeed < 0 && x < -24) {
     /// Wrap x position: calculate distance past edge and place on opposite side
     x = (room_width + 24) - (x + 24);
 
@@ -24,9 +25,10 @@ if (direction == 180 && x < -24) {
     /// Clear bonk state so Pac can move immediately
     bonked = 0;
 
-    /// ===============================================================================
+    /// Update direction to RIGHT after wrapping
+    direction = 0;
+
     /// Re-apply speed based on current direction and fright mode
-    /// ===============================================================================
     if (fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
@@ -69,7 +71,8 @@ if (direction == 180 && x < -24) {
 /// ===============================================================================
 /// RIGHT EDGE WRAP: Pac exits right and re-enters from left
 /// ===============================================================================
-if (direction == 0 && x > (room_width + 24)) {
+/// Check if moving RIGHT (hspeed > 0) and went past right edge
+if (hspeed > 0 && x > (room_width + 24)) {
     /// Wrap x position: calculate distance past edge and place on opposite side
     x = -24 + (x - (room_width + 24));
 
@@ -79,9 +82,10 @@ if (direction == 0 && x > (room_width + 24)) {
     /// Clear bonk state so Pac can move immediately
     bonked = 0;
 
-    /// ===============================================================================
+    /// Update direction to LEFT after wrapping
+    direction = 180;
+
     /// Re-apply speed based on current direction and fright mode
-    /// ===============================================================================
     if (fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
