@@ -1,4 +1,4 @@
-if Pac.dead = 0 and Pac.finish = 0{
+if Pac.dead = 0 and oGameManager.finish = 0{
 
 if house = 1{newtile = 0; tilex = (xstart - 184) + 224; tiley = (ystart - 272) + 224}
 
@@ -16,7 +16,7 @@ if housestate = 1{hspeed = -speyes; vspeed = 0; dir = 2;
 
 if housestate = 2{  ///bouncing state
 
-    if Pac.isig > Pac.dotcount{
+    if oGameManager.isig > oGameManager.dotcount{
 
         if y < (ystart - 272) + 264{y = (ystart - 272) + 264; hspeed = 0; vspeed = spslow; up = 0; dir = 3}
 
@@ -28,7 +28,7 @@ if housestate = 2{  ///bouncing state
 
     else{
 
-        if Pac.start = 0 and Pac.finish = 0{housestate = 3}
+        if oGameManager.start = 0 and oGameManager.finish = 0{housestate = 3}
 
     }
 
@@ -44,12 +44,12 @@ if housestate = 4{hspeed = 0; vspeed = -spslow; dir = 1;}
 
 if house = 1 and state < 2 and x = (xstart - 184) + 216 and y < (ystart - 272) + 224{housestate=0;
 
-    x = (xstart - 184) + 216; y = (ystart - 272) + 224; hspeed = -sp; vspeed = 0; house = 0; newtile = 0; dir = 2;}
+    x = (xstart - 184) + 216; y = (ystart - 272) + 224; hspeed = -oGameManager.sp; vspeed = 0; house = 0; newtile = 0; dir = 2;}
 
 }
 
 
-if Pac.dead = 0 and Pac.finish = 0{
+if Pac.dead = 0 and oGameManager.finish = 0{
 
 //speed
 
@@ -59,7 +59,7 @@ if state = 0{
 
     if collision_point(tilex,tiley,Slow,false,true){speed = spslow}
 
-    else{speed = sp}
+    else{speed = oGameManager.sp}
 
 }    
 

@@ -29,9 +29,9 @@ script_execute(beginstep2);   // Handle player 2 startup logic
 /// Update Pac's mouth animation (im = image index for sprite animation)
 /// Only animate when Pac is alive or dying (not dead yet)
 
-if (dead < PAC_STATE.DEAD && finish >= 0) {
+if (dead < PAC_STATE.DEAD && oGameManager.finish >= 0) {
 
-    if (start == 1) {
+    if (oGameManager.start == 1) {
         /// Level starting: reset animation frame
         /// Different reset based on game mode
         if (global.game == 0) {
@@ -71,7 +71,7 @@ if (dead == PAC_STATE.DEAD) {
 
 // ===== LEVEL INTERMISSION ANIMATION =====
 /// When level starts or finishes, show blinking effect
-if (start == 0 && finish == 0) {
+if (oGameManager.start == 0 && oGameManager.finish == 0) {
     im2 = im2 + 0.5;  // Slow blink animation
     if (im2 >= 4) {
         im2 = 0;  // Loop blink
@@ -115,7 +115,7 @@ if (global.lvl > 0) {
 /// - Pac not stopped (not paused from dot collection)
 /// - Not collided with Player 2
 
-if (dead == PAC_STATE.ALIVE && start == 0 && finish == 0 && stoppy == 0 && bonked == 0) {
+if (dead == PAC_STATE.ALIVE && oGameManager.start == 0 && oGameManager.finish == 0 && stoppy == 0 && bonked == 0) {
 
     if (global.lvl > 0) {
 
@@ -372,7 +372,7 @@ if (dead == PAC_STATE.ALIVE) {
 // ===== DOT COLLECTION (ACTIVE LEVEL) =====
 /// Detect collision with dot pellets during gameplay
 /// Only triggers when Pac is alive, level has started, and not currently eating ghost
-if (dead == PAC_STATE.ALIVE && start == 0 && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
+if (dead == PAC_STATE.ALIVE && oGameManager.start == 0 && (oGameManager.prohibit == GHOST_PROHIBIT.ALLOWED || oGameManager.prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
 
     if (place_meeting((16 * (round(x / 16))), (16 * (round(y / 16))), Dot)) {
 
@@ -411,7 +411,7 @@ if (dead == PAC_STATE.ALIVE && start == 0 && (prohibit == GHOST_PROHIBIT.ALLOWED
         }
 
         if (global.boost == 0) {
-            timer = timerstart + 1;
+            oGameManager.timer = oGameManager.timerstart + 1;
         }
 
         bonked = 0;
@@ -425,15 +425,15 @@ if (dead == PAC_STATE.ALIVE && start == 0 && (prohibit == GHOST_PROHIBIT.ALLOWED
             }
 
             if (global.game == 0) {
-                if (dot == 0) {
+                if (oGameManager.dot == 0) {
                     sound_play(Dot0);
-                    dot = 1;
+                    oGameManager.dot = 1;
                     exit;
                 }
 
-                if (dot == 1) {
+                if (oGameManager.dot == 1) {
                     sound_play(Dot1);
-                    dot = 0;
+                    oGameManager.dot = 0;
                     exit;
                 }
             }
@@ -470,7 +470,7 @@ if (dead == PAC_STATE.ALIVE) {
         if (frighttime > 0) {
             /// In 2-player mode, toggle which player can eat ghosts
             if (global.players == 2) {
-                if (prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+                if (oGameManager.prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
                     prohibit = GHOST_PROHIBIT.ALLOWED;
                 }
                 else {
@@ -488,12 +488,12 @@ if (dead == PAC_STATE.ALIVE) {
         Pinky.visible = true;
         Inky.visible = true;
         Clyde.visible = true;
-        Pac.pluseat = 0;
+        oGameManager.pluseat = 0;
 
         plus = -1;
         plus2 = 0;
 
-        timer = timerstart + 1;
+        oGameManager.timer = oGameManager.timerstart + 1;
         if (global.plus == 1) {
             plus = irandom(7);
             if (frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
@@ -504,8 +504,8 @@ if (dead == PAC_STATE.ALIVE) {
         /// All ghosts reverse direction
         with (Blinky) {
             aboutface = 1;
-            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
-                if (Pac.plus == 0) {
+            if (state < GHOST_STATE.EYES && oGameManager.frighttime > 0) {
+                if (oGameManager.plus == 0) {
                     if (state == GHOST_STATE.FRIGHTENED) {
                         state = GHOST_STATE.CHASE;
                     }
@@ -518,8 +518,8 @@ if (dead == PAC_STATE.ALIVE) {
 
         with (Pinky) {
             aboutface = 1;
-            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
-                if (Pac.plus == 1) {
+            if (state < GHOST_STATE.EYES && oGameManager.frighttime > 0) {
+                if (oGameManager.plus == 1) {
                     if (state == GHOST_STATE.FRIGHTENED) {
                         state = GHOST_STATE.CHASE;
                     }
@@ -532,8 +532,8 @@ if (dead == PAC_STATE.ALIVE) {
 
         with (Inky) {
             aboutface = 1;
-            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
-                if (Pac.plus == 2) {
+            if (state < GHOST_STATE.EYES && oGameManager.frighttime > 0) {
+                if (oGameManager.plus == 2) {
                     if (state == GHOST_STATE.FRIGHTENED) {
                         state = GHOST_STATE.CHASE;
                     }
@@ -546,8 +546,8 @@ if (dead == PAC_STATE.ALIVE) {
 
         with (Clyde) {
             aboutface = 1;
-            if (state < GHOST_STATE.EYES && Pac.frighttime > 0) {
-                if (Pac.plus == 3) {
+            if (state < GHOST_STATE.EYES && oGameManager.frighttime > 0) {
+                if (oGameManager.plus == 3) {
                     if (state == GHOST_STATE.FRIGHTENED) {
                         state = GHOST_STATE.CHASE;
                     }
@@ -574,15 +574,15 @@ if (dead == PAC_STATE.ALIVE) {
             }
 
             if (global.game == 0) {
-                if (dot == 0) {
+                if (oGameManager.dot == 0) {
                     sound_play(Dot0);
-                    dot = 1;
+                    oGameManager.dot = 1;
                     exit;
                 }
 
-                if (dot == 1) {
+                if (oGameManager.dot == 1) {
                     sound_play(Dot1);
-                    dot = 0;
+                    oGameManager.dot = 0;
                     exit;
                 }
             }
@@ -594,11 +594,11 @@ if (dead == PAC_STATE.ALIVE) {
 // ===== LEVEL COMPLETION CHECK =====
 /// Detect when all dots have been collected
 /// If so, trigger level completion sequence
-if (global.lvl > 0 && start == 0 && dead == PAC_STATE.ALIVE) {
+if (global.lvl > 0 && oGameManager.start == 0 && dead == PAC_STATE.ALIVE) {
 
-    if ((dotcount == global.dottotal || dotcount > global.dottotal) && finish == 0) {
+    if ((oGameManager.dotcount == global.dottotal || oGameManager.dotcount > global.dottotal) && oGameManager.finish == 0) {
         /// All dots collected - level complete!
-        finish = 1;
+        oGameManager.finish = 1;
         alarm[11] = 60;  // Level completion sequence timer
         alarm[1] = -1;   // Cancel fright alarm
 
@@ -620,7 +620,7 @@ if (global.lvl > 0 && start == 0 && dead == PAC_STATE.ALIVE) {
 // ===== FRUIT COLLECTION =====
 /// Detect collision with bonus fruits during gameplay
 /// Fruits award varying points based on level
-if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
+if (dead == PAC_STATE.ALIVE && (oGameManager.prohibit == GHOST_PROHIBIT.ALLOWED || oGameManager.prohibit == GHOST_PROHIBIT.PLAYER2_BLOCKED)) {
 
     if (place_meeting((16 * (round(x / 16))), (16 * (round(y / 16))), Fruit) && speed > 0) {
 
@@ -677,10 +677,10 @@ if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit =
                 /// Check if bonus power fruit (grants extended fright mode)
                 if (global.plus == true) {
 
-                    if (Pac.bonustime > 0) {
+                    if (oGameManager.bonustime > 0) {
                         /// In 2-player mode, toggle which player can eat ghosts
                         if (global.players == 2) {
-                            if (prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+                            if (oGameManager.prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
                                 prohibit = GHOST_PROHIBIT.ALLOWED;
                             }
                             else {
@@ -689,11 +689,11 @@ if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit =
                         }
 
                         /// Activate extended fright mode
-                        Pac.fright = PAC_FRIGHT.ACTIVE;
-                        Pac.alarm[0] = Pac.bonustime;
-                        Pac.chompcount = 0;
-                        Pac.plus2 = 0;
-                        Pac.pluseat = 1;
+                        oGameManager.fright = PAC_FRIGHT.ACTIVE;
+                        Pac.alarm[0] = oGameManager.bonustime;
+                        oGameManager.chompcount = 0;
+                        oGameManager.plus2 = 0;
+                        oGameManager.pluseat = 1;
 
                         /// Hide ghosts during bonus fright period
                         with (Blinky) {
@@ -721,33 +721,33 @@ if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit =
                         }
                     }
 
-                    Pac.timer = Pac.timerstart + 1;
+                    oGameManager.timer = oGameManager.timerstart + 1;
 
                     /// All ghosts reverse and go frightened
                     with (Blinky) {
                         aboutface = 1;
-                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                        if (state < GHOST_STATE.EYES && oGameManager.bonustime > 0) {
                             state = GHOST_STATE.FRIGHTENED;
                         }
                     }
 
                     with (Pinky) {
                         aboutface = 1;
-                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                        if (state < GHOST_STATE.EYES && oGameManager.bonustime > 0) {
                             state = GHOST_STATE.FRIGHTENED;
                         }
                     }
 
                     with (Inky) {
                         aboutface = 1;
-                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                        if (state < GHOST_STATE.EYES && oGameManager.bonustime > 0) {
                             state = GHOST_STATE.FRIGHTENED;
                         }
                     }
 
                     with (Clyde) {
                         aboutface = 1;
-                        if (state < GHOST_STATE.EYES && Pac.bonustime > 0) {
+                        if (state < GHOST_STATE.EYES && oGameManager.bonustime > 0) {
                             state = GHOST_STATE.FRIGHTENED;
                         }
                     }
@@ -765,7 +765,7 @@ if (dead == PAC_STATE.ALIVE && (prohibit == GHOST_PROHIBIT.ALLOWED || prohibit =
 /// Determine whether Pac eats ghost (if ghost is frightened) or Pac dies
 /// This section checks all 4 ghosts for collision
 
-if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
+if (oGameManager.finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
     // ===== BLINKY COLLISION =====
     /// Detect collision with Blinky (Red ghost)
@@ -774,7 +774,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
         with (Blinky) {
             /// Only process collision if Pac can interact with ghosts
-            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+            if (oGameManager.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
 
                 /// Ghost is frightened - Pac eats it!
                 if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
@@ -798,7 +798,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                         script_execute(sickofit);
                     }
 
-                    Pac.chompcount = Pac.chompcount + 1;
+                    oGameManager.chompcount = oGameManager.chompcount + 1;
                     Pac.chomp = 1;
                     alarm[0] = 60;  // Eating animation duration
                     chomped = 1;
@@ -847,17 +847,17 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
                     /// Award points based on ghost count eaten
                     if (global.lvl > 0) {
-                        if (Pac.chompcount == 1) {
-                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        if (oGameManager.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 2) {
-                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        if (oGameManager.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 3) {
-                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        if (oGameManager.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 4) {
-                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        if (oGameManager.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * oGameManager.pluseat));
                         }
                     }
                 }
@@ -907,7 +907,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
         with (Pinky) {
             /// Only process collision if Pac can interact with ghosts
-            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+            if (oGameManager.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
 
                 /// Ghost is frightened - Pac eats it!
                 if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
@@ -931,7 +931,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                         script_execute(sickofit);
                     }
 
-                    Pac.chompcount = Pac.chompcount + 1;
+                    oGameManager.chompcount = oGameManager.chompcount + 1;
                     Pac.chomp = 1;
                     alarm[0] = 60;  // Eating animation duration
                     chomped = 1;
@@ -979,17 +979,17 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
                     /// Award points based on ghost count eaten
                     if (global.lvl > 0) {
-                        if (Pac.chompcount == 1) {
-                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        if (oGameManager.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 2) {
-                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        if (oGameManager.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 3) {
-                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        if (oGameManager.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 4) {
-                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        if (oGameManager.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * oGameManager.pluseat));
                         }
                     }
                 }
@@ -1037,7 +1037,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
         with (Inky) {
             /// Only process collision if Pac can interact with ghosts
-            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+            if (oGameManager.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
 
                 /// Ghost is frightened - Pac eats it!
                 if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
@@ -1060,7 +1060,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                         script_execute(sickofit);
                     }
 
-                    Pac.chompcount = Pac.chompcount + 1;
+                    oGameManager.chompcount = oGameManager.chompcount + 1;
                     Pac.chomp = 1;
                     alarm[0] = 60;
                     chomped = 1;
@@ -1106,17 +1106,17 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                     }
 
                     if (global.lvl > 0) {
-                        if (Pac.chompcount == 1) {
-                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        if (oGameManager.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 2) {
-                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        if (oGameManager.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 3) {
-                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        if (oGameManager.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 4) {
-                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        if (oGameManager.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * oGameManager.pluseat));
                         }
                     }
                 }
@@ -1164,7 +1164,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
         with (Clyde) {
             /// Only process collision if Pac can interact with ghosts
-            if (Pac.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
+            if (oGameManager.prohibit != GHOST_PROHIBIT.PLAYER1_BLOCKED) {
 
                 /// Ghost is frightened - Pac eats it!
                 if (state == GHOST_STATE.FRIGHTENED && Pac.chomp == 0) {
@@ -1187,7 +1187,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                         script_execute(sickofit);
                     }
 
-                    Pac.chompcount = Pac.chompcount + 1;
+                    oGameManager.chompcount = oGameManager.chompcount + 1;
                     Pac.chomp = 1;
                     alarm[0] = 60;
                     chomped = 1;
@@ -1233,17 +1233,17 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                     }
 
                     if (global.lvl > 0) {
-                        if (Pac.chompcount == 1) {
-                            global.p1score = global.p1score + (200 + (200 * Pac.pluseat));
+                        if (oGameManager.chompcount == 1) {
+                            global.p1score = global.p1score + (200 + (200 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 2) {
-                            global.p1score = global.p1score + (400 + (400 * Pac.pluseat));
+                        if (oGameManager.chompcount == 2) {
+                            global.p1score = global.p1score + (400 + (400 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 3) {
-                            global.p1score = global.p1score + (800 + (800 * Pac.pluseat));
+                        if (oGameManager.chompcount == 3) {
+                            global.p1score = global.p1score + (800 + (800 * oGameManager.pluseat));
                         }
-                        if (Pac.chompcount == 4) {
-                            global.p1score = global.p1score + (1600 + (1600 * Pac.pluseat));
+                        if (oGameManager.chompcount == 4) {
+                            global.p1score = global.p1score + (1600 + (1600 * oGameManager.pluseat));
                         }
                     }
                 }
@@ -1326,7 +1326,7 @@ if (chomp == true) {
 }
 
 /// When level is starting, freeze all actors
-if (start == true) {
+if (oGameManager.start == true) {
     hspeed = 0;
     vspeed = 0;
     alarm[0] = alarm[0] + 1;
@@ -1387,309 +1387,52 @@ if (dead > PAC_STATE.ALIVE) {
 
 // ===== FRIGHT MODE END CONDITION =====
 /// When all ghosts have returned to chase mode, fright ends
-if (fright == PAC_FRIGHT.ACTIVE) {
+if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
     if (Blinky.state == GHOST_STATE.CHASE && Pinky.state == GHOST_STATE.CHASE &&
         Inky.state == GHOST_STATE.CHASE && Clyde.state == GHOST_STATE.CHASE) {
 
         /// Fright mode complete - reset to normal
         alarm[0] = -1;
-        fright = PAC_FRIGHT.OFF;
+        oGameManager.fright = PAC_FRIGHT.OFF;
         prohibit = GHOST_PROHIBIT.ALLOWED;
         plus2 = 0;
 
         /// Reset speeds to normal (not boosted)
         if (bonked == 0) {
             if (hspeed > 0) {
-                hspeed = sp;
+                hspeed = oGameManager.sp;
             }
             if (hspeed < 0) {
-                hspeed = -sp;
+                hspeed = -oGameManager.sp;
             }
             if (vspeed > 0) {
-                vspeed = sp;
+                vspeed = oGameManager.sp;
             }
             if (vspeed < 0) {
-                vspeed = -sp;
+                vspeed = -oGameManager.sp;
             }
         }
 
         /// Reset Player 2 speeds
         if (bonked2 == 0) {
             if (hspeed2 > 0) {
-                hspeed2 = sp;
+                hspeed2 = oGameManager.sp;
             }
             if (hspeed2 < 0) {
-                hspeed2 = -sp;
+                hspeed2 = -oGameManager.sp;
             }
             if (vspeed2 > 0) {
-                vspeed2 = sp;
+                vspeed2 = oGameManager.sp;
             }
             if (vspeed2 < 0) {
-                vspeed2 = -sp;
+                vspeed2 = -oGameManager.sp;
             }
         }
 
         chompcount = 0;
-        Pac.pluseat = 0;
+        oGameManager.pluseat = 0;
     }
 }
-
-
-// ===== AUDIO & AMBIENCE MANAGEMENT =====
-/// Control background music based on game state
-if (global.lvl > 0) {
-
-    /// Stop all ambience when not playing
-    if (dead > PAC_STATE.ALIVE || finish > 0 || start == 1) {
-        sound_stop(Ghost1);
-        sound_stop(Ghost2);
-        sound_stop(Ghost3);
-        sound_stop(Ghost4);
-        sound_stop(Ghost5);
-        sound_stop(Blue);
-        sound_stop(Flee);
-
-        sound_stop(MsGhost1);
-        sound_stop(MsGhost2);
-        sound_stop(MsGhost3);
-        sound_stop(MsGhost4);
-        sound_stop(MsGhost5);
-        sound_stop(MsBlue);
-        sound_stop(MsFlee);
-
-        sound_stop(JrGhost1);
-        sound_stop(JrGhost2);
-        sound_stop(JrGhost3);
-        sound_stop(JrGhost4);
-        sound_stop(JrGhost5);
-        sound_stop(JrBlue);
-        sound_stop(JrFlee);
-    }
-
-    /// Only manage ambience during active gameplay
-    if (dead == PAC_STATE.ALIVE && finish == 0 && start == 0) {
-
-        /// ===== SIREN PROGRESSION =====
-        /// Update siren level based on remaining dot count
-        /// Different thresholds for different level sizes
-        if (room_width == 448) {
-            /// Small level (classic Pacman)
-            if (siren == 0 && dotcount > 111) {
-                siren = 1;
-            }
-            if (siren == 1 && dotcount > 179) {
-                siren = 2;
-            }
-            if (siren == 2 && dotcount > 211) {
-                siren = 3;
-            }
-            if (siren == 3 && dotcount > 227) {
-                siren = 4;
-            }
-        }
-        else {
-            /// Large level
-            if (siren == 0 && dotcount > 229) {
-                siren = 1;
-            }
-            if (siren == 1 && dotcount > 357) {
-                siren = 2;
-            }
-            if (siren == 2 && dotcount > 421) {
-                siren = 3;
-            }
-            if (siren == 3 && dotcount > 453) {
-                siren = 4;
-            }
-        }
-
-        /// ===== AUDIO PLAYBACK =====
-        /// Select appropriate music based on game state and game variant
-        if (global.game == 0) {
-            /// STANDARD PACMAN SOUNDS
-
-            /// Check if any ghost is in flee (frightened) mode
-            if (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
-                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES) {
-
-                if (ambience != 6) {
-                    sound_loop(Flee);
-                    ambience = 6;
-                    exit;
-                }
-            }
-            else {
-                /// Check fright mode
-                if (fright == PAC_FRIGHT.ACTIVE) {
-                    if (ambience != 5) {
-                        sound_loop(Blue);
-                        ambience = 5;
-                        exit;
-                    }
-                }
-                else {
-                    /// Play siren based on dot progression
-                    if (siren == 4) {
-                        if (ambience != SIREN_LEVEL.LEVEL_4) {
-                            sound_loop(Ghost5);
-                            ambience = SIREN_LEVEL.LEVEL_4;
-                            exit;
-                        }
-                    }
-                    else if (siren == 3) {
-                        if (ambience != SIREN_LEVEL.LEVEL_3) {
-                            sound_loop(Ghost4);
-                            ambience = SIREN_LEVEL.LEVEL_3;
-                            exit;
-                        }
-                    }
-                    else if (siren == 2) {
-                        if (ambience != SIREN_LEVEL.LEVEL_2) {
-                            sound_loop(Ghost3);
-                            ambience = SIREN_LEVEL.LEVEL_2;
-                            exit;
-                        }
-                    }
-                    else if (siren == 1) {
-                        if (ambience != SIREN_LEVEL.LEVEL_1) {
-                            sound_loop(Ghost2);
-                            ambience = SIREN_LEVEL.LEVEL_1;
-                            exit;
-                        }
-                    }
-                    else {
-                        if (ambience != SIREN_LEVEL.LEVEL_0) {
-                            sound_loop(Ghost1);
-                            ambience = SIREN_LEVEL.LEVEL_0;
-                            exit;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (global.game == 1) {
-            /// MS. PACMAN SOUNDS
-
-            if (global.otto == 0 && (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
-                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES)) {
-
-                if (ambience != 6) {
-                    sound_loop(MsFlee);
-                    ambience = 6;
-                    exit;
-                }
-            }
-            else {
-                if (fright == PAC_FRIGHT.ACTIVE) {
-                    if (ambience != 5) {
-                        sound_loop(MsBlue);
-                        ambience = 5;
-                        exit;
-                    }
-                }
-                else {
-                    if (siren == 4) {
-                        if (ambience != SIREN_LEVEL.LEVEL_4) {
-                            sound_loop(MsGhost5);
-                            ambience = SIREN_LEVEL.LEVEL_4;
-                            exit;
-                        }
-                    }
-                    else if (siren == 3) {
-                        if (ambience != SIREN_LEVEL.LEVEL_3) {
-                            sound_loop(MsGhost4);
-                            ambience = SIREN_LEVEL.LEVEL_3;
-                            exit;
-                        }
-                    }
-                    else if (siren == 2) {
-                        if (ambience != SIREN_LEVEL.LEVEL_2) {
-                            sound_loop(MsGhost3);
-                            ambience = SIREN_LEVEL.LEVEL_2;
-                            exit;
-                        }
-                    }
-                    else if (siren == 1) {
-                        if (ambience != SIREN_LEVEL.LEVEL_1) {
-                            sound_loop(MsGhost2);
-                            ambience = SIREN_LEVEL.LEVEL_1;
-                            exit;
-                        }
-                    }
-                    else {
-                        if (ambience != SIREN_LEVEL.LEVEL_0) {
-                            sound_loop(MsGhost1);
-                            ambience = SIREN_LEVEL.LEVEL_0;
-                            exit;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (global.game == 2) {
-            /// JR. PACMAN SOUNDS
-
-            if (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES ||
-                Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES) {
-
-                if (ambience != 6) {
-                    sound_loop(JrFlee);
-                    ambience = 6;
-                    exit;
-                }
-            }
-            else {
-                if (fright == PAC_FRIGHT.ACTIVE) {
-                    if (ambience != 5) {
-                        sound_loop(JrBlue);
-                        ambience = 5;
-                        exit;
-                    }
-                }
-                else {
-                    if (siren == 4) {
-                        if (ambience != SIREN_LEVEL.LEVEL_4) {
-                            sound_loop(JrGhost5);
-                            ambience = SIREN_LEVEL.LEVEL_4;
-                            exit;
-                        }
-                    }
-                    else if (siren == 3) {
-                        if (ambience != SIREN_LEVEL.LEVEL_3) {
-                            sound_loop(JrGhost4);
-                            ambience = SIREN_LEVEL.LEVEL_3;
-                            exit;
-                        }
-                    }
-                    else if (siren == 2) {
-                        if (ambience != SIREN_LEVEL.LEVEL_2) {
-                            sound_loop(JrGhost3);
-                            ambience = SIREN_LEVEL.LEVEL_2;
-                            exit;
-                        }
-                    }
-                    else if (siren == 1) {
-                        if (ambience != SIREN_LEVEL.LEVEL_1) {
-                            sound_loop(JrGhost2);
-                            ambience = SIREN_LEVEL.LEVEL_1;
-                            exit;
-                        }
-                    }
-                    else {
-                        if (ambience != SIREN_LEVEL.LEVEL_0) {
-                            sound_loop(JrGhost1);
-                            ambience = SIREN_LEVEL.LEVEL_0;
-                            exit;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 
 // ===== PLAYER 2 COLLISION (2-PLAYER MODE) =====
 /// Detect collision between Player 1 and Player 2

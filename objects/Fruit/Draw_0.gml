@@ -10,7 +10,7 @@ mv2 = color_get_value(make_color_rgb(global.mr2,global.mg2,global.mb2))
 ///"GAME OVER" and "READY"
 if Pauser.pause = 0{
 draw_set_font(font0);draw_set_halign(fa_left);
-if (((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and Pac.countdown = -1) or global.lvl = 0{
+if (((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and oGameManager.countdown = -1) or global.lvl = 0{
     if room_width = 448{
         if global.players > 0{draw_set_color(c_aqua); if global.p2lives > 0 or global.p2gameover = 1{draw_text((Blinky.xstart - 216)+144,(Blinky.ystart - 224)+224,string_hash_to_newline("PLAYER ONE"))}else{draw_text((Blinky.xstart - 216)+144,(Blinky.ystart - 224)+224,string_hash_to_newline("PLAYER TWO"))};}
         draw_set_color(c_red)
@@ -59,7 +59,7 @@ if (((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and g
         }
     }
 }
-else{if Pac.start = 1{
+else{if oGameManager.start = 1{
     if room_width = 448{
         if Pac.alarm[9] = -1{}else{
         draw_set_color(c_aqua)
@@ -135,7 +135,7 @@ else{if Pac.start = 1{
         }
     }
 }}}
-if Pac.start = 0{
+if oGameManager.start = 0{
 if global.doki = 1{
 draw_sprite(spr_DokiFruit,image_index,x,y+bounce)
 if room_height = 576{

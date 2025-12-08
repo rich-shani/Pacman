@@ -23,12 +23,12 @@ script_execute(endstep);
 
 // ===== CORNER COMPLETION LOGIC =====
 /// When in a corner transition, snap to grid and apply appropriate speed
-if (fright == PAC_FRIGHT.ACTIVE) {
+if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
     /// During fright mode - use faster speed
     if (corner == PAC_CORNER.UP_TO_RIGHT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = spfright;
+            hspeed = oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -38,7 +38,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.UP_TO_RIGHT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = spfright;
+            hspeed = oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -49,7 +49,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -spfright;
+            vspeed = -oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -59,7 +59,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -spfright;
+            vspeed = -oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -68,7 +68,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.DOWN_TO_LEFT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -spfright;
+            hspeed = -oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -78,7 +78,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.DOWN_TO_LEFT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -spfright;
+            hspeed = -oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -89,7 +89,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = spfright;
+            vspeed = oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -99,7 +99,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = spfright;
+            vspeed = oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -108,7 +108,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.DOWN_TO_RIGHT_PRE) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = spfright;
+            hspeed = oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -118,7 +118,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.DOWN_TO_RIGHT_POST) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = spfright;
+            hspeed = oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -129,7 +129,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = spfright;
+            vspeed = oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -139,7 +139,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = spfright;
+            vspeed = oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -148,7 +148,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.UP_TO_LEFT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -spfright;
+            hspeed = -oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -158,7 +158,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
     if (corner == PAC_CORNER.UP_TO_LEFT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -spfright;
+            hspeed = -oGameManager.spfright;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -169,7 +169,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -spfright;
+            vspeed = -oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -179,7 +179,7 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -spfright;
+            vspeed = -oGameManager.spfright;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -191,7 +191,7 @@ else {
     if (corner == PAC_CORNER.UP_TO_RIGHT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = sp;
+            hspeed = oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -201,7 +201,7 @@ else {
     if (corner == PAC_CORNER.UP_TO_RIGHT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = sp;
+            hspeed = oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -212,7 +212,7 @@ else {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -sp;
+            vspeed = -oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -222,7 +222,7 @@ else {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -sp;
+            vspeed = -oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -231,7 +231,7 @@ else {
     if (corner == PAC_CORNER.DOWN_TO_LEFT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -sp;
+            hspeed = -oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -241,7 +241,7 @@ else {
     if (corner == PAC_CORNER.DOWN_TO_LEFT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -sp;
+            hspeed = -oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -252,7 +252,7 @@ else {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = sp;
+            vspeed = oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -262,7 +262,7 @@ else {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = sp;
+            vspeed = oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -271,7 +271,7 @@ else {
     if (corner == PAC_CORNER.DOWN_TO_RIGHT_PRE) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = sp;
+            hspeed = oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -281,7 +281,7 @@ else {
     if (corner == PAC_CORNER.DOWN_TO_RIGHT_POST) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = sp;
+            hspeed = oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -292,7 +292,7 @@ else {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = sp;
+            vspeed = oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -302,7 +302,7 @@ else {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = sp;
+            vspeed = oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -311,7 +311,7 @@ else {
     if (corner == PAC_CORNER.UP_TO_LEFT_PRE) {
         if (y < 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -sp;
+            hspeed = -oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -321,7 +321,7 @@ else {
     if (corner == PAC_CORNER.UP_TO_LEFT_POST) {
         if (y > 16 * (round(y / 16))) {
             y = 16 * (round(y / 16));
-            hspeed = -sp;
+            hspeed = -oGameManager.sp;
             vspeed = 0;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
@@ -332,7 +332,7 @@ else {
         if (x < 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -sp;
+            vspeed = -oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -342,7 +342,7 @@ else {
         if (x > 16 * (round(x / 16))) {
             x = 16 * (round(x / 16));
             hspeed = 0;
-            vspeed = -sp;
+            vspeed = -oGameManager.sp;
             corner = PAC_CORNER.NONE;
             cornercheck = 0;
             exit;
@@ -353,7 +353,7 @@ else {
 // ===== EATING DIRECTION RECOVERY =====
 /// After eating a dot, resume movement in the direction Pac was facing
 if (chomp == 0) {
-    if (fright == PAC_FRIGHT.ACTIVE) {
+    if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
         if (pause == 0) {
             if (eatdir == 0) { hspeed = spfright; vspeed = 0; eatdir = -1; }
             if (eatdir == 1) { hspeed = spfright; vspeed = -spfright; eatdir = -1; }
@@ -371,14 +371,14 @@ if (chomp == 0) {
     }
     else {
         if (pause == 0) {
-            if (eatdir == 0) { hspeed = sp; vspeed = 0; eatdir = -1; }
-            if (eatdir == 1) { hspeed = sp; vspeed = -sp; eatdir = -1; }
-            if (eatdir == 2) { hspeed = 0; vspeed = -sp; eatdir = -1; }
-            if (eatdir == 3) { hspeed = -sp; vspeed = -sp; eatdir = -1; }
-            if (eatdir == 4) { hspeed = -sp; vspeed = 0; eatdir = -1; }
-            if (eatdir == 5) { hspeed = -sp; vspeed = sp; eatdir = -1; }
-            if (eatdir == 6) { hspeed = 0; vspeed = sp; eatdir = -1; }
-            if (eatdir == 7) { hspeed = sp; vspeed = sp; eatdir = -1; }
+            if (eatdir == 0) { hspeed = oGameManager.sp; vspeed = 0; eatdir = -1; }
+            if (eatdir == 1) { hspeed = oGameManager.sp; vspeed = -oGameManager.sp; eatdir = -1; }
+            if (eatdir == 2) { hspeed = 0; vspeed = -oGameManager.sp; eatdir = -1; }
+            if (eatdir == 3) { hspeed = -oGameManager.sp; vspeed = -oGameManager.sp; eatdir = -1; }
+            if (eatdir == 4) { hspeed = -oGameManager.sp; vspeed = 0; eatdir = -1; }
+            if (eatdir == 5) { hspeed = -oGameManager.sp; vspeed = oGameManager.sp; eatdir = -1; }
+            if (eatdir == 6) { hspeed = 0; vspeed = oGameManager.sp; eatdir = -1; }
+            if (eatdir == 7) { hspeed = oGameManager.sp; vspeed = oGameManager.sp; eatdir = -1; }
             stoppy = 0;
         }
         else {
@@ -389,7 +389,7 @@ if (chomp == 0) {
 
 // ===== INSTANCE ACTIVATION (PERFORMANCE OPTIMIZATION) =====
 /// Only activate instances near Pac to improve performance
-if (Pauser.pause == 0 && Pac.finish < 1) {
+if (Pauser.pause == 0 && oGameManager.finish < 1) {
 
     instance_deactivate_all(true);
     instance_activate_region(Pac.tilex - 32, Pac.tiley - 32, 80, 80, true);
@@ -427,8 +427,8 @@ if (dead == 0) {
 
             /// Speed management
             if (speed > 0) {
-                if (fright == 0) {
-                    speed = sp;
+                if (oGameManager.fright == 0) {
+                    speed = oGameManager.sp;
                 }
                 else {
                     speed = spfright;
@@ -491,11 +491,11 @@ if (dead == 3 && room_width > 448 && ((global.p1lives == 0 && global.p1gameover 
 
 // ===== LEVEL COMPLETION FREEZE =====
 /// When level complete, freeze all movement
-if (finish > 0) {
+if (oGameManager.finish > 0) {
     hspeed = 0;
     vspeed = 0;
     alarm[0] = alarm[0] + 1;
-    plus2 = 0;
+    oGameManager.plus2 = 0;
 
     with (Blinky) { hspeed = 0; vspeed = 0; }
     with (Pinky) { hspeed = 0; vspeed = 0; }
@@ -507,7 +507,7 @@ if (finish > 0) {
 // ===== AUDIO MANAGEMENT =====
 /// Stop and start audio based on game state
 if (global.lvl > 0) {
-    if (dead > 0 || finish > 0 || start == 1) {
+    if (dead > 0 || oGameManager.finish > 0 || oGameManager.start == 1) {
         sound_stop(Ghost1); sound_stop(Ghost2); sound_stop(Ghost3); sound_stop(Ghost4); sound_stop(Ghost5);
         sound_stop(Blue); sound_stop(Flee);
         sound_stop(MsGhost1); sound_stop(MsGhost2); sound_stop(MsGhost3); sound_stop(MsGhost4); sound_stop(MsGhost5);
@@ -516,40 +516,40 @@ if (global.lvl > 0) {
         sound_stop(JrBlue); sound_stop(JrFlee);
     }
 
-    if (dead == 0 && finish == 0 && start == 0) {
+    if (dead == 0 && oGameManager.finish == 0 && oGameManager.start == 0) {
 
         /// Update siren level based on dot collection
         if (room_width == 448) {
             /// Classic Pacman room size
-            if (siren == 0 && dotcount > 111) { siren = 1; }
-            if (siren == 1 && dotcount > 179) { siren = 2; }
-            if (siren == 2 && dotcount > 211) { siren = 3; }
-            if (siren == 3 && dotcount > 227) { siren = 4; }
+            if (oGameManager.siren == 0 && oGameManager.dotcount > 111) { oGameManager.siren = 1; }
+            if (oGameManager.siren == 1 && oGameManager.dotcount > 179) { oGameManager.siren = 2; }
+            if (oGameManager.siren == 2 && oGameManager.dotcount > 211) { oGameManager.siren = 3; }
+            if (oGameManager.siren == 3 && oGameManager.dotcount > 227) { oGameManager.siren = 4; }
         }
         else {
             /// Large room size
-            if (siren == 0 && dotcount > 229) { siren = 1; }
-            if (siren == 1 && dotcount > 357) { siren = 2; }
-            if (siren == 2 && dotcount > 421) { siren = 3; }
-            if (siren == 3 && dotcount > 453) { siren = 4; }
+            if (oGameManager.siren == 0 && oGameManager.dotcount > 229) { oGameManager.siren = 1; }
+            if (oGameManager.siren == 1 && oGameManager.dotcount > 357) { oGameManager.siren = 2; }
+            if (oGameManager.siren == 2 && oGameManager.dotcount > 421) { oGameManager.siren = 3; }
+            if (oGameManager.siren == 3 && oGameManager.dotcount > 453) { oGameManager.siren = 4; }
         }
 
         /// Play appropriate audio track
         if (global.game == 0) {
             /// Standard Pacman
             if (Blinky.state == GHOST_STATE.EYES || Pinky.state == GHOST_STATE.EYES || Inky.state == GHOST_STATE.EYES || Clyde.state == GHOST_STATE.EYES) {
-                if (ambience != 6) { sound_loop(Flee); ambience = 6; exit; }
+                if (oGameManager.ambience != 6) { sound_loop(Flee); oGameManager.ambience = 6; exit; }
             }
             else {
-                if (fright == 1) {
-                    if (ambience != 5) { sound_loop(Blue); ambience = 5; exit; }
+                if (oGameManager.fright == 1) {
+                    if (oGameManager.ambience != 5) { sound_loop(Blue); oGameManager.ambience = 5; exit; }
                 }
                 else {
-                    if (siren == 4) { if (ambience != 4) { sound_loop(Ghost5); ambience = 4; exit; } }
-                    else if (siren == 3) { if (ambience != 3) { sound_loop(Ghost4); ambience = 3; exit; } }
-                    else if (siren == 2) { if (ambience != 2) { sound_loop(Ghost3); ambience = 2; exit; } }
-                    else if (siren == 1) { if (ambience != 1) { sound_loop(Ghost2); ambience = 1; exit; } }
-                    else { if (ambience != 0) { sound_loop(Ghost1); ambience = 0; exit; } }
+                    if (oGameManager.siren == 4) { if (oGameManager.ambience != 4) { sound_loop(Ghost5); oGameManager.ambience = 4; exit; } }
+                    else if (oGameManager.siren == 3) { if (oGameManager.ambience != 3) { sound_loop(Ghost4); oGameManager.ambience = 3; exit; } }
+                    else if (oGameManager.siren == 2) { if (oGameManager.ambience != 2) { sound_loop(Ghost3); oGameManager.ambience = 2; exit; } }
+                    else if (oGameManager.siren == 1) { if (oGameManager.ambience != 1) { sound_loop(Ghost2); oGameManager.ambience = 1; exit; } }
+                    else { if (oGameManager.ambience != 0) { sound_loop(Ghost1); oGameManager.ambience = 0; exit; } }
                 }
             }
         }
@@ -560,7 +560,7 @@ if (global.lvl > 0) {
                 if (ambience != 6) { sound_loop(MsFlee); ambience = 6; exit; }
             }
             else {
-                if (fright == 1) {
+                if (oGameManager.fright == 1) {
                     if (ambience != 5) { sound_loop(MsBlue); ambience = 5; exit; }
                 }
                 else {
@@ -579,7 +579,7 @@ if (global.lvl > 0) {
                 if (ambience != 6) { sound_loop(JrFlee); ambience = 6; exit; }
             }
             else {
-                if (fright == 1) {
+                if (oGameManager.fright == 1) {
                     if (ambience != 5) { sound_loop(JrBlue); ambience = 5; exit; }
                 }
                 else {
@@ -618,7 +618,7 @@ if (plus2 == 0 && Drawless.plus2 == 1) {
 }
 
 // ===== DEPTH & TARGET HELPERS =====
-if (fright == 1) { depth = 99; }
+if (oGameManager.fright == 1) { depth = 99; }
 else { depth = 104; }
 
 /// Target display position for debugging
@@ -628,17 +628,17 @@ if (dir == 2) { xdir = -32; ydir = 0; }
 if (dir == 3) { xdir = 0; ydir = 32; }
 
 // ===== GHOST RELEASE TIMING =====
-if (dead == 0 && start == 0) {
-    if (timer > 0) { timer = timer - 1; }
+if (dead == 0 && oGameManager.start == 0) {
+    if (oGameManager.timer > 0) { oGameManager.timer = oGameManager.timer - 1; }
 
-    if (timer == 0) {
+    if (oGameManager.timer == 0) {
         if (Pinky.housestate == 1) {
             with (Pinky) {
                 if (y > (ystart - 272) + 270 && y < (ystart - 272) + 274) {
                     y = (ystart - 272) + 272;
                     housestate = 2;
-                    Pac.psig = 0;
-                    Pac.timer = Pac.timerstart;
+                    oGameManager.psig = 0;
+                    oGameManager.timer = oGameManager.timerstart;
                 }
             }
         }
@@ -648,8 +648,8 @@ if (dead == 0 && start == 0) {
                     if (y > (ystart - 272) + 270 && y < (ystart - 272) + 274) {
                         y = (ystart - 272) + 272;
                         housestate = 3;
-                        Pac.isig = 0;
-                        Pac.timer = Pac.timerstart;
+                        oGameManager.isig = 0;
+                        oGameManager.timer = oGameManager.timerstart;
                     }
                 }
             }
@@ -659,8 +659,8 @@ if (dead == 0 && start == 0) {
                         if (y > (ystart - 272) + 270 && y < (ystart - 272) + 274) {
                             y = (ystart - 272) + 272;
                             housestate = 3;
-                            Pac.csig = 0;
-                            Pac.timer = Pac.timerstart;
+                            oGameManager.csig = 0;
+                            oGameManager.timer = oGameManager.timerstart;
                         }
                     }
                 }
@@ -670,4 +670,4 @@ if (dead == 0 && start == 0) {
 }
 
 /// Pause fright cycle timer during fright mode
-if (fright == 1) { alarm[1] = alarm[1] + 1; }
+if (oGameManager.fright == 1) { alarm[1] = alarm[1] + 1; }

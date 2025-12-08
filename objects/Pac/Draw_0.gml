@@ -18,7 +18,7 @@ if dead > 1{
 
 else{
 
-if prohibit = 1{
+if oGameManager.prohibit = 1{
 
     if room_width = 448{
 
@@ -38,7 +38,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if start = false{
+    if oGameManager.start = false{
 
     if global.boost > 0{
 
@@ -84,9 +84,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,oGameManager.chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,oGameManager.chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 
@@ -122,7 +122,7 @@ if dead > 1{
 
 else{
 
-if prohibit = 1{
+if oGameManager.prohibit = 1{
 
     if room_width = 448{
 
@@ -142,7 +142,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if start = false{
+    if oGameManager.start = false{
 
     if global.boost = 1{
 
@@ -221,7 +221,7 @@ if dead > 1{
 
 else{
 
-if prohibit = 1{
+if oGameManager.prohibit = 1{
 
     if room_width = 448{
 
@@ -241,7 +241,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if start = false{
+    if oGameManager.start = false{
 
     if global.boost = 1{
 

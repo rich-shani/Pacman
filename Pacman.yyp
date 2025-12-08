@@ -39,7 +39,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.1.210",
+    "IDEVersion":"2024.14.0.207",
   },
   "name":"Pacman",
   "resources":[
@@ -60,6 +60,7 @@
     {"id":{"name":"Mac","path":"objects/Mac/Mac.yy",},},
     {"id":{"name":"Menu","path":"objects/Menu/Menu.yy",},},
     {"id":{"name":"NoUp","path":"objects/NoUp/NoUp.yy",},},
+    {"id":{"name":"oGameManager","path":"objects/oGameManager/oGameManager.yy",},},
     {"id":{"name":"oGhost","path":"objects/oGhost/oGhost.yy",},},
     {"id":{"name":"Pac","path":"objects/Pac/Pac.yy",},},
     {"id":{"name":"Pauser","path":"objects/Pauser/Pauser.yy",},},

@@ -19,9 +19,9 @@
 /// SECTION 1: GAME OVER DETECTION (Both Players Dead or Level 0 Death)
 /// ===============================================================================
 /// Check if we're in a game-ending state (finish = 0 means not level completion)
-if (finish == 0) {
+if (oGameManager.finish == 0) {
     /// Check if level 0 (title screen) or game completely over
-    if (global.lvl == 0 || countdown == -1) {
+    if (global.lvl == 0 || oGameManager.countdown == -1) {
         /// Final death state triggers game end
         if (dead == PAC_STATE.DEAD_FINAL) {
             if (global.lvl == 0) {
@@ -68,10 +68,10 @@ if (finish == 0) {
 
                     /// Re-trigger this alarm to process life loss
                     alarm[11] = 1;
-                    countdown = 10;
+                    oGameManager.countdown = 10;
 
                     /// Reset blink animation and pause handler
-                    blink = 0;
+                    oGameManager.blink = 0;
                     alarm[8] = 14;
                     Pauser.ignore = 1;
                 }
@@ -84,7 +84,7 @@ if (finish == 0) {
 /// SECTION 2: DEATH ANIMATION SEQUENCE (dead = 1 → dead = 2)
 /// ===============================================================================
 /// First frame of death: play death sound and hide ghosts
-if (finish == 0) {
+if (oGameManager.finish == 0) {
     if (dead == PAC_STATE.DYING) {
         /// Play game variant-specific death sound
         if (global.lvl > 0) {
@@ -161,14 +161,14 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         /// Reset power pellet state
         Power.alarm[0] = 0;
         Power.alarm[1] = 0;
-        blink = 0;
+        oGameManager.blink = 0;
         alarm[8] = -1;
 
         /// Countdown for next state
-        countdown = countdown - 1;
+        oGameManager.countdown = oGameManager.countdown - 1;
 
         /// Determine next alarm timing
-        if (countdown == -1 || global.lvl == 0) {
+        if (oGameManager.countdown == -1 || global.lvl == 0) {
             alarm[11] = 120;  /// Longer pause for game over
         } else {
             alarm[11] = 60;  /// Shorter pause for next player
@@ -216,10 +216,10 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         }
 
         /// Reset ghost release signatures for new life
-        psig = dotcount + 7;
-        isig = dotcount + 17;
-        csig = dotcount + 32;
-        timer = timerstart;
+        oGameManager.psig = oGameManager.dotcount + 7;
+        oGameManager.isig = oGameManager.dotcount + 17;
+        oGameManager.csig = oGameManager.dotcount + 32;
+        oGameManager.timer = oGameManager.timerstart;
 
         /// Add power pellets to tile layer
         with (Power) {
@@ -331,8 +331,8 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         /// ===============================================================================
         alarm[0] = -1;
         alarm[1] = -1;
-        cycle = 0;
-        scatter = 1;
+        oGameManager.cycle = 0;
+        oGameManager.scatter = 1;
         pause = 0;
         park = -1;
         eatdir = -1;
@@ -340,7 +340,7 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         dead = PAC_STATE.ALIVE;
         dir = PAC_DIRECTION.LEFT;
         deadanim = 0;
-        fright = PAC_FRIGHT.OFF;
+        oGameManager.fright = PAC_FRIGHT.OFF;
 
         /// Reset Player 2 state
         hspeed2 = 0;
@@ -410,8 +410,8 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
 /// SECTION 7: LEVEL COMPLETION SEQUENCE (finish > 0)
 /// ===============================================================================
 /// Handle maze completion effects and transitions
-if (finish > 0) {
-    finish = finish + 1;
+if (oGameManager.finish > 0) {
+    oGameManager.finish = oGameManager.finish + 1;
 
     /// Destroy all remaining dots and power pellets
     with (Dot) {
@@ -434,7 +434,7 @@ if (finish > 0) {
     /// SECTION 8: WALL BLINKING EFFECT DURING LEVEL COMPLETION
     /// ===============================================================================
     with (Drawless) {
-        if (blink == 0) {
+        if (oGameManager.blink == 0) {
             /// Blink on: show colored walls
             with (Wall) {
                 /// Special handling for ghost house
@@ -532,7 +532,7 @@ if (finish > 0) {
 /// SECTION 9: CUTSCENE & MAZE TRANSITIONS (finish = 10)
 /// ===============================================================================
 /// Transition to next level/cutscene after completion animation
-if (finish == 10) {
+if (oGameManager.finish == 10) {
     /// Choose maze type or show cutscene based on game variant and level
     if (global.rand == 0) {
         /// Random maze generator route

@@ -15,11 +15,11 @@ if (global.lvl > 0) {
     alarm[8] = 14;
 
     /// Increment blink animation frame counter (0 or 1)
-    blink = blink + 1;
+    oGameManager.blink = oGameManager.blink + 1;
 
     /// Reset to 0 when counter reaches 2 (wraps: 0 → 1 → 0 → 1...)
-    if (blink == 2) {
-        blink = 0;
+    if (oGameManager.blink == 2) {
+        oGameManager.blink = 0;
     }
 }
 

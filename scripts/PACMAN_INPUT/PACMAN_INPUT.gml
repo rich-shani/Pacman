@@ -63,14 +63,14 @@ function handle_pac_input() {
                     /// Currently moving UP, turning RIGHT
                     if (y > 16 * round((y) / 16)) {
                         corner = PAC_CORNER.UP_TO_RIGHT_PRE;  // Pre-alignment
-                        hspeed = sp;
-                        vspeed = -sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.UP_TO_RIGHT_POST;  // Post-alignment
-                        hspeed = sp;
-                        vspeed = sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                 }
@@ -78,20 +78,20 @@ function handle_pac_input() {
                     /// Currently moving DOWN, turning RIGHT
                     if (y < 16 * round((y) / 16)) {
                         corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;  // Pre-alignment (custom)
-                        hspeed = sp;
-                        vspeed = sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.DOWN_TO_RIGHT_POST;  // Post-alignment (custom)
-                        hspeed = sp;
-                        vspeed = -sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                 }
                 else {
                     /// Moving LEFT or already RIGHT - just continue right
-                    hspeed = sp;
+                    hspeed = oGameManager.sp;
                     vspeed = 0;
                 }
             }
@@ -118,14 +118,14 @@ function handle_pac_input() {
                     /// Currently moving RIGHT, turning UP
                     if (x < 16 * round((x) / 16)) {
                         corner = PAC_CORNER.RIGHT_TO_UP_PRE;  // Pre-alignment
-                        hspeed = sp;
-                        vspeed = -sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.RIGHT_TO_UP_POST;  // Post-alignment
-                        hspeed = -sp;
-                        vspeed = -sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                 }
@@ -133,21 +133,21 @@ function handle_pac_input() {
                     /// Currently moving LEFT, turning UP
                     if (x > 16 * round((x) / 16)) {
                         corner = PAC_CORNER.LEFT_TO_UP_PRE;  // Pre-alignment
-                        hspeed = -sp;
-                        vspeed = -sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.LEFT_TO_UP_POST;  // Post-alignment
-                        hspeed = sp;
-                        vspeed = -sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                 }
                 else {
                     /// Moving DOWN or already UP - just continue up
                     hspeed = 0;
-                    vspeed = -sp;
+                    vspeed = -oGameManager.sp;
                 }
             }
             else {
@@ -173,14 +173,14 @@ function handle_pac_input() {
                     /// Currently moving UP, turning LEFT
                     if (y > 16 * round((y) / 16)) {
                         corner = PAC_CORNER.UP_TO_LEFT_PRE;  // Pre-alignment
-                        hspeed = -sp;
-                        vspeed = -sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.UP_TO_LEFT_POST;  // Post-alignment
-                        hspeed = -sp;
-                        vspeed = sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                 }
@@ -188,20 +188,20 @@ function handle_pac_input() {
                     /// Currently moving DOWN, turning LEFT
                     if (y < 16 * round((y) / 16)) {
                         corner = PAC_CORNER.DOWN_TO_LEFT_PRE;  // Pre-alignment
-                        hspeed = -sp;
-                        vspeed = sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.DOWN_TO_LEFT_POST;  // Post-alignment
-                        hspeed = -sp;
-                        vspeed = -sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = -oGameManager.sp;
                         exit;
                     }
                 }
                 else {
                     /// Moving RIGHT or already LEFT - just continue left
-                    hspeed = -sp;
+                    hspeed = -oGameManager.sp;
                     vspeed = 0;
                 }
             }
@@ -228,14 +228,14 @@ function handle_pac_input() {
                     /// Currently moving RIGHT, turning DOWN
                     if (x < 16 * round((x) / 16)) {
                         corner = PAC_CORNER.RIGHT_TO_DOWN_PRE;  // Pre-alignment
-                        hspeed = sp;
-                        vspeed = sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.RIGHT_TO_DOWN_POST;  // Post-alignment
-                        hspeed = -sp;
-                        vspeed = sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                 }
@@ -243,21 +243,21 @@ function handle_pac_input() {
                     /// Currently moving LEFT, turning DOWN
                     if (x > 16 * round((x) / 16)) {
                         corner = PAC_CORNER.LEFT_TO_DOWN_PRE;  // Pre-alignment
-                        hspeed = -sp;
-                        vspeed = sp;
+                        hspeed = -oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                     else {
                         corner = PAC_CORNER.LEFT_TO_DOWN_POST;  // Post-alignment
-                        hspeed = sp;
-                        vspeed = sp;
+                        hspeed = oGameManager.sp;
+                        vspeed = oGameManager.sp;
                         exit;
                     }
                 }
                 else {
                     /// Moving UP or already DOWN - just continue down
                     hspeed = 0;
-                    vspeed = sp;
+                    vspeed = oGameManager.sp;
                 }
             }
             else {
@@ -283,14 +283,14 @@ function handle_pac_input() {
                     switch(corner) {
                         case PAC_CORNER.DOWN_TO_LEFT_POST:
                             corner = PAC_CORNER.DOWN_TO_RIGHT_PRE;
-                            hspeed = sp;
-                            vspeed = sp;
+                            hspeed = oGameManager.sp;
+                            vspeed = oGameManager.sp;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
                         case PAC_CORNER.UP_TO_LEFT_POST:
                             corner = PAC_CORNER.UP_TO_RIGHT_PRE;
-                            hspeed = sp;
-                            vspeed = -sp;
+                            hspeed = oGameManager.sp;
+                            vspeed = -oGameManager.sp;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
                         // ... additional cases omitted for brevity

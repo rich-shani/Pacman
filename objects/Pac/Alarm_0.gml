@@ -12,44 +12,44 @@
 /// ===============================================================================
 
 /// End fright mode
-fright = PAC_FRIGHT.OFF;
-prohibit = GHOST_PROHIBIT.ALLOWED;
-plus2 = 0;
+oGameManager.fright = PAC_FRIGHT.OFF;
+oGameManager.prohibit = GHOST_PROHIBIT.ALLOWED;
+oGameManager.plus2 = 0;
 
 /// Reset Player 1 speed to normal
 if (bonked == 0) {
     if (hspeed > 0) {
-        hspeed = sp;
+        hspeed = oGameManager.sp;
     }
     if (hspeed < 0) {
-        hspeed = -sp;
+        hspeed = -oGameManager.sp;
     }
     if (vspeed > 0) {
-        vspeed = sp;
+        vspeed = oGameManager.sp;
     }
     if (vspeed < 0) {
-        vspeed = -sp;
+        vspeed = -oGameManager.sp;
     }
 }
 
 /// Reset Player 2 speed to normal
 if (bonked2 == 0) {
     if (hspeed2 > 0) {
-        hspeed2 = sp;
+        hspeed2 = oGameManager.sp;
     }
     if (hspeed2 < 0) {
-        hspeed2 = -sp;
+        hspeed2 = -oGameManager.sp;
     }
     if (vspeed2 > 0) {
-        vspeed2 = sp;
+        vspeed2 = oGameManager.sp;
     }
     if (vspeed2 < 0) {
-        vspeed2 = -sp;
+        vspeed2 = -oGameManager.sp;
     }
 }
 
-chompcount = 0;
-Pac.pluseat = 0;
+oGameManager.chompcount = 0;
+oGameManager.pluseat = 0;
 
 /// All ghosts return to chase mode
 with (Blinky) {

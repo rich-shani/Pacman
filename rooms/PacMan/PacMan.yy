@@ -762,6 +762,7 @@
     {"name":"inst_3FCD243B","path":"rooms/PacMan/PacMan.yy",},
     {"name":"inst_30509B7B","path":"rooms/PacMan/PacMan.yy",},
     {"name":"inst_3558461A","path":"rooms/PacMan/PacMan.yy",},
+    {"name":"inst_5165D7BD","path":"rooms/PacMan/PacMan.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -797,6 +798,7 @@
       ],"layers":[],"name":"Compatibility_Instances_Depth_103","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":true,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Compatibility_Instances_Depth_104","depth":104,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_B0B43994","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_B0B43994","objectId":{"name":"Pac","path":"objects/Pac/Pac.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":216.0,"y":416.0,},
+        {"$GMRInstance":"v4","%Name":"inst_5165D7BD","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_5165D7BD","objectId":{"name":"oGameManager","path":"objects/oGameManager/oGameManager.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
       ],"layers":[],"name":"Compatibility_Instances_Depth_104","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":true,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Compatibility_Instances_Depth_105","depth":105,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_E7223C05","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_E7223C05","objectId":{"name":"Fruit","path":"objects/Fruit/Fruit.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":216.0,"y":320.0,},

@@ -70,7 +70,7 @@ if Pac.chomp = 0 or state = 2{
 
                 if state = 0{
 
-                if Pac.scatter = 1{script_execute(chase_object,tilex,tiley,cornerx,cornery);}
+                if oGameManager.scatter = 1{script_execute(chase_object,tilex,tiley,cornerx,cornery);}
 
                 else{
 
