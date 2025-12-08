@@ -293,12 +293,123 @@ function handle_pac_input() {
                             vspeed = -sp;
                             dir = PAC_DIRECTION.RIGHT;
                             exit;
-                        // ... additional cases omitted for brevity
+                        case PAC_CORNER.UP_TO_LEFT_PRE:
+                            corner = PAC_CORNER.UP_TO_RIGHT_POST;
+                            hspeed = sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
+                        case PAC_CORNER.DOWN_TO_LEFT_PRE:
+                            corner = PAC_CORNER.DOWN_TO_RIGHT_POST;
+                            hspeed = sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.RIGHT;
+                            exit;
                     }
                 }
             }
-            // Similar blocks for UP, LEFT, DOWN directions would follow...
-            // (Omitted for space, but pattern is consistent)
+
+            // Attempting UP during corner transition
+            if (keyboard_check(vk_up) == true && keyboard_check(vk_right) == false &&
+                keyboard_check(vk_left) == false && keyboard_check(vk_down) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) - 1, Wall, false, true)) {
+                    switch(corner) {
+                        case PAC_CORNER.RIGHT_TO_DOWN_POST:
+                            corner = PAC_CORNER.RIGHT_TO_UP_PRE;
+                            hspeed = sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        case PAC_CORNER.LEFT_TO_DOWN_POST:
+                            corner = PAC_CORNER.LEFT_TO_UP_PRE;
+                            hspeed = -sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        case PAC_CORNER.RIGHT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_UP_POST;
+                            hspeed = sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                        case PAC_CORNER.LEFT_TO_DOWN_PRE:
+                            corner = PAC_CORNER.LEFT_TO_UP_POST;
+                            hspeed = -sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.UP;
+                            exit;
+                    }
+                }
+            }
+
+            // Attempting LEFT during corner transition
+            if (keyboard_check(vk_left) == true && keyboard_check(vk_up) == false &&
+                keyboard_check(vk_right) == false && keyboard_check(vk_down) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)) - 1, 16 * (round((y) / 16)), Wall, false, true)) {
+                    switch(corner) {
+                        case PAC_CORNER.DOWN_TO_RIGHT_POST:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_PRE;
+                            hspeed = -sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        case PAC_CORNER.UP_TO_RIGHT_POST:
+                            corner = PAC_CORNER.UP_TO_LEFT_PRE;
+                            hspeed = -sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        case PAC_CORNER.DOWN_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.DOWN_TO_LEFT_POST;
+                            hspeed = -sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                        case PAC_CORNER.UP_TO_RIGHT_PRE:
+                            corner = PAC_CORNER.UP_TO_LEFT_POST;
+                            hspeed = -sp;
+                            vspeed = -sp;
+                            dir = PAC_DIRECTION.LEFT;
+                            exit;
+                    }
+                }
+            }
+
+            // Attempting DOWN during corner transition
+            if (keyboard_check(vk_down) == true && keyboard_check(vk_right) == false &&
+                keyboard_check(vk_left) == false && keyboard_check(vk_up) == false) {
+
+                if (!collision_point(16 * (round((x) / 16)), 16 * (round((y) / 16)) + 17, Wall, false, true)) {
+                    switch(corner) {
+                        case PAC_CORNER.RIGHT_TO_UP_POST:
+                            corner = PAC_CORNER.RIGHT_TO_DOWN_PRE;
+                            hspeed = sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        case PAC_CORNER.LEFT_TO_UP_POST:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_PRE;
+                            hspeed = -sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        case PAC_CORNER.RIGHT_TO_UP_PRE:
+                            corner = PAC_CORNER.RIGHT_TO_DOWN_POST;
+                            hspeed = sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                        case PAC_CORNER.LEFT_TO_UP_PRE:
+                            corner = PAC_CORNER.LEFT_TO_DOWN_POST;
+                            hspeed = -sp;
+                            vspeed = sp;
+                            dir = PAC_DIRECTION.DOWN;
+                            exit;
+                    }
+                }
+            }
         }
     }
 }
