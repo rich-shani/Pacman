@@ -75,7 +75,7 @@ fright = PAC_FRIGHT.OFF;
 
 /// Duration of fright mode in frames (set per level)
 /// Set when power pellet collected, counts down to 0
-frighttime = 0;
+oGameManager.frighttime = 0;
 
 /// Bonus time duration for extended fright mode
 /// When bonus fruit eaten during fright, extends fright timer

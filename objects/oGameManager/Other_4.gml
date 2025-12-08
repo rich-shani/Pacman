@@ -88,90 +88,90 @@ fright = PAC_FRIGHT.OFF;
 /// STANDARD AND MS. PAC-MAN FRIGHT TIMINGS
 if (global.plus == PAC_PLUS_MODE.INACTIVE) {
     if (global.game < 2) {
-        frighttime = 360;
+        oGameManager.frighttime = 360;
 
-        if (global.lvl == 2) frighttime = 300;
-        if (global.lvl == 3) frighttime = 240;
-        if (global.lvl == 4) frighttime = 180;
-        if (global.lvl == 5) frighttime = 120;
-        if (global.lvl == 6) frighttime = 300;
-        if (global.lvl == 7) frighttime = 120;
-        if (global.lvl == 8) frighttime = 120;
-        if (global.lvl == 9) frighttime = 60;
-        if (global.lvl == 10) frighttime = 300;
-        if (global.lvl == 11) frighttime = 120;
-        if (global.lvl == 12) frighttime = 60;
-        if (global.lvl == 13) frighttime = 60;
-        if (global.lvl == 14) frighttime = 180;
-        if (global.lvl == 15) frighttime = 60;
-        if (global.lvl == 16) frighttime = 60;
-        if (global.lvl == 17) frighttime = 0;
-        if (global.lvl == 18) frighttime = 60;
-        if (global.lvl > 18) frighttime = 0;
+        if (global.lvl == 2) oGameManager.frighttime = 300;
+        if (global.lvl == 3) oGameManager.frighttime = 240;
+        if (global.lvl == 4) oGameManager.frighttime = 180;
+        if (global.lvl == 5) oGameManager.frighttime = 120;
+        if (global.lvl == 6) oGameManager.frighttime = 300;
+        if (global.lvl == 7) oGameManager.frighttime = 120;
+        if (global.lvl == 8) oGameManager.frighttime = 120;
+        if (global.lvl == 9) oGameManager.frighttime = 60;
+        if (global.lvl == 10) oGameManager.frighttime = 300;
+        if (global.lvl == 11) oGameManager.frighttime = 120;
+        if (global.lvl == 12) oGameManager.frighttime = 60;
+        if (global.lvl == 13) oGameManager.frighttime = 60;
+        if (global.lvl == 14) oGameManager.frighttime = 180;
+        if (global.lvl == 15) oGameManager.frighttime = 60;
+        if (global.lvl == 16) oGameManager.frighttime = 60;
+        if (global.lvl == 17) oGameManager.frighttime = 0;
+        if (global.lvl == 18) oGameManager.frighttime = 60;
+        if (global.lvl > 18) oGameManager.frighttime = 0;
     } else {
         /// Jr. Pac-Man
-        frighttime = 360;
+        oGameManager.frighttime = 360;
 
-        if (global.lvl == 2) frighttime = 180;
-        if (global.lvl == 3) frighttime = 120;
-        if (global.lvl == 4) frighttime = 120;
-        if (global.lvl == 5) frighttime = 120;
-        if (global.lvl == 6) frighttime = 60;
-        if (global.lvl == 7) frighttime = 60;
-        if (global.lvl == 8) frighttime = 120;
-        if (global.lvl == 9) frighttime = 60;
-        if (global.lvl == 10) frighttime = 60;
-        if (global.lvl == 11) frighttime = 60;
-        if (global.lvl == 12) frighttime = 60;
-        if (global.lvl == 13) frighttime = 60;
-        if (global.lvl == 14) frighttime = 0;
-        if (global.lvl == 15) frighttime = 60;
-        if (global.lvl > 15) frighttime = 0;
+        if (global.lvl == 2) oGameManager.frighttime = 180;
+        if (global.lvl == 3) oGameManager.frighttime = 120;
+        if (global.lvl == 4) oGameManager.frighttime = 120;
+        if (global.lvl == 5) oGameManager.frighttime = 120;
+        if (global.lvl == 6) oGameManager.frighttime = 60;
+        if (global.lvl == 7) oGameManager.frighttime = 60;
+        if (global.lvl == 8) oGameManager.frighttime = 120;
+        if (global.lvl == 9) oGameManager.frighttime = 60;
+        if (global.lvl == 10) oGameManager.frighttime = 60;
+        if (global.lvl == 11) oGameManager.frighttime = 60;
+        if (global.lvl == 12) oGameManager.frighttime = 60;
+        if (global.lvl == 13) oGameManager.frighttime = 60;
+        if (global.lvl == 14) oGameManager.frighttime = 0;
+        if (global.lvl == 15) oGameManager.frighttime = 60;
+        if (global.lvl > 15) oGameManager.frighttime = 0;
     }
 }
 
 /// PLUS MODE FRIGHT TIMINGS
 if (global.plus == PAC_PLUS_MODE.ACTIVE) {
     if (global.game < 2) {
-        frighttime = 240;
+        oGameManager.frighttime = 240;
         bonustime = 360;
 
-        if (global.lvl == 2) { frighttime = 180; bonustime = 360; }
-        if (global.lvl == 3) { frighttime = 120; bonustime = 300; }
-        if (global.lvl == 4) { frighttime = 120; bonustime = 240; }
-        if (global.lvl == 5) { frighttime = 120; bonustime = 180; }
-        if (global.lvl == 6) { frighttime = 240; bonustime = 300; }
-        if (global.lvl == 7) { frighttime = 120; bonustime = 180; }
-        if (global.lvl == 8) { frighttime = 60; bonustime = 180; }
-        if (global.lvl == 9) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 10) { frighttime = 120; bonustime = 240; }
-        if (global.lvl == 11) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 12) { frighttime = 0; bonustime = 120; }
-        if (global.lvl == 13) { frighttime = 0; bonustime = 120; }
-        if (global.lvl == 14) { frighttime = 120; bonustime = 240; }
-        if (global.lvl == 15) { frighttime = 0; bonustime = 120; }
-        if (global.lvl == 16) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 17) { frighttime = 0; bonustime = 120; }
-        if (global.lvl == 18) { frighttime = 120; bonustime = 120; }
-        if (global.lvl == 19) { frighttime = 0; bonustime = 60; }
-        if (global.lvl > 19) { frighttime = 0; bonustime = 0; }
+        if (global.lvl == 2) { oGameManager.frighttime = 180; bonustime = 360; }
+        if (global.lvl == 3) { oGameManager.frighttime = 120; bonustime = 300; }
+        if (global.lvl == 4) { oGameManager.frighttime = 120; bonustime = 240; }
+        if (global.lvl == 5) { oGameManager.frighttime = 120; bonustime = 180; }
+        if (global.lvl == 6) { oGameManager.frighttime = 240; bonustime = 300; }
+        if (global.lvl == 7) { oGameManager.frighttime = 120; bonustime = 180; }
+        if (global.lvl == 8) { oGameManager.frighttime = 60; bonustime = 180; }
+        if (global.lvl == 9) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 10) { oGameManager.frighttime = 120; bonustime = 240; }
+        if (global.lvl == 11) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 12) { oGameManager.frighttime = 0; bonustime = 120; }
+        if (global.lvl == 13) { oGameManager.frighttime = 0; bonustime = 120; }
+        if (global.lvl == 14) { oGameManager.frighttime = 120; bonustime = 240; }
+        if (global.lvl == 15) { oGameManager.frighttime = 0; bonustime = 120; }
+        if (global.lvl == 16) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 17) { oGameManager.frighttime = 0; bonustime = 120; }
+        if (global.lvl == 18) { oGameManager.frighttime = 120; bonustime = 120; }
+        if (global.lvl == 19) { oGameManager.frighttime = 0; bonustime = 60; }
+        if (global.lvl > 19) { oGameManager.frighttime = 0; bonustime = 0; }
     } else {
         /// Jr. Pac-Man Plus
-        frighttime = 240;
+        oGameManager.frighttime = 240;
         bonustime = 360;
 
-        if (global.lvl == 2) { frighttime = 120; bonustime = 240; }
-        if (global.lvl == 3) { frighttime = 120; bonustime = 180; }
-        if (global.lvl == 4) { frighttime = 120; bonustime = 180; }
-        if (global.lvl == 5) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 6) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 7) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 8) { frighttime = 0; bonustime = 60; }
-        if (global.lvl == 9) { frighttime = 0; bonustime = 60; }
-        if (global.lvl == 10) { frighttime = 60; bonustime = 120; }
-        if (global.lvl == 11) { frighttime = 60; bonustime = 60; }
-        if (global.lvl == 12) { frighttime = 0; bonustime = 60; }
-        if (global.lvl > 12) { frighttime = 0; bonustime = 0; }
+        if (global.lvl == 2) { oGameManager.frighttime = 120; bonustime = 240; }
+        if (global.lvl == 3) { oGameManager.frighttime = 120; bonustime = 180; }
+        if (global.lvl == 4) { oGameManager.frighttime = 120; bonustime = 180; }
+        if (global.lvl == 5) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 6) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 7) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 8) { oGameManager.frighttime = 0; bonustime = 60; }
+        if (global.lvl == 9) { oGameManager.frighttime = 0; bonustime = 60; }
+        if (global.lvl == 10) { oGameManager.frighttime = 60; bonustime = 120; }
+        if (global.lvl == 11) { oGameManager.frighttime = 60; bonustime = 60; }
+        if (global.lvl == 12) { oGameManager.frighttime = 0; bonustime = 60; }
+        if (global.lvl > 12) { oGameManager.frighttime = 0; bonustime = 0; }
     }
 }
 

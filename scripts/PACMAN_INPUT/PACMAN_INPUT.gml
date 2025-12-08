@@ -32,7 +32,7 @@ function handle_pac_input() {
     // - No ghost collision happened this frame
     // - Pac is not in chomp animation
     // - Level is in progress (not starting/ending)
-    if (dead >= PAC_STATE.DEAD || chomp > 0 || start > 0) {
+    if (dead >= PAC_STATE.DEAD || chomp > 0 || oGameManager.start > 0) {
         return;  // Input disabled, skip processing
     }
 

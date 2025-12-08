@@ -467,7 +467,7 @@ if (dead == PAC_STATE.ALIVE) {
             pause = 1;
             stoppy = 1;
         }
-        if (frighttime > 0) {
+        if (oGameManager.frighttime > 0) {
             /// In 2-player mode, toggle which player can eat ghosts
             if (global.players == 2) {
                 if (oGameManager.prohibit == GHOST_PROHIBIT.PLAYER1_BLOCKED) {
@@ -479,7 +479,7 @@ if (dead == PAC_STATE.ALIVE) {
             }
             /// Activate fright mode and set duration
             fright = PAC_FRIGHT.ACTIVE;
-            alarm[0] = frighttime;
+            alarm[0] = oGameManager.frighttime;
             chompcount = 0;
         }
 
@@ -496,7 +496,7 @@ if (dead == PAC_STATE.ALIVE) {
         oGameManager.timer = oGameManager.timerstart + 1;
         if (global.plus == 1) {
             plus = irandom(7);
-            if (frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
+            if (oGameManager.frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
                 plus2 = irandom(1);
             }
         }
