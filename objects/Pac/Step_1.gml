@@ -933,7 +933,7 @@ if (finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
 
                     Pac.chompcount = Pac.chompcount + 1;
                     Pac.chomp = 1;
-                    alarm[0] = 60;
+                    alarm[0] = 60;  // Eating animation duration
                     chomped = 1;
 
                     if (Pac.speed != 0) {
