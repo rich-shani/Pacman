@@ -32,7 +32,7 @@ if state = 0{
     else{speed = oGameManager.sp}
 }    
 if state = 1{
-    if collision_point(tilex,tiley,Slow,false,true){speed = spslow}else{speed = spfright}
+    if collision_point(tilex,tiley,Slow,false,true){speed = spslow}else{speed = oGameManager.spfright}
 }
 if state = 2{
     speed = speyes

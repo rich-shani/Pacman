@@ -355,14 +355,14 @@ else {
 if (chomp == 0) {
     if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
         if (pause == 0) {
-            if (eatdir == 0) { hspeed = spfright; vspeed = 0; eatdir = -1; }
-            if (eatdir == 1) { hspeed = spfright; vspeed = -spfright; eatdir = -1; }
-            if (eatdir == 2) { hspeed = 0; vspeed = -spfright; eatdir = -1; }
-            if (eatdir == 3) { hspeed = -spfright; vspeed = -spfright; eatdir = -1; }
-            if (eatdir == 4) { hspeed = -spfright; vspeed = 0; eatdir = -1; }
-            if (eatdir == 5) { hspeed = -spfright; vspeed = spfright; eatdir = -1; }
-            if (eatdir == 6) { hspeed = 0; vspeed = spfright; eatdir = -1; }
-            if (eatdir == 7) { hspeed = spfright; vspeed = spfright; eatdir = -1; }
+            if (eatdir == 0) { hspeed = oGameManager.spfright; vspeed = 0; eatdir = -1; }
+            if (eatdir == 1) { hspeed = soGameManager.pfright; vspeed = -oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 2) { hspeed = 0; vspeed = -oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 3) { hspeed = -oGameManager.spfright; vspeed = -oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 4) { hspeed = -oGameManager.spfright; vspeed = 0; eatdir = -1; }
+            if (eatdir == 5) { hspeed = -oGameManager.spfright; vspeed = oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 6) { hspeed = 0; vspeed = oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 7) { hspeed = oGameManager.spfright; vspeed = oGameManager.spfright; eatdir = -1; }
             stoppy = 0;
         }
         else {
@@ -431,7 +431,7 @@ if (dead == 0) {
                     speed = oGameManager.sp;
                 }
                 else {
-                    speed = spfright;
+                    speed = oGameManager.spfright;
                 }
             }
 

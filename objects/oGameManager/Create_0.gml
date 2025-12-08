@@ -75,7 +75,7 @@ fright = PAC_FRIGHT.OFF;
 
 /// Duration of fright mode in frames (set per level)
 /// Set when power pellet collected, counts down to 0
-oGameManager.frighttime = 0;
+frighttime = 0;
 
 /// Bonus time duration for extended fright mode
 /// When bonus fruit eaten during fright, extends fright timer
@@ -119,7 +119,7 @@ plus2 = 0;
 // ===== SPEED CONFIGURATION =====
 /// Normal movement speed (pixels/frame)
 /// Set per level in Other_4 event
-oGameManager.sp = 2;
+sp = 2;
 
 /// Power pellet mode speed (faster during fright)
 /// Set per level in Other_4 event

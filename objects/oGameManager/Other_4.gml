@@ -30,46 +30,46 @@ global.dottotal = (instance_number(Dot) + instance_number(Power));
 /// PLUS MODE SPEEDS (Ms. Pac-Man Plus / Jr. Pac-Man)
 if (global.plus == PAC_PLUS_MODE.ACTIVE) {
     oGameManager.sp = 2.5;
-    spfright = 2.5;
+    oGameManager.spfright = 2.5;
 
     if (global.game < 2 && global.lvl > 15) {
         oGameManager.sp = 2.25;
-        spfright = 2.375;
+        oGameManager.spfright = 2.375;
     }
     if (global.game == 2 && global.lvl > 12) {
         oGameManager.sp = 2.25;
-        spfright = 2.375;
+        oGameManager.spfright = 2.375;
     }
 } else {
     /// STANDARD MODE SPEEDS
     if (global.game < 2) {
         oGameManager.sp = 2.00001;
-        spfright = 2.25;
+        oGameManager.spfright = 2.25;
 
         if (global.lvl > 1) {
             oGameManager.sp = 2.25;
-            spfright = 2.375;
+            oGameManager.spfright = 2.375;
         }
         if (global.lvl > 4) {
             oGameManager.sp = 2.5;
-            spfright = 2.5;
+            oGameManager.spfright = 2.5;
         }
         if (global.lvl > 20) {
             oGameManager.sp = 2.25;
-            spfright = 2.375;
+            oGameManager.spfright = 2.375;
         }
     } else {
         /// Jr. Pac-Man standard mode
         oGameManager.sp = 2.25;
-        spfright = 2.375;
+        oGameManager.spfright = 2.375;
 
         if (global.lvl > 2) {
             oGameManager.sp = 2.5;
-            spfright = 2.5;
+            oGameManager.spfright = 2.5;
         }
         if (global.lvl > 15) {
             oGameManager.sp = 2.25;
-            spfright = 2.375;
+            oGameManager.spfright = 2.375;
         }
     }
 }
@@ -77,7 +77,7 @@ if (global.plus == PAC_PLUS_MODE.ACTIVE) {
 /// BOOST MODE OVERRIDE
 if (global.boost > 0) {
     oGameManager.sp = 4;
-    spfright = 4;
+    oGameManager.spfright = 4;
 }
 
 /// ===============================================================================

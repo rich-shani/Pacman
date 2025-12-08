@@ -13,7 +13,7 @@
 /// This sets:
 /// - oGameManager.sp: Normal chase speed
 /// - spslow: Tunnel/slow area speed
-/// - spfright: Frightened mode speed
+/// - oGameManager.spfright: Frightened mode speed
 /// - spelroy: Elroy mode 1 speed
 /// - spelroy2: Elroy mode 2 speed
 /// - speyes: Eyes speed
@@ -30,7 +30,7 @@ if (global.boost == 1) {
     // Boost mode: all speeds doubled
     oGameManager.sp = 4.0;
     spslow = 2.0;
-    spfright = 2.5;
+    oGameManager.spfright = 2.5;
     spelroy = 4.0;
     spelroy2 = 4.25;
     speyes = 8.0;
@@ -43,14 +43,14 @@ if (global.boost == 1) {
         if (global.lvl < 5) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
         else if (global.lvl < 21) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
@@ -58,7 +58,7 @@ if (global.boost == 1) {
             // Levels 21+: maximum speed
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
@@ -72,21 +72,21 @@ if (global.boost == 1) {
         if (global.lvl <= 4) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
         else if (global.lvl == 5) {
             oGameManager.sp = 2.0;
             spslow = 1.25;
-            spfright = 1.5;
+            oGameManager.spfright = 1.5;
             spelroy = 2.25;
             spelroy2 = 2.375;
         }
         else {
             oGameManager.sp = 2.0;
             spslow = 1.25;
-            spfright = 1.5;
+            oGameManager.spfright = 1.5;
             spelroy = 2.25;
             spelroy2 = 2.375;
         }
@@ -100,28 +100,28 @@ if (global.boost == 1) {
         if (global.lvl <= 1) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
         else if (global.lvl <= 2) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
         else if (global.lvl <= 5) {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
         else {
             oGameManager.sp = 1.875;
             spslow = 1.0;
-            spfright = 1.25;
+            oGameManager.spfright = 1.25;
             spelroy = 2.0;
             spelroy2 = 2.125;
         }
@@ -136,7 +136,7 @@ if (global.boost == 1) {
 if (global.plus == 1) {
     // Plus mode: ghosts slower
     oGameManager.sp *= 0.9;
-    spfright *= 0.9;
+    oGameManager.spfright *= 0.9;
     spelroy *= 0.9;
     spelroy2 *= 0.9;
 }
@@ -148,7 +148,7 @@ if (global.plus == 1) {
 ///
 /// oGameManager.sp = 1.875          Normal chase speed
 /// spslow = 1.0        Tunnel/slow area (about 50% normal)
-/// spfright = 1.25     Frightened mode (about 67% normal)
+/// oGameManager.spfright = 1.25     Frightened mode (about 67% normal)
 /// spelroy = 2.0       Elroy mode 1 (about 107% normal)
 /// spelroy2 = 2.125    Elroy mode 2 (about 113% normal)
 /// speyes = 4.0        Eyes/dead speed (about 213% normal)

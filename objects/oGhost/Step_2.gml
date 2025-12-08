@@ -130,7 +130,7 @@ if (Pac.dead == 0 && oGameManager.finish == 0) {
 /// Speeds available:
 /// - oGameManager.sp: Normal speed (1.875 pixels/frame)
 /// - spslow: Tunnel speed (1.0 pixels/frame)
-/// - spfright: Frightened speed (1.25 pixels/frame)
+/// - oGameManager.spfright: Frightened speed (1.25 pixels/frame)
 /// - spelroy: Elroy mode 1 (2.0 pixels/frame)
 /// - spelroy2: Elroy mode 2 (2.125 pixels/frame)
 /// - speyes: Eyes return speed (4.0 pixels/frame)
@@ -187,7 +187,7 @@ if (Pac.dead == 0 && oGameManager.finish == 0) {
                 speed = spslow;
             } else {
                 /// Normal maze: use frightened speed (reduced from normal)
-                speed = spfright;  // 1.25 pixels/frame (slower)
+                speed = oGameManager.spfright;  // 1.25 pixels/frame (slower)
             }
         }
         else if (state == GHOST_STATE.EYES) {

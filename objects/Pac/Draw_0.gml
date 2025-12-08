@@ -188,9 +188,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 
@@ -287,9 +287,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 

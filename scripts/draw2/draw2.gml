@@ -42,8 +42,8 @@ function draw2(argument0, argument1) {
 	    }
 	}
 	else{
-	    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
-	    else{draw_sprite_ext(spr_Chomp,chompcount-1+pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+	    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+	    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 	}
 	}
 	}

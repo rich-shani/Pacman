@@ -93,7 +93,7 @@ xdir = -32;
 ydir = 0;
 
 /// Initial movement (LEFT at normal speed)
-/// Note: Speed values (oGameManager.sp, spfright) are managed by oGameManager
+/// Note: Speed values (oGameManager.sp, oGameManager.spfright) are managed by oGameManager
 hspeed = -oGameManager.sp;
 vspeed = 0;
 

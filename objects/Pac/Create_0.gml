@@ -30,7 +30,7 @@ dir2 = 0;
 
 /// Movement speeds for Player 1
 /// Used to apply actual velocity each frame
-/// Note: oGameManager.sp and spfright are managed by oGameManager
+/// Note: oGameManager.sp and oGameManager.spfright are managed by oGameManager
 hspeed2 = 0;   // Unused in current setup
 vspeed2 = 0;   // Unused in current setup
 

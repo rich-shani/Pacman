@@ -6,19 +6,19 @@ newtile = 0
 
 if global.game < 2{
 
-{oGameManager.sp = 1.875; spslow = 1; spfright = 1.25;}
+{oGameManager.sp = 1.875; spslow = 1; oGameManager.spfright = 1.25;}
 
-if global.lvl > 1{oGameManager.sp = 2.125; spslow = 1.125; spfright = 1.375;}
+if global.lvl > 1{oGameManager.sp = 2.125; spslow = 1.125; oGameManager.spfright = 1.375;}
 
-if global.lvl > 4 or global.plus = 1{oGameManager.sp = 2.375; spslow = 1.25; spfright = 1.5;}
+if global.lvl > 4 or global.plus = 1{oGameManager.sp = 2.375; spslow = 1.25; oGameManager.spfright = 1.5;}
 
 }
 
 else{
 
-{oGameManager.sp = 2.125; spslow = 1.125; spfright = 1.375; spelroy = 2.25;}
+{oGameManager.sp = 2.125; spslow = 1.125; oGameManager.spfright = 1.375; spelroy = 2.25;}
 
-if global.lvl > 2 or global.plus = 1{oGameManager.sp = 2.375; spslow = 1.25; spfright = 1.5;}
+if global.lvl > 2 or global.plus = 1{oGameManager.sp = 2.375; spslow = 1.25; oGameManager.spfright = 1.5;}
 
 }
 
