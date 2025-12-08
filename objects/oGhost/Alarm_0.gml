@@ -23,6 +23,7 @@
 if (chomped == 1) {
     /// This ghost was just eaten by Pac
     /// Transition to Eyes state so ghost returns to house
+    Pac.chomp = 0;  /// Reset Pac's chomp animation flag (eaten ghost - animation done)
     state = GHOST_STATE.EYES;
 
     /// Reverse direction by 180° (running away)
