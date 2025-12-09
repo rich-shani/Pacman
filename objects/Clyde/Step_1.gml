@@ -1,125 +1,233 @@
-im = im+1; if im = 16{im = 0}
+/// ===============================================================================
+/// CLYDE GHOST - STEP_1 EVENT (TARGET CALCULATION - AMBIGUOUS PURSUER)
+/// ===============================================================================
+/// Purpose: Calculate Clyde's target position using distance-based switching strategy
+/// Called: Every frame (second step event, after Step_0 animation)
+/// Parent: oGhost (inherits base ghost behavior)
+///
+/// Clyde's Personality: "Pokey" - Ambiguous/Shy Behavior
+/// Strategy: Clyde changes behavior based on distance to Pac
+/// - Close (< 128 pixels): Flee to scatter corner (shy behavior)
+/// - Far (>= 128 pixels): Chase Pac directly (like Blinky)
+///
+/// Two-Player Support:
+/// Clyde chooses between Player 1 (Pac) and Player 2 (Mac) based on which
+/// target produces a shorter distance from Clyde's current position
+/// If distances are equal, randomly chooses between players
+///
+/// Algorithm:
+/// 1. Calculate Manhattan distance from Clyde to Player 1 (Pac)
+/// 2. Calculate Manhattan distance from Clyde to Player 2 (Mac)
+/// 3. Choose closer player (or random if equal)
+/// 4. If chosen player is close (< 128 pixels): Target scatter corner (flee)
+/// 5. If chosen player is far (>= 128 pixels): Target player directly (chase)
+/// 6. Set pursuex/pursuey to chosen target
+///
+/// This creates unpredictable behavior: Clyde appears to "change his mind"
+/// ===============================================================================
 
-if Pac.alarm[0] > 120{flash = 0}
-
-if Pac.alarm[0] = 120{flash = 1}
-
-if Pac.alarm[0] = 106{flash = 0}
-
-if Pac.alarm[0] = 92{flash = 1}
-
-if Pac.alarm[0] = 78{flash = 0}
-
-if Pac.alarm[0] = 64{flash = 1}
-
-if Pac.alarm[0] = 60{flash = 1}
-
-if Pac.alarm[0] = 50{flash = 0}
-
-if Pac.alarm[0] = 36{flash = 1}
-
-if Pac.alarm[0] = 22{flash = 0}
-
-if Pac.alarm[0] = 8{flash = 1}
-
-if Pac.alarm[0] = 0{flash = 0}
-
-
-
-
-if (abs(16*(round(Pac.x2/16)) - tilex) + abs(16*(round(Pac.y2/16)) - tiley)) = (abs(16*(round(Pac.x/16)) - tilex) + abs(16*(round(Pac.y/16)) - tiley)) {
-
-if irandom(1) = 1{pursuex = 16*(round(Pac.x2/16)); pursuey = 16*(round(Pac.y2/16)); }
-
-else{pursuex = 16*(round(Pac.x/16)); pursuey = 16*(round(Pac.y/16)); }
-
+// ===== ANIMATION UPDATE =====
+/// Increment animation frame counter
+/// Cycles 0-15 continuously for walking animation
+im = im + 1;
+if (im == 16) {
+    im = 0;  // Wrap back to 0 after reaching 15
 }
 
-else{
-
-if (abs(16*(round(Pac.x2/16)) - tilex) + abs(16*(round(Pac.y2/16)) - tiley)) < (abs(16*(round(Pac.x/16)) - tilex) + abs(16*(round(Pac.y/16)) - tiley)) {
-
-pursuex = 16*(round(Pac.x2/16)); pursuey = 16*(round(Pac.y2/16)); 
-
+// ===== FRIGHTENED MODE FLASHING EFFECT =====
+/// Handle flashing effect when power pellet is active
+/// Flash timing matches original arcade behavior
+if (Pac.alarm[0] > 120) {
+    flash = 0;  // No flashing when plenty of time remains
+}
+if (Pac.alarm[0] == 120) {
+    flash = 1;  // Start flashing
+}
+if (Pac.alarm[0] == 106) {
+    flash = 0;
+}
+if (Pac.alarm[0] == 92) {
+    flash = 1;
+}
+if (Pac.alarm[0] == 78) {
+    flash = 0;
+}
+if (Pac.alarm[0] == 64) {
+    flash = 1;
+}
+if (Pac.alarm[0] == 60) {
+    flash = 1;
+}
+if (Pac.alarm[0] == 50) {
+    flash = 0;
+}
+if (Pac.alarm[0] == 36) {
+    flash = 1;
+}
+if (Pac.alarm[0] == 22) {
+    flash = 0;
+}
+if (Pac.alarm[0] == 8) {
+    flash = 1;
+}
+if (Pac.alarm[0] == 0) {
+    flash = 0;  // Stop flashing when power pellet expires
 }
 
-else{
+// ===== TARGET CALCULATION - DISTANCE-BASED SWITCHING =====
+/// Calculate target positions using distance-based personality
+/// Clyde chooses which player to target, then decides whether to chase or flee
 
-pursuex = 16*(round(Pac.x/16)); pursuey = 16*(round(Pac.y/16)); 
+/// Calculate Player 1 (Pac) grid position
+var _pac_tile_x = 16 * (round(Pac.x / 16));
+var _pac_tile_y = 16 * (round(Pac.y / 16));
 
-}
+/// Calculate Player 2 (Mac) grid position
+var _mac_tile_x = 16 * (round(Pac.x2 / 16));
+var _mac_tile_y = 16 * (round(Pac.y2 / 16));
 
-}
+/// Calculate Manhattan distances from Clyde to each player
+/// Manhattan distance = |x1 - x2| + |y1 - y2|
+var _dist_to_pac = abs(_pac_tile_x - tilex) + abs(_pac_tile_y - tiley);
+var _dist_to_mac = abs(_mac_tile_x - tilex) + abs(_mac_tile_y - tiley);
 
+/// Choose target player based on distance
+var _chosen_player_x, _chosen_player_y;
+var _chosen_distance;
 
-if (y > 48 and y < room_height - 48) {
-
-if house = 0{
-
-if Pac.chomp = 0 or state = 2{
-
-    if newtile = 0{
-
-        if tilex = (16*(round(x/16))) and tiley = (16*(round(y/16))){}
-
-        else{
-
-            newtile = 1; tilex = (16*(round(x/16))); tiley = (16*(round(y/16)));
-
-            if aboutface = 0{
-
-                if state = 0{
-
-                if Pac.scatter = 1{script_execute(chase_object,tilex,tiley,cornerx,cornery);}
-
-                else{
-
-                    if collision_circle(16*(round(Pac.x/16))+8,16*(round(Pac.y/16))+8,128,Clyde,false,false)
-
-                    or collision_circle(16*(round(Pac.x2/16))+8,16*(round(Pac.y2/16))+8,128,Clyde,false,false)
-
-                    or (
-
-                    collision_circle(16*(round(Pac.x/16))+8,16*(round(Pac.y/16))+8,128,Clyde,false,false) and
-
-                    collision_circle(16*(round(Pac.x2/16))+8,16*(round(Pac.y2/16))+8,128,Clyde,false,false)
-
-                    )
-
-                    {
-
-                        script_execute(chase_object,tilex,tiley,cornerx,cornery);
-
-                    }
-
-                    else{script_execute(chase_object,tilex,tiley,pursuex,pursuey);}
-
-                }}
-
-                if state = 1{script_execute(random_direction);}
-
-                if state = 2{
-
-                    script_execute(chase_object,tilex,tiley,(xstart-248)+208,(ystart-272)+224);
-
-                }
-
-            }
-
-            else{
-
-                dir = (direction/90)+2; if dir>3{dir = dir-4}; aboutface = 0;
-
-            }
-
-        }
-
+if (_dist_to_pac == _dist_to_mac) {
+    /// Equal distances: randomly choose between players
+    /// This adds unpredictability when both players are equidistant
+    if (irandom(1) == 1) {
+        /// Choose Player 2 (Mac)
+        _chosen_player_x = _mac_tile_x;
+        _chosen_player_y = _mac_tile_y;
+        _chosen_distance = _dist_to_mac;
+    } else {
+        /// Choose Player 1 (Pac)
+        _chosen_player_x = _pac_tile_x;
+        _chosen_player_y = _pac_tile_y;
+        _chosen_distance = _dist_to_pac;
     }
-
+} else {
+    /// Different distances: choose closer player
+    if (_dist_to_mac < _dist_to_pac) {
+        /// Player 2 (Mac) is closer: target Mac
+        _chosen_player_x = _mac_tile_x;
+        _chosen_player_y = _mac_tile_y;
+        _chosen_distance = _dist_to_mac;
+    } else {
+        /// Player 1 (Pac) is closer: target Pac
+        _chosen_player_x = _pac_tile_x;
+        _chosen_player_y = _pac_tile_y;
+        _chosen_distance = _dist_to_pac;
+    }
 }
 
+/// ===== DISTANCE-BASED BEHAVIOR SWITCHING =====
+/// Clyde's personality: close = flee, far = chase
+/// Threshold: 128 pixels (8 tiles) Manhattan distance
+
+/// Check if chosen player is within flee distance
+/// Use collision_circle to check if player is within 128 pixel radius
+/// This checks both Pac and Mac positions to handle edge cases
+var _player_close = collision_circle(_chosen_player_x + 8, _chosen_player_y + 8, 128, Clyde, false, false) ||
+                    collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) ||
+                    collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false);
+
+if (_player_close) {
+    /// Player is TOO CLOSE (< 128 pixels): Flee to scatter corner
+    /// Clyde's shy behavior: when threatened, run away instead of chase
+    pursuex = cornerx;
+    pursuey = cornery;
+} else {
+    /// Player is SAFE DISTANCE (>= 128 pixels): Chase directly
+    /// Clyde's normal behavior: pursue like Blinky when not threatened
+    pursuex = _chosen_player_x;
+    pursuey = _chosen_player_y;
 }
 
+// ===== PATHFINDING AT INTERSECTIONS =====
+/// Handle pathfinding when ghost reaches a new tile
+/// This logic determines which direction Clyde should turn
+if (y > 48 && y < room_height - 48) {
+    /// Keep ghost in vertical bounds (avoids room edges where wrapping occurs)
+    
+    if (house == 0) {
+        /// Only pathfind when ghost is FREE (not in house bouncing)
+        
+        if (Pac.chomp == 0 || state == 2) {
+            /// Only turn when Pac is moving (chomp==0) OR in eyes mode (always pathfind)
+            
+            if (newtile == 0) {
+                /// newtile=0 means ghost has NOT reached intersection yet
+                /// Check if we're aligned to grid
+                
+                if (tilex == (16 * (round(x / 16))) && tiley == (16 * (round(y / 16)))) {
+                    /// Already aligned: no action needed
+                } else {
+                    /// Ghost has JUST reached a new tile (position changed since last frame)
+                    /// Update newtile flag and calculate new tile coordinates
+                    
+                    newtile = 1;  // Mark that we hit intersection
+                    tilex = (16 * (round(x / 16)));
+                    tiley = (16 * (round(y / 16)));
+                    
+                    /// ===== DIRECTION DECISION LOGIC =====
+                    /// Now decide which direction to turn based on state and behavior
+                    
+                    if (aboutface == 0) {
+                        /// No reversal needed: make normal pathfinding decision
+                        
+                        if (state == 0) {
+                            /// CHASE MODE: Hunt target using Clyde's distance-based strategy
+                            
+                            if (Pac.scatter == 1) {
+                                /// Scatter mode active: always go to scatter corner
+                                script_execute(chase_object, tilex, tiley, cornerx, cornery);
+                            } else {
+                                /// Normal chase: Check if player is close (flee) or far (chase)
+                                /// This check uses collision_circle to determine if player is within 128 pixels
+                                
+                                if (collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) ||
+                                    collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false) ||
+                                    (collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) &&
+                                     collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false))) {
+                                    /// Player(s) too close: Flee to scatter corner
+                                    script_execute(chase_object, tilex, tiley, cornerx, cornery);
+                                } else {
+                                    /// Player(s) at safe distance: Chase directly
+                                    /// pursuex/pursuey already set above (chosen player position)
+                                    script_execute(chase_object, tilex, tiley, pursuex, pursuey);
+                                }
+                            }
+                        }
+                        
+                        if (state == 1) {
+                            /// FRIGHTENED MODE: Random movement (power pellet active)
+                            script_execute(random_direction);
+                        }
+                        
+                        if (state == 2) {
+                            /// EYES MODE: Chase house entrance to resurrect
+                            /// Target is always house entrance (xstart, ystart)
+                            script_execute(chase_object, tilex, tiley, (xstart - 248) + 208, (ystart - 272) + 224);
+                        }
+                    } else {
+                        /// ABOUT-FACE: Ghost needs to reverse direction (power pellet eaten)
+                        /// Convert current direction (angle) to cardinal direction
+                        dir = (direction / 90) + 2;  // Rotate 180 degrees
+                        if (dir > 3) {
+                            dir = dir - 4;  // Wrap around (0-3 range)
+                        }
+                        aboutface = 0;  // Clear flag, reversal complete
+                    }
+                }
+            }
+        }
+    }
 }
 
-
+/// ===============================================================================
+/// END CLYDE STEP_1 EVENT
+/// ===============================================================================
