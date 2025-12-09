@@ -253,135 +253,14 @@ function endstep() {
     if (dir2 == 3) { xdir2 = 0; ydir2 = 32; }     // Down
     
     // ===== HIGH SCORE TRACKING =====
-    /// Update high scores for all game variants and modes
-    /// Only track when random mode is disabled
-    if (global.rand == 0) {
-        // ===== STANDARD PACMAN VARIANTS =====
-        if (global.game == 0 && global.plus == 0 && global.mode == 0) {
-            if (global.p2score > global.pacscore) { global.pacscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1 && global.mode == 0) {
-            if (global.p2score > global.pacplusscore) { global.pacplusscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 0 && global.mode == 0) {
-            if (global.p2score > global.mspacscore) { global.mspacscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1 && global.mode == 0) {
-            if (global.p2score > global.mspacplusscore) { global.mspacplusscore = global.p2score; }
-        }
-        
-        // ===== HANGLY MODE =====
-        if (global.game == 0 && global.plus == 0 && global.mode == 1) {
-            if (global.p2score > global.hanglyscore) { global.hanglyscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1 && global.mode == 1) {
-            if (global.p2score > global.hanglyplusscore) { global.hanglyplusscore = global.p2score; }
-        }
-        
-        // ===== NEW MODE =====
-        if (global.game == 0 && global.plus == 0 && global.mode == 2) {
-            if (global.p2score > global.newscore) { global.newscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1 && global.mode == 2) {
-            if (global.p2score > global.newplusscore) { global.newplusscore = global.p2score; }
-        }
-        
-        // ===== ULTRA MODE =====
-        if (global.game == 0 && global.plus == 0 && global.mode == 3) {
-            if (global.p2score > global.ultrascore) { global.ultrascore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1 && global.mode == 3) {
-            if (global.p2score > global.ultraplusscore) { global.ultraplusscore = global.p2score; }
-        }
-        
-        // ===== MS. PACMAN VARIANTS =====
-        if (global.game == 1 && global.plus == 0 && global.mode == 1) {
-            if (global.p2score > global.mspmpscore) { global.mspmpscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1 && global.mode == 1) {
-            if (global.p2score > global.mspmpplusscore) { global.mspmpplusscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 0 && global.mode == 2) {
-            if (global.p2score > global.pacjrscore) { global.pacjrscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1 && global.mode == 2) {
-            if (global.p2score > global.pacjrplusscore) { global.pacjrplusscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 0 && global.mode == 3) {
-            if (global.p2score > global.strangescore) { global.strangescore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1 && global.mode == 3) {
-            if (global.p2score > global.strangeplusscore) { global.strangeplusscore = global.p2score; }
-        }
-        
-        // ===== JR. PACMAN VARIANTS =====
-        if (global.game == 2 && global.plus == 0 && global.mode == 0) {
-            if (global.p2score > global.jrpacscore) { global.jrpacscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 0 && global.mode == 1) {
-            if (global.p2score > global.extendedscore) { global.extendedscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 0 && global.mode == 2) {
-            if (global.p2score > global.c64score) { global.c64score = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 0 && global.mode == 3) {
-            if (global.p2score > global.a2600score) { global.a2600score = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1 && global.mode == 0) {
-            if (global.p2score > global.jrpacplusscore) { global.jrpacplusscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1 && global.mode == 1) {
-            if (global.p2score > global.extendedplusscore) { global.extendedplusscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1 && global.mode == 2) {
-            if (global.p2score > global.c64plusscore) { global.c64plusscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1 && global.mode == 3) {
-            if (global.p2score > global.a2600plusscore) { global.a2600plusscore = global.p2score; }
-        }
-        
-        // ===== CHAMPION MODE =====
-        if (global.game == 1 && global.plus == 0 && global.mode == 4) {
-            if (global.p2score > global.champscore) { global.champscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1 && global.mode == 4) {
-            if (global.p2score > global.champplusscore) { global.champplusscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 0 && global.mode == 4) {
-            if (global.p2score > global.arrscore) { global.arrscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1 && global.mode == 4) {
-            if (global.p2score > global.arrplusscore) { global.arrplusscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 0 && global.mode == 4) {
-            if (global.p2score > global.bleachscore) { global.bleachscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1 && global.mode == 4) {
-            if (global.p2score > global.bleachplusscore) { global.bleachplusscore = global.p2score; }
-        }
+    /// Update high scores for standard Pac-Man and Ms. Pac-Man
+    if (global.game == 0) {
+        if (global.p2score > global.pacscore) { 
+			
+			global.pacscore = global.p2score; }
     }
-    
-    // ===== RANDOM MODE HIGH SCORES =====
-    /// Track high scores for random mode variants
-    if (global.rand == 1) {
-        if (global.game == 0 && global.plus == 0) {
-            if (global.p2score > global.pacrandscore) { global.pacrandscore = global.p2score; }
-        }
-        if (global.game == 0 && global.plus == 1) {
-            if (global.p2score > global.pacplusrandscore) { global.pacplusrandscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 0) {
-            if (global.p2score > global.mspacrandscore) { global.mspacrandscore = global.p2score; }
-        }
-        if (global.game == 1 && global.plus == 1) {
-            if (global.p2score > global.mspacplusrandscore) { global.mspacplusrandscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 0) {
-            if (global.p2score > global.jrpacrandscore) { global.jrpacrandscore = global.p2score; }
-        }
-        if (global.game == 2 && global.plus == 1) {
-            if (global.p2score > global.jrpacplusrandscore) { global.jrpacplusrandscore = global.p2score; }
-        }
+    if (global.game == 1) {
+        if (global.p2score > global.mspacscore) { global.mspacscore = global.p2score; }
     }
     
     // ===== EXTRA LIFE AWARD =====

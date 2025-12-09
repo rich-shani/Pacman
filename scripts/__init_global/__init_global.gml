@@ -40,46 +40,7 @@ function __init_global() {
 
 	// Initialize score variables (game modes)
 	global.pacscore = 0;
-	global.pacplusscore = 0;
-	global.pacrandscore = 0;
-	global.pacplusrandscore = 0;
-	global.hanglyscore = 0;
-	global.hanglyplusscore = 0;
-	global.babyloop = 0;
-	global.babylvl = 0;
-	global.babyscore = 0;
-	global.baby2score = 0;
-	global.baby3score = 0;
-	global.ultrascore = 0;
-	global.ultraplusscore = 0;
-	global.arrscore = 0;
-	global.arrplusscore = 0;
 	global.mspacscore = 0;
-	global.mspacplusscore = 0;
-	global.mspacrandscore = 0;
-	global.mspacplusrandscore = 0;
-	global.mspmpscore = 0;
-	global.mspmpplusscore = 0;
-	global.pacjrscore = 0;
-	global.pacjrplusscore = 0;
-	global.jrpacscore = 0;
-	global.jrpacplusscore = 0;
-	global.jrpacrandscore = 0;
-	global.jrpacplusrandscore = 0;
-	global.strangescore = 0;
-	global.strangeplusscore = 0;
-	global.champscore = 0;
-	global.champsplusscore = 0;
-	global.c64score = 0;
-	global.c64plusscore = 0;
-	global.a2600score = 0;
-	global.a2600plusscore = 0;
-	global.bleachscore = 0;
-	global.bleachplusscore = 0;
-	global.extendedscore = 0;
-	global.extendedplusscore = 0;
-	global.newscore = 0;
-	global.newplusscore = 0;
 
 	// Initialize game flags and counters
 	global.start = 0;
@@ -97,6 +58,5 @@ function __init_global() {
 	global.smashno = 0;
 	global.ex1 = 0;
 	global.ex2 = 0;
-	global.plus = 0;
 
 }

@@ -1,4 +1,20 @@
-__background_set( e__BG.Index, 0, background_create_from_screen(0,0,448,576,false,false) ); __background_set( e__BG.Alpha, 0, 0.25 );
+// this must do the FLASH effect ...
+var _surf = surface_create(448, 576);
+if (surface_exists(_surf)) {
+	surface_set_target(_surf);
+	draw_clear_alpha(c_black, 0);
+	
+	// Draw the screen content to surface
+	surface_reset_target();
+	var _spr = sprite_create_from_surface(_surf, 0, 0, 448, 576, false, false, 0, 0);
+	var _bg = background_add(_spr, false, false);
+	surface_free(_surf);
+	
+	__background_set( e__BG.Index, 0, _bg ); 
+	__background_set( e__BG.Alpha, 0, 0.25 );
+}
+
+
 with Drawless{
 ///
 with Wall{

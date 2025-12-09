@@ -22,8 +22,8 @@
 // ===== EXECUTE SUPPORT SCRIPTS =====
 /// Run external step functions for specialized logic
 script_execute(beginstep);    // Handle player 1 startup logic
-script_execute(movement2);    // Handle player 2 movement
-script_execute(beginstep2);   // Handle player 2 startup logic
+//script_execute(movement2);    // Handle player 2 movement
+//script_execute(beginstep2);   // Handle player 2 startup logic
 
 // ===== AUDIO & AMBIENCE MANAGEMENT =====
 /// Control background music based on game state

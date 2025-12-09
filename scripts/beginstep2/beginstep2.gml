@@ -173,30 +173,15 @@ function beginstep2() {
             
             /// Reset plus mode variables
             Pac.pluseat = 0;
-            Pac.Pac.plus = -1;
-            Pac.plus2 = 0;
             
             /// Reset ghost release timer
             Pac.timer = Pac.timerstart + 1;
-            
-            /// Random plus mode activation (if plus mode enabled)
-            if (global.plus == 1) {
-                Pac.Pac.plus = irandom(7);  // Random plus value (0-7)
-                
-                /// Random plus2 activation (if conditions met)
-                if (Pac.frighttime > 0 && 
-                    ((global.game < 2 && global.lvl > 2) || 
-                     (global.game == 2 && global.lvl > 1))) {
-                    Pac.plus2 = irandom(1);  // Random plus2 value (0-1)
-                }
-            }
             
             /// Make ghosts turn around (about-face)
             with (Blinky) {
                 aboutface = 1;
                 if (state < 2 && Pac.frighttime > 0) {
-                    if (Pac.Pac.plus == 0) {
-                        if (state == 1) { state = 0; }  // Exit frightened if in it
+                    if (state == 1) { state = 0; }  // Exit frightened if in it
                     } else {
                         state = 1;  // Enter frightened
                     }
@@ -205,7 +190,7 @@ function beginstep2() {
             with (Pinky) {
                 aboutface = 1;
                 if (state < 2 && Pac.frighttime > 0) {
-                    if (Pac.Pac.plus == 1) {
+                    if (Pac.plus == 1) {
                         if (state == 1) { state = 0; }
                     } else {
                         state = 1;
@@ -215,26 +200,17 @@ function beginstep2() {
             with (Inky) {
                 aboutface = 1;
                 if (state < 2 && Pac.frighttime > 0) {
-                    if (Pac.Pac.plus == 2) {
-                        if (state == 1) { state = 0; }
-                    } else {
-                        state = 1;
-                    }
+                    if (state == 1) { state = 0; }
+                    else { state = 1; }
                 }
             }
             with (Clyde) {
                 aboutface = 1;
                 if (state < 2 && Pac.frighttime > 0) {
-                    if (Pac.Pac.plus == 3) {
-                        if (state == 1) { state = 0; }
-                    } else {
-                        state = 1;
-                    }
+                    if (state == 1) { state = 0; }
+                    else { state = 1; }
                 }
             }
-            
-            /// Reset plus variable
-            Pac.Pac.plus = -1;
             
             /// Clear collision flag
             bonked2 = 0;
@@ -244,9 +220,6 @@ function beginstep2() {
                 global.p2score = global.p2score + 50;  // Power pellet worth 50 points
                 
                 /// Play sound based on game variant
-                if (global.game == 2) {
-                    sound_play(JrDot2);
-                }
                 if (global.game == 1) {
                     sound_play(MsDot);
                 }
@@ -265,7 +238,6 @@ function beginstep2() {
                 }
             }
         }
-    }
     
     // ===== LEVEL COMPLETION CHECK =====
     /// Check if all dots have been collected
@@ -442,7 +414,6 @@ function beginstep2() {
                             if (global.lvl > 0) {
                                 if (global.game == 0) { sound_play(Chomp); }
                                 if (global.game == 1) { sound_play(MsChomp); }
-                                if (global.game == 2) { sound_play(JrChomp); }
                             }
                             
                             /// Execute eating script
@@ -549,7 +520,6 @@ function beginstep2() {
                             if (global.lvl > 0) {
                                 if (global.game == 0) { sound_play(Chomp); }
                                 if (global.game == 1) { sound_play(MsChomp); }
-                                if (global.game == 2) { sound_play(JrChomp); }
                             }
                             with (Pac) { script_execute(sickofit); }
                             Pac.chompcount = Pac.chompcount + 1;
@@ -570,10 +540,10 @@ function beginstep2() {
                             with (Clyde) { if (state < 2) { resdir = direction / 90; } }
                             with (Fruit) { if (state > -1) { resdir = direction / 90; } }
                             if (global.lvl > 0) {
-                                if (Pac.chompcount == 1) { global.p2score = global.p2score + (200 + (200 * Pac.pluseat)); }
-                                if (Pac.chompcount == 2) { global.p2score = global.p2score + (400 + (400 * Pac.pluseat)); }
-                                if (Pac.chompcount == 3) { global.p2score = global.p2score + (800 + (800 * Pac.pluseat)); }
-                                if (Pac.chompcount == 4) { global.p2score = global.p2score + (1600 + (1600 * Pac.pluseat)); }
+                                if (Pac.chompcount == 1) { global.p2score = global.p2score + 200; }
+                                if (Pac.chompcount == 2) { global.p2score = global.p2score + 400; }
+                                if (Pac.chompcount == 3) { global.p2score = global.p2score + 800; }
+                                if (Pac.chompcount == 4) { global.p2score = global.p2score + 1600; }
                             }
                         }
                         if (state == 0 && Pac.dead == 0) {
@@ -618,7 +588,6 @@ function beginstep2() {
                             if (global.lvl > 0) {
                                 if (global.game == 0) { sound_play(Chomp); }
                                 if (global.game == 1) { sound_play(MsChomp); }
-                                if (global.game == 2) { sound_play(JrChomp); }
                             }
                             with (Pac) { script_execute(sickofit); }
                             Pac.chompcount = Pac.chompcount + 1;
@@ -639,10 +608,10 @@ function beginstep2() {
                             with (Clyde) { if (state < 2) { resdir = direction / 90; } }
                             with (Fruit) { if (state > -1) { resdir = direction / 90; } }
                             if (global.lvl > 0) {
-                                if (Pac.chompcount == 1) { global.p2score = global.p2score + (200 + (200 * Pac.pluseat)); }
-                                if (Pac.chompcount == 2) { global.p2score = global.p2score + (400 + (400 * Pac.pluseat)); }
-                                if (Pac.chompcount == 3) { global.p2score = global.p2score + (800 + (800 * Pac.pluseat)); }
-                                if (Pac.chompcount == 4) { global.p2score = global.p2score + (1600 + (1600 * Pac.pluseat)); }
+                                if (Pac.chompcount == 1) { global.p2score = global.p2score + 200; }
+                                if (Pac.chompcount == 2) { global.p2score = global.p2score + 400; }
+                                if (Pac.chompcount == 3) { global.p2score = global.p2score + 800; }
+                                if (Pac.chompcount == 4) { global.p2score = global.p2score + 1600; }
                             }
                         }
                         if (state == 0 && Pac.dead == 0) {
@@ -687,7 +656,6 @@ function beginstep2() {
                             if (global.lvl > 0) {
                                 if (global.game == 0) { sound_play(Chomp); }
                                 if (global.game == 1) { sound_play(MsChomp); }
-                                if (global.game == 2) { sound_play(JrChomp); }
                             }
                             with (Pac) { script_execute(sickofit); }
                             Pac.chompcount = Pac.chompcount + 1;
@@ -708,10 +676,10 @@ function beginstep2() {
                             with (Clyde) { if (state < 2) { resdir = direction / 90; } }
                             with (Fruit) { if (state > -1) { resdir = direction / 90; } }
                             if (global.lvl > 0) {
-                                if (Pac.chompcount == 1) { global.p2score = global.p2score + (200 + (200 * Pac.pluseat)); }
-                                if (Pac.chompcount == 2) { global.p2score = global.p2score + (400 + (400 * Pac.pluseat)); }
-                                if (Pac.chompcount == 3) { global.p2score = global.p2score + (800 + (800 * Pac.pluseat)); }
-                                if (Pac.chompcount == 4) { global.p2score = global.p2score + (1600 + (1600 * Pac.pluseat)); }
+                                if (Pac.chompcount == 1) { global.p2score = global.p2score + 200; }
+                                if (Pac.chompcount == 2) { global.p2score = global.p2score + 400; }
+                                if (Pac.chompcount == 3) { global.p2score = global.p2score + 800; }
+                                if (Pac.chompcount == 4) { global.p2score = global.p2score + 1600; }
                             }
                         }
                         if (state == 0 && Pac.dead == 0) {
