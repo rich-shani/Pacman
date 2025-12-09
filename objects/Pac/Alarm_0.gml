@@ -14,7 +14,6 @@
 /// End fright mode
 fright = PAC_FRIGHT.OFF;
 Pac.prohibit = GHOST_PROHIBIT.ALLOWED;
-plus2 = 0;
 
 /// Reset Player 1 speed to normal
 if (bonked == 0) {
@@ -29,22 +28,6 @@ if (bonked == 0) {
     }
     if (vspeed < 0) {
         vspeed = -sp;
-    }
-}
-
-/// Reset Player 2 speed to normal
-if (bonked2 == 0) {
-    if (hspeed2 > 0) {
-        hspeed2 = sp;
-    }
-    if (hspeed2 < 0) {
-        hspeed2 = -sp;
-    }
-    if (vspeed2 > 0) {
-        vspeed2 = sp;
-    }
-    if (vspeed2 < 0) {
-        vspeed2 = -sp;
     }
 }
 

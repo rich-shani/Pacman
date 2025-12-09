@@ -216,7 +216,6 @@ if (Pauser.pause == 0 && Pac.finish < 1) {
 
     instance_deactivate_all(true);
     instance_activate_region(Pac.tilex - 32, Pac.tiley - 32, 80, 80, true);
-    instance_activate_region(Pac.tilex2 - 32, Pac.tiley2 - 32, 80, 80, true);
 
     instance_activate_object(Power);
     instance_activate_object(Pauser);
@@ -318,7 +317,6 @@ if (Pac.finish > 0) {
     hspeed = 0;
     vspeed = 0;
     alarm[0] = alarm[0] + 1;
-    plus2 = 0;
 
     with (Blinky) { hspeed = 0; vspeed = 0; }
     with (Pinky) { hspeed = 0; vspeed = 0; }
@@ -327,28 +325,6 @@ if (Pac.finish > 0) {
     with (Fruit) { hspeed = 0; vspeed = 0; }
 }  
 
-// ===== PLUS MODE VISIBILITY =====
-if (plus2 == 1 && Drawless.plus2 == 0) {
-    instance_activate_object(Wall);
-    instance_activate_object(Dot);
-    tile_layer_hide(Wall.depth);
-    tile_layer_hide(Wall.depth - 1);
-    tile_layer_hide(Dot.depth);
-    tile_layer_hide(Dot.depth - 1);
-    tile_layer_hide(Dot.depth + 1);
-    Drawless.plus2 = 1;
-}
-
-if (plus2 == 0 && Drawless.plus2 == 1) {
-    instance_activate_object(Wall);
-    instance_activate_object(Dot);
-    tile_layer_show(Wall.depth);
-    tile_layer_show(Wall.depth - 1);
-    tile_layer_show(Dot.depth);
-    tile_layer_show(Dot.depth - 1);
-    tile_layer_show(Dot.depth + 1);
-    Drawless.plus2 = 0;
-}
 
 // ===== DEPTH & TARGET HELPERS =====
 if (fright == 1) { depth = 99; }

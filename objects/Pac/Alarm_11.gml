@@ -149,13 +149,10 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         if (global.game == 2) {
             /// Jr. Pac-Man: hide vertically
             y = -5000;
-            y2 = -5000;
         } else {
             /// Standard/Ms. Pac: hide horizontally
             x = -5000;
-            x2 = -5000;
             y = ystart;
-            y2 = ystart;
         }
 
         /// Reset power pellet state
@@ -345,49 +342,25 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         deadanim = 0;
         fright = PAC_FRIGHT.OFF;
 
-        /// Reset Player 2 state
-        hspeed2 = 0;
-        vspeed2 = 0;
-        dir = PAC_DIRECTION.LEFT;
-        dir2 = PAC_DIRECTION.RIGHT;
+        /// Reset player state
         newtile = 0;
-        newtile2 = 0;
         corner = 0;
-        corner2 = 0;
         cornercheck = 0;
-        corner2check = 0;
         bonked = 0;
-        bonked2 = 0;
 
-        /// Reposition players based on player count
-        if (global.players > 0 && global.players < 3 && global.p1lives > 0 && global.p2lives > 0) {
-            /// Both players alive: position apart
-            x = xstart - 16;
+        /// Reposition player
+        if (global.p1lives > 0) {
+            x = xstart;
             y = ystart;
-            x2 = xstart + 16;
-            y2 = ystart;
         } else {
-            /// Single player or one dead
-            if (global.p1lives > 0) {
-                x = xstart;
-                y = ystart;
-                x2 = -5000;
-                y2 = ystart;
-            } else {
-                x2 = xstart;
-                y2 = ystart;
-                x = -5000;
-                y = ystart;
-            }
+            x = -5000;
+            y = ystart;
         }
 
         /// Update tile positions
         tilex = 16 * (round(x / 16));
         tiley = 16 * (round(y / 16));
-        tilex2 = 16 * (round(x2 / 16));
-        tiley2 = 16 * (round(y2 / 16));
         eatdir = -1;
-        eatdir2 = -1;
 
         /// Trigger level initialization
         global.start = 1;

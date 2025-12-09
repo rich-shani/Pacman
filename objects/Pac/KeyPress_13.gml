@@ -32,36 +32,17 @@ if (((global.p1lives == 0 && global.p1gameover == 0) ||
         global.credit = global.credit - 1;
         Pac.countdown  = 10;
 
-        /// Reset Player 2 state
-        hspeed2 = 0;
-        vspeed2 = 0;
-        dir = PAC_DIRECTION.LEFT;
-        dir2 = PAC_DIRECTION.RIGHT;
+        /// Reset player state
         newtile = 0;
-        newtile2 = 0;
         bonked = 0;
-        bonked2 = 0;
 
-        /// Reposition players based on player count
-        if (global.players > 0 && global.players < 3 && global.p1lives > 0 && global.p2lives > 0) {
-            /// Both players alive: position apart
-            x = xstart - 16;
+        /// Reposition player
+        if (global.p1lives > 0) {
+            x = xstart;
             y = ystart;
-            x2 = xstart + 16;
-            y2 = ystart;
         } else {
-            /// Single player or one dead
-            if (global.p1lives > 0) {
-                x = xstart;
-                y = ystart;
-                x2 = -5000;
-                y2 = ystart;
-            } else {
-                x2 = xstart;
-                y2 = ystart;
-                x = -5000;
-                y = ystart;
-            }
+            x = -5000;
+            y = ystart;
         }
 
         /// Reset Pac.blink animation and pause handler

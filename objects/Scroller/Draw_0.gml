@@ -491,12 +491,6 @@ else{
 if global.p1lives>3 and Pauser.ignore = 0{draw_sprite(spr_Jrlife,floor(Pac.im2)+2,__view_get( e__VW.XView, 0 ) + 136-24-12, __view_get( e__VW.YView, 0 ) + -24+568)}
 if global.p1lives>2{draw_sprite(spr_Jrlife,floor(Pac.im2)+1,__view_get( e__VW.XView, 0 ) + 104-24-12, __view_get( e__VW.YView, 0 ) + -24+568)}
 if global.p1lives>1{draw_sprite(spr_Jrlife,floor(Pac.im2),__view_get( e__VW.XView, 0 ) + 72-24-12, __view_get( e__VW.YView, 0 ) + -24+568)}
-///
-if global.players > 0{
-if global.p2lives>3 and Pauser.ignore = 0{draw_sprite(spr_Jrlife2,floor(Pac.im2)+2,__view_get( e__VW.XView, 0 )-24+448-96-4-8,__view_get( e__VW.YView, 0 )+552-8)}
-if global.p2lives>2{draw_sprite(spr_Jrlife2,floor(Pac.im2)+1,__view_get( e__VW.XView, 0 )-24+448-64-4-8,__view_get( e__VW.YView, 0 )+552-8)}
-if global.p2lives>1{draw_sprite(spr_Jrlife2,floor(Pac.im2),__view_get( e__VW.XView, 0 )-24+448-32-4-8,__view_get( e__VW.YView, 0 )+552-8)}
-}
 }
 }
 if global.players = 0{
@@ -537,11 +531,6 @@ action_draw_sprite(spr_Red, Blinky.pursuex, Blinky.pursuey, -1);
 action_draw_sprite(spr_Pink, Pinky.pursuex, Pinky.pursuey, -1);
 action_draw_sprite(spr_Cyan, Inky.pursuex, Inky.pursuey, -1);
 if collision_circle(16*(round(Pac.x/16)),16*(round(Pac.y/16)),128,Clyde,false,false)
-or collision_circle(16*(round(Pac.x2/16)),16*(round(Pac.y2/16)),128,Clyde,false,false)
-or (
-collision_circle(16*(round(Pac.x/16)),16*(round(Pac.y/16)),128,Clyde,false,false) and
-collision_circle(16*(round(Pac.x2/16)),16*(round(Pac.y2/16)),128,Clyde,false,false)
-)
 {draw_sprite(spr_Orange,0,Clyde.cornerx,Clyde.cornery);}
 
 action_font(font0, 0);
@@ -633,25 +622,6 @@ action_draw_variable(Pac.tiley, __view_get( e__VW.XView, 0 ) + 80, __view_get( e
 action_draw_variable(Pac.park, __view_get( e__VW.XView, 0 ), __view_get( e__VW.YView, 0 ) + 560);
 action_draw_variable(Pac.pause, __view_get( e__VW.XView, 0 ) + 32, __view_get( e__VW.YView, 0 ) + 560);
 action_draw_variable(Pac.stoppy, __view_get( e__VW.XView, 0 ) + 48, __view_get( e__VW.YView, 0 ) + 560);
-action_color(65280);
-action_draw_variable(Pac.dir2*2, __view_get( e__VW.XView, 0 ) + 128 + 16, __view_get( e__VW.YView, 0 ) + 544);
-action_draw_variable(Pac.eatdir2, __view_get( e__VW.XView, 0 ) + 16 + 128 + 16, __view_get( e__VW.YView, 0 ) + 544);
-action_draw_variable(Pac.corner2, __view_get( e__VW.XView, 0 ) + 48 + 128 + 16, __view_get( e__VW.YView, 0 ) + 544);
-__b__ = action_if_variable(global.p2gameover, 0, 0);
-if __b__
-{
-__b__ = action_if_variable(Pac.dead, 2, 1);
-if __b__
-{
-{
-action_draw_variable(Pac.tilex2, __view_get( e__VW.XView, 0 ) + 80 + 128 + 16, __view_get( e__VW.YView, 0 ) + 544);
-action_draw_variable(Pac.tiley2, __view_get( e__VW.XView, 0 ) + 80 + 128 + 16, __view_get( e__VW.YView, 0 ) + 560);
-}
-}
-}
-action_draw_variable(Pac.park2, __view_get( e__VW.XView, 0 ) + 128 + 16, __view_get( e__VW.YView, 0 ) + 560);
-action_draw_variable(Pac.pause2, __view_get( e__VW.XView, 0 ) + 32 + 128 + 16, __view_get( e__VW.YView, 0 ) + 560);
-action_draw_variable(Pac.stoppy, __view_get( e__VW.XView, 0 ) + 48 + 128 + 16, __view_get( e__VW.YView, 0 ) + 560);
 action_color(32768);
 action_draw_variable(Fruit.alarm[0], __view_get( e__VW.XView, 0 ) + 224 + 64, __view_get( e__VW.YView, 0 ) + 544);
 action_draw_variable(Fruit.spawn, __view_get( e__VW.XView, 0 ) + 256 + 64, __view_get( e__VW.YView, 0 ) + 560);

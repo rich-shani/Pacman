@@ -9,17 +9,12 @@
 /// Strategy: Blinky directly chases Pac's current position (no prediction)
 /// This makes Blinky the most straightforward threat - he's always coming straight at you
 ///
-/// Two-Player Support:
-/// Blinky chooses between Player 1 (Pac) and Player 2 (Mac) based on which
-/// target is closer to Blinky's current position (Manhattan distance)
-/// If distances are equal, randomly chooses between players
+/// Single-Player Support:
+/// Blinky directly chases Pac's current position
 ///
 /// Algorithm:
 /// 1. Calculate Player 1 (Pac) grid position
-/// 2. Calculate Player 2 (Mac) grid position
-/// 3. Compare Manhattan distances from Blinky to each player
-/// 4. Choose closer player (or random if equal)
-/// 5. Set pursuex/pursuey to chosen player's grid position
+/// 2. Set pursuex/pursuey to Pac's grid position
 ///
 /// This is the simplest ghost AI - just "go toward Pac"
 /// ===============================================================================
@@ -40,40 +35,9 @@ if (state == GHOST_STATE.CHASE) {
     var _pac_tile_x = 16 * round(Pac.x / 16);
     var _pac_tile_y = 16 * round(Pac.y / 16);
     
-    /// Calculate Player 2 (Mac) grid position (if two-player mode)
-    var _mac_tile_x = 16 * round(Pac.x2 / 16);
-    var _mac_tile_y = 16 * round(Pac.y2 / 16);
-    
-    /// Calculate Manhattan distances from Blinky to each player
-    /// Manhattan distance = |x1 - x2| + |y1 - y2|
-    var _dist_to_pac = abs(_pac_tile_x - tilex) + abs(_pac_tile_y - tiley);
-    var _dist_to_mac = abs(_mac_tile_x - tilex) + abs(_mac_tile_y - tiley);
-    
-    /// Choose target player based on distance
-    if (_dist_to_pac == _dist_to_mac) {
-        /// Equal distances: randomly choose between players
-        /// This adds unpredictability when both players are equidistant
-        if (irandom(1) == 1) {
-            /// Choose Player 2 (Mac)
-            pursuex = _mac_tile_x;
-            pursuey = _mac_tile_y;
-        } else {
-            /// Choose Player 1 (Pac)
-            pursuex = _pac_tile_x;
-            pursuey = _pac_tile_y;
-        }
-    } else {
-        /// Different distances: choose closer player
-        if (_dist_to_mac < _dist_to_pac) {
-            /// Player 2 (Mac) is closer: target Mac
-            pursuex = _mac_tile_x;
-            pursuey = _mac_tile_y;
-        } else {
-            /// Player 1 (Pac) is closer: target Pac
-            pursuex = _pac_tile_x;
-            pursuey = _pac_tile_y;
-        }
-    }
+    /// Set target to Pac's position (direct chase)
+    pursuex = _pac_tile_x;
+    pursuey = _pac_tile_y;
     
     /// Note: In scatter mode (when Pac.scatter == 1), the pathfinding script
     /// in Step_2 will override this target and chase the scatter corner instead.

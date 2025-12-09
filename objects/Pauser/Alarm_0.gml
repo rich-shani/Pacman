@@ -16,7 +16,7 @@ if (surface_exists(_surf)) {
 
 
 with Drawless{
-///
+
 with Wall{
 if image_index = 18 and ((y = room_height - 48) or (room_height = 960 and y = room_height - 64)){
 tile_set_alpha(tile_layer_find(depth-1,x,y+8),0);
@@ -63,4 +63,3 @@ sound_stop(JrGhost4);
 sound_stop(JrGhost5);
 sound_stop(JrBlue);
 sound_stop(JrFlee);
-

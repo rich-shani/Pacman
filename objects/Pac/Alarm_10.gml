@@ -55,15 +55,6 @@ if (global.lvl > 0 && global.start == 0 && dead == PAC_STATE.ALIVE && Pac.dotcou
     }
     vspeed = 0;
 
-    /// PLAYER 2 INPUT
-    if (keyboard_check(ord("A")) == true) {
-        dir2 = PAC_DIRECTION.LEFT;
-        hspeed2 = -sp;
-    } else {
-        dir2 = PAC_DIRECTION.RIGHT;
-        hspeed2 = sp;
-    }
-    vspeed2 = 0;
 
     /// Set Blinky (red ghost) initial movement
     with (Blinky) {

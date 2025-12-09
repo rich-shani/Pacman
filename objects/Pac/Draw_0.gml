@@ -487,20 +487,6 @@ if (__b__) {
     }
 }
 
-// ===== PLAYER 2 RENDERING =====
-/// Draw Player 2 (Mac) sprite using draw2 script
-/// This handles all Player 2 rendering logic separately
-script_execute(draw2, x2, y2);
-
-// ===== PLAYER 2 WRAPAROUND RENDERING =====
-/// For tall rooms, also render Player 2 at wrapped positions
-if (room_height == 576) {
-    /// Render Player 2 at Y-512 (above)
-    script_execute(draw2, x2, y2 - 512);
-    
-    /// Render Player 2 at Y+512 (below)
-    script_execute(draw2, x2, y2 + 512);
-}
 
 /// ===============================================================================
 /// COMMENTED OUT CODE (LEGACY/UNUSED)

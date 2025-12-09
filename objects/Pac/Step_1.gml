@@ -5,7 +5,7 @@
 /// Called: SECOND each frame (after Step_0 direction sync)
 ///
 /// Main Responsibilities:
-/// 1. Execute support scripts (beginstep, movement2, beginstep2)
+/// 1. Execute support scripts (beginstep)
 /// 2. Manage animation frame updates (Pac mouth opening/closing)
 /// 3. Handle keyboard input for movement direction changes
 /// 4. Detect and process dot collection
@@ -22,8 +22,6 @@
 // ===== EXECUTE SUPPORT SCRIPTS =====
 /// Run external step functions for specialized logic
 script_execute(beginstep);    // Handle player 1 startup logic
-//script_execute(movement2);    // Handle player 2 movement
-//script_execute(beginstep2);   // Handle player 2 startup logic
 
 // ===== AUDIO & AMBIENCE MANAGEMENT =====
 /// Control background music based on game state
@@ -759,14 +757,10 @@ if (dead == PAC_STATE.ALIVE) {
         Pac.pluseat  = 0;
 
         Pac.plus = -1;
-        plus2 = 0;
 
         Pac.timer = Pac.timerstart + 1;
         if (global.plus == 1) {
             Pac.plus = irandom(7);
-            if (Pac.frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
-                plus2 = irandom(1);
-            }
         }
 
         /// All ghosts reverse direction
@@ -960,7 +954,6 @@ if (dead == PAC_STATE.ALIVE && (Pac.prohibit == GHOST_PROHIBIT.ALLOWED || Pac.pr
                         fright = PAC_FRIGHT.ACTIVE;
                         Pac.alarm[0] = bonustime;
                         Pac.chompcount = 0;
-                        plus2 = 0;
                         Pac.pluseat  = 1;
 
                         /// Hide ghosts during bonus fright period
@@ -1075,14 +1068,6 @@ if (Pac.finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                     if (Pac.speed != 0) {
                         if (Pac.eatdir == -1) {
                             Pac.eatdir = Pac.direction / 45;
-                        }
-                    }
-                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
-                        // Player 2 not moving
-                    }
-                    else {
-                        if (Pac.eatdir2 == -1) {
-                            Pac.eatdir2 = Pac.direction2 / 45;
                         }
                     }
 
@@ -1209,14 +1194,6 @@ if (Pac.finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                             Pac.eatdir = Pac.direction / 45;
                         }
                     }
-                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
-                        // Player 2 not moving
-                    }
-                    else {
-                        if (Pac.eatdir2 == -1) {
-                            Pac.eatdir2 = Pac.direction2 / 45;
-                        }
-                    }
 
                     /// All ghosts reverse direction
                     with (Blinky) {
@@ -1338,14 +1315,6 @@ if (Pac.finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                             Pac.eatdir = Pac.direction / 45;
                         }
                     }
-                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
-                        // Player 2 not moving
-                    }
-                    else {
-                        if (Pac.eatdir2 == -1) {
-                            Pac.eatdir2 = Pac.direction2 / 45;
-                        }
-                    }
 
                     with (Blinky) {
                         if (state < GHOST_STATE.EYES) {
@@ -1463,14 +1432,6 @@ if (Pac.finish == 0 && chomp == 0 && dead == PAC_STATE.ALIVE) {
                     if (Pac.speed != 0) {
                         if (Pac.eatdir == -1) {
                             Pac.eatdir = Pac.direction / 45;
-                        }
-                    }
-                    if (Pac.hspeed2 == 0 && Pac.vspeed2 == 0) {
-                        // Player 2 not moving
-                    }
-                    else {
-                        if (Pac.eatdir2 == -1) {
-                            Pac.eatdir2 = Pac.direction2 / 45;
                         }
                     }
 
@@ -1599,8 +1560,6 @@ if (global.start == true) {
     vspeed = 0;
     alarm[0] = alarm[0] + 1;
 
-    plus2 = 0;
-
     with (Blinky) {
         hspeed = 0;
         vspeed = 0;
@@ -1628,8 +1587,6 @@ if (dead > PAC_STATE.ALIVE) {
     hspeed = 0;
     vspeed = 0;
     alarm[0] = alarm[0] + 1;
-
-    plus2 = 0;
 
     with (Blinky) {
         hspeed = 0;
@@ -1663,7 +1620,6 @@ if (fright == PAC_FRIGHT.ACTIVE) {
         alarm[0] = -1;
         fright = PAC_FRIGHT.OFF;
         Pac.prohibit = GHOST_PROHIBIT.ALLOWED;
-        plus2 = 0;
 
         /// Reset speeds to normal (not boosted)
         if (bonked == 0) {
@@ -1681,108 +1637,9 @@ if (fright == PAC_FRIGHT.ACTIVE) {
             }
         }
 
-        /// Reset Player 2 speeds
-        if (bonked2 == 0) {
-            if (hspeed2 > 0) {
-                hspeed2 = sp;
-            }
-            if (hspeed2 < 0) {
-                hspeed2 = -sp;
-            }
-            if (vspeed2 > 0) {
-                vspeed2 = sp;
-            }
-            if (vspeed2 < 0) {
-                vspeed2 = -sp;
-            }
-        }
-
         Pac.chompcount = 0;
         Pac.pluseat  = 0;
     }
-}
-
-// ===== PLAYER 2 COLLISION (2-PLAYER MODE) =====
-/// Detect collision between Player 1 and Player 2
-if (global.p1gameover == 0 && global.p2gameover == 0 && chomp == 0 && global.start == 0 && dead == PAC_STATE.ALIVE && Pac.finish == 0) {
-
-    if (corner == PAC_CORNER.NONE && corner2 == PAC_CORNER.NONE) {
-
-        if ((tilex == tilex2 || (abs(x2 - x)) < 4) && (tiley == tiley2 || (abs(y2 - y)) < 4) && bonked != 1 && bonked2 != 1) {
-
-            bonked = 1;
-            bonked2 = 1;
-            alarm[4] = 10;
-            sound_play(Bonk);
-
-            /// Player 1 relative position to Player 2
-            if (speed == 0) {
-                bonked = 0;
-            }
-            else {
-                if (dir == PAC_DIRECTION.RIGHT || dir == PAC_DIRECTION.LEFT) {
-                    if (x > x2) {
-                        hspeed = 4;
-                    }
-                    else {
-                        hspeed = -4;
-                    }
-                }
-
-                if (dir == PAC_DIRECTION.UP || dir == PAC_DIRECTION.DOWN) {
-                    if (y > y2) {
-                        vspeed = 4;
-                    }
-                    else {
-                        vspeed = -4;
-                    }
-                }
-            }
-
-            /// Player 2 relative position to Player 1
-            if (hspeed2 == 0 && vspeed2 == 0) {
-                bonked2 = 0;
-            }
-            else {
-                if (dir2 == PAC_DIRECTION.RIGHT || dir2 == PAC_DIRECTION.LEFT) {
-                    if (x > x2) {
-                        hspeed2 = -4;
-                    }
-                    else {
-                        hspeed2 = 4;
-                    }
-                }
-
-                if (dir2 == PAC_DIRECTION.UP || dir2 == PAC_DIRECTION.DOWN) {
-                    if (y > y2) {
-                        vspeed2 = -4;
-                    }
-                    else {
-                        vspeed2 = 4;
-                    }
-                }
-            }
-
-            /// Snap both players to grid and apply direction updates
-            x = tilex;
-            y = tiley;
-            x2 = tilex2;
-            y2 = tiley2;
-
-            if (hspeed == 4) { dir = PAC_DIRECTION.RIGHT; }
-            if (hspeed == -4) { dir = PAC_DIRECTION.LEFT; }
-            if (vspeed == 4) { dir = PAC_DIRECTION.DOWN; }
-            if (vspeed == -4) { dir = PAC_DIRECTION.UP; }
-
-            if (hspeed2 == 4) { dir2 = PAC_DIRECTION.RIGHT; }
-            if (hspeed2 == -4) { dir2 = PAC_DIRECTION.LEFT; }
-            if (vspeed2 == 4) { dir2 = PAC_DIRECTION.DOWN; }
-            if (vspeed2 == -4) { dir2 = PAC_DIRECTION.UP; }
-
-        }
-
-    }
-
 }
 
 

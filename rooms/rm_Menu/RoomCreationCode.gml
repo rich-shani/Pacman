@@ -5,7 +5,7 @@ global.p1score = 0; global.p2score = 0;
 
 global.p1lives = 0; global.p2lives = 0;
 
-global.extralife = 1; global.extralife2 = 1;
+global.extralife = 1;
 
 global.p1gameover = 0; global.p2gameover = 0;
 
@@ -18,12 +18,6 @@ global.mr = 0;
 global.mg = 0;
 
 global.mb = 255;
-
-global.mr2 = 0;
-
-global.mg2 = 0;
-
-global.mb2 = 0;
 
 global.dr = 255;
 

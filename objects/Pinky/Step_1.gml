@@ -9,17 +9,12 @@
 /// Strategy: Pinky tries to AMBUSH Pac by targeting 2 tiles ahead of Pac's movement
 /// This makes Pinky appear to "cut off" Pac's path rather than directly chase
 ///
-/// Two-Player Support:
-/// Pinky chooses between Player 1 (Pac) and Player 2 (Mac) based on which
-/// target is closer to Pinky's current position (Manhattan distance)
-/// If distances are equal, randomly chooses between players
+/// Single-Player Support:
+/// Pinky targets 2 tiles ahead of Pac's movement direction
 ///
 /// Algorithm:
 /// 1. Calculate target for Player 1: 2 tiles ahead of Pac's movement direction
-/// 2. Calculate target for Player 2: 2 tiles ahead of Mac's movement direction
-/// 3. Compare Manhattan distances from Pinky to each target
-/// 4. Choose closer target (or random if equal)
-/// 5. Set pursuex/pursuey to chosen target
+/// 2. Set pursuex/pursuey to Pac's predicted position
 /// ===============================================================================
 
 // ===== ANIMATION UPDATE =====
@@ -80,40 +75,9 @@ if (Pac.alarm[0] == 0) {
 var _pac_target_x = 16 * (round(Pac.x / 16)) + (2 * Pac.xdir);
 var _pac_target_y = 16 * (round(Pac.y / 16)) + (2 * Pac.ydir);
 
-/// Calculate Player 2 (Mac) target: 2 tiles ahead of movement direction
-var _mac_target_x = 16 * (round(Pac.x2 / 16)) + (2 * Pac.xdir2);
-var _mac_target_y = 16 * (round(Pac.y2 / 16)) + (2 * Pac.ydir2);
-
-/// Calculate Manhattan distances from Pinky to each target
-/// Manhattan distance = |x1 - x2| + |y1 - y2|
-var _dist_to_pac = abs(_pac_target_x - tilex) + abs(_pac_target_y - tiley);
-var _dist_to_mac = abs(_mac_target_x - tilex) + abs(_mac_target_y - tiley);
-
-/// Choose target based on distance
-if (_dist_to_pac == _dist_to_mac) {
-    /// Equal distances: randomly choose between players
-    /// This adds unpredictability when both players are equidistant
-    if (irandom(1) == 1) {
-        /// Choose Player 2 (Mac)
-        pursuex = _mac_target_x;
-        pursuey = _mac_target_y;
-    } else {
-        /// Choose Player 1 (Pac)
-        pursuex = _pac_target_x;
-        pursuey = _pac_target_y;
-    }
-} else {
-    /// Different distances: choose closer target
-    if (_dist_to_mac < _dist_to_pac) {
-        /// Player 2 (Mac) is closer: target Mac
-        pursuex = _mac_target_x;
-        pursuey = _mac_target_y;
-    } else {
-        /// Player 1 (Pac) is closer: target Pac
-        pursuex = _pac_target_x;
-        pursuey = _pac_target_y;
-    }
-}
+/// Set target to Pac's predicted position (2 tiles ahead)
+pursuex = _pac_target_x;
+pursuey = _pac_target_y;
 
 // ===== PATHFINDING AT INTERSECTIONS =====
 /// Handle pathfinding when ghost reaches a new tile

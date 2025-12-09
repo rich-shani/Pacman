@@ -117,7 +117,6 @@
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"maze_picker","path":"scripts/maze_picker/maze_picker.yy",},},
     {"id":{"name":"mazer","path":"scripts/mazer/mazer.yy",},},
-    {"id":{"name":"movement2","path":"scripts/movement2/movement2.yy",},},
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
     {"id":{"name":"PACMAN_INPUT","path":"scripts/PACMAN_INPUT/PACMAN_INPUT.yy",},},
     {"id":{"name":"PACMAN_STATE","path":"scripts/PACMAN_STATE/PACMAN_STATE.yy",},},

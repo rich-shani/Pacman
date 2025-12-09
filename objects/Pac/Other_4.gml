@@ -329,7 +329,6 @@ finish = 0;
 siren = 0;
 ambience = 0;
 plus = -1;
-plus2 = 0;
 countdown  = 10;
 blink = 0;
 

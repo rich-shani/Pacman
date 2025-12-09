@@ -47,7 +47,6 @@ function __init_global() {
 //	global.credit = 0;
 	global.dottotal = 0;
 	global.extralife = 0;
-	global.extralife2 = 0;
 	global.color = 0;
 	global.last = 0;
 	global.loop = 0;
@@ -57,6 +56,5 @@ function __init_global() {
 	global.doki = 0;
 	global.smashno = 0;
 	global.ex1 = 0;
-	global.ex2 = 0;
 
 }

@@ -39,12 +39,6 @@ if (room_width == 448) {
                 tile_set_blend(tile_layer_find(depth + 1, x, y), 
                               make_color_hsv(Drawless.mh2, Drawless.ms2, Drawless.mv2));
                 
-                /// Hide tiles if player 2 plus mode is active
-                if (Pac.plus2 == 1) {
-                    tile_layer_hide(depth - 1);
-                    tile_layer_hide(depth + 1);
-                }
-                
                 /// Hide the dot instance
                 visible = false;
             }
@@ -109,12 +103,9 @@ if ((Pac.dotcount > -1 + 70 && global.game == 0) ||
             alarm[0] = 1080;  // Despawn timer
             state = 0;  // Set to spawning state
             
-            /// Random vertical position (top or bottom exit)
-            if (irandom(1) == 0) {
-                y = global.ex1;
-            } else {
-                y = global.ex2;
-            }
+            ///  vertical position 
+			y = global.ex1;
+       
             
             /// Random horizontal position and direction
             if (irandom(1) == 0) {
@@ -267,13 +258,10 @@ if ((Pac.dotcount > -1 + 170 && global.game == 0) ||
                 state = 0;
                 alarm[0] = 1080;
                 
-                /// Random vertical position
-                if (irandom(1) == 0) {
+                ///  vertical position
+
                     y = global.ex1;
-                } else {
-                    y = global.ex2;
-                }
-                
+             
                 /// Random horizontal position and direction
                 if (irandom(1) == 0) {
                     x = -24;

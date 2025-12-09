@@ -38,9 +38,9 @@ function beginstep() {
         else {
             /// Only animate when Pac is moving or eating
             /// Check if Pac is stationary and not eating
-            if ((hspeed2 == 0 && vspeed2 == 0) || 
+            if ((hspeed == 0 && vspeed == 0) || 
                 (chomp == 1) || 
-                (hspeed2 == 0 && vspeed2 == 0 && chomp == 1)) {
+                (hspeed == 0 && vspeed == 0 && chomp == 1)) {
                 // Pac is stationary - no animation update needed
             } else {
                 /// Increment animation frame

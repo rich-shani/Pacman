@@ -3,7 +3,7 @@
 /// ===============================================================================
 /// Purpose: Restore Player 1 and Player 2 movement speed after eating a ghost
 /// Called: When a ghost is eaten (from beginstep2 or Pac Step_1)
-///
+/// ===============================================================================
 /// Responsibilities:
 /// 1. Clear pause flags for both players
 /// 2. Restore movement speed based on eating direction
@@ -17,7 +17,6 @@
 function sickofit() {
     /// Clear pause flags for both players
     pause = 0;   // Player 1 pause cleared
-    pause2 = 0;  // Player 2 pause cleared
     
     // ===== FRIGHT MODE SPEED RESTORATION =====
     /// Restore speed when in fright mode (power pellet active)
@@ -34,18 +33,7 @@ function sickofit() {
         if (eatdir == 6) { hspeed = 0; vspeed = spfright; eatdir = -1; }
         if (eatdir == 7) { hspeed = spfright; vspeed = spfright; eatdir = -1; }
         stoppy = 0;  // Clear Player 1 suspension flag
-        
-        // ===== PLAYER 2 SPEED RESTORATION =====
-        /// Restore Player 2 speed based on eating direction (8-way)
-        if (eatdir2 == 0) { hspeed2 = spfright; vspeed2 = 0; eatdir2 = -1; }
-        if (eatdir2 == 1) { hspeed2 = spfright; vspeed2 = -spfright; eatdir2 = -1; }
-        if (eatdir2 == 2) { hspeed2 = 0; vspeed2 = -spfright; eatdir2 = -1; }
-        if (eatdir2 == 3) { hspeed2 = -spfright; vspeed2 = -spfright; eatdir2 = -1; }
-        if (eatdir2 == 4) { hspeed2 = -spfright; vspeed2 = 0; eatdir2 = -1; }
-        if (eatdir2 == 5) { hspeed2 = -spfright; vspeed2 = spfright; eatdir2 = -1; }
-        if (eatdir2 == 6) { hspeed2 = 0; vspeed2 = spfright; eatdir2 = -1; }
-        if (eatdir2 == 7) { hspeed2 = spfright; vspeed2 = spfright; eatdir2 = -1; }
-        stoppy2 = 0;  // Clear Player 2 suspension flag
+     
     }
     // ===== NORMAL MODE SPEED RESTORATION =====
     /// Restore speed when in normal mode (no power pellet)
@@ -62,16 +50,5 @@ function sickofit() {
         if (eatdir == 7) { hspeed = sp; vspeed = sp; eatdir = -1; }
         stoppy = 0;  // Clear Player 1 suspension flag
         
-        // ===== PLAYER 2 SPEED RESTORATION =====
-        /// Restore Player 2 speed based on eating direction (8-way)
-        if (eatdir2 == 0) { hspeed2 = sp; vspeed2 = 0; eatdir2 = -1; }
-        if (eatdir2 == 1) { hspeed2 = sp; vspeed2 = -sp; eatdir2 = -1; }
-        if (eatdir2 == 2) { hspeed2 = 0; vspeed2 = -sp; eatdir2 = -1; }
-        if (eatdir2 == 3) { hspeed2 = -sp; vspeed2 = -sp; eatdir2 = -1; }
-        if (eatdir2 == 4) { hspeed2 = -sp; vspeed2 = 0; eatdir2 = -1; }
-        if (eatdir2 == 5) { hspeed2 = -sp; vspeed2 = sp; eatdir2 = -1; }
-        if (eatdir2 == 6) { hspeed2 = 0; vspeed2 = sp; eatdir2 = -1; }
-        if (eatdir2 == 7) { hspeed2 = sp; vspeed2 = sp; eatdir2 = -1; }
-        stoppy2 = 0;  // Clear Player 2 suspension flag
     }
 }

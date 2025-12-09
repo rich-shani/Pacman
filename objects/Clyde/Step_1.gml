@@ -10,18 +10,14 @@
 /// - Close (< 128 pixels): Flee to scatter corner (shy behavior)
 /// - Far (>= 128 pixels): Chase Pac directly (like Blinky)
 ///
-/// Two-Player Support:
-/// Clyde chooses between Player 1 (Pac) and Player 2 (Mac) based on which
-/// target produces a shorter distance from Clyde's current position
-/// If distances are equal, randomly chooses between players
+/// Single-Player Support:
+/// Clyde chooses behavior based on distance to Pac
 ///
 /// Algorithm:
 /// 1. Calculate Manhattan distance from Clyde to Player 1 (Pac)
-/// 2. Calculate Manhattan distance from Clyde to Player 2 (Mac)
-/// 3. Choose closer player (or random if equal)
-/// 4. If chosen player is close (< 128 pixels): Target scatter corner (flee)
-/// 5. If chosen player is far (>= 128 pixels): Target player directly (chase)
-/// 6. Set pursuex/pursuey to chosen target
+/// 2. If Pac is close (< 128 pixels): Target scatter corner (flee)
+/// 3. If Pac is far (>= 128 pixels): Target Pac directly (chase)
+/// 4. Set pursuex/pursuey to chosen target
 ///
 /// This creates unpredictable behavior: Clyde appears to "change his mind"
 /// ===============================================================================
@@ -82,58 +78,13 @@ if (Pac.alarm[0] == 0) {
 var _pac_tile_x = 16 * (round(Pac.x / 16));
 var _pac_tile_y = 16 * (round(Pac.y / 16));
 
-/// Calculate Player 2 (Mac) grid position
-var _mac_tile_x = 16 * (round(Pac.x2 / 16));
-var _mac_tile_y = 16 * (round(Pac.y2 / 16));
-
-/// Calculate Manhattan distances from Clyde to each player
-/// Manhattan distance = |x1 - x2| + |y1 - y2|
-var _dist_to_pac = abs(_pac_tile_x - tilex) + abs(_pac_tile_y - tiley);
-var _dist_to_mac = abs(_mac_tile_x - tilex) + abs(_mac_tile_y - tiley);
-
-/// Choose target player based on distance
-var _chosen_player_x, _chosen_player_y;
-var _chosen_distance;
-
-if (_dist_to_pac == _dist_to_mac) {
-    /// Equal distances: randomly choose between players
-    /// This adds unpredictability when both players are equidistant
-    if (irandom(1) == 1) {
-        /// Choose Player 2 (Mac)
-        _chosen_player_x = _mac_tile_x;
-        _chosen_player_y = _mac_tile_y;
-        _chosen_distance = _dist_to_mac;
-    } else {
-        /// Choose Player 1 (Pac)
-        _chosen_player_x = _pac_tile_x;
-        _chosen_player_y = _pac_tile_y;
-        _chosen_distance = _dist_to_pac;
-    }
-} else {
-    /// Different distances: choose closer player
-    if (_dist_to_mac < _dist_to_pac) {
-        /// Player 2 (Mac) is closer: target Mac
-        _chosen_player_x = _mac_tile_x;
-        _chosen_player_y = _mac_tile_y;
-        _chosen_distance = _dist_to_mac;
-    } else {
-        /// Player 1 (Pac) is closer: target Pac
-        _chosen_player_x = _pac_tile_x;
-        _chosen_player_y = _pac_tile_y;
-        _chosen_distance = _dist_to_pac;
-    }
-}
-
 /// ===== DISTANCE-BASED BEHAVIOR SWITCHING =====
 /// Clyde's personality: close = flee, far = chase
 /// Threshold: 128 pixels (8 tiles) Manhattan distance
 
-/// Check if chosen player is within flee distance
+/// Check if Pac is within flee distance
 /// Use collision_circle to check if player is within 128 pixel radius
-/// This checks both Pac and Mac positions to handle edge cases
-var _player_close = collision_circle(_chosen_player_x + 8, _chosen_player_y + 8, 128, Clyde, false, false) ||
-                    collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) ||
-                    collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false);
+var _player_close = collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false);
 
 if (_player_close) {
     /// Player is TOO CLOSE (< 128 pixels): Flee to scatter corner
@@ -143,8 +94,8 @@ if (_player_close) {
 } else {
     /// Player is SAFE DISTANCE (>= 128 pixels): Chase directly
     /// Clyde's normal behavior: pursue like Blinky when not threatened
-    pursuex = _chosen_player_x;
-    pursuey = _chosen_player_y;
+    pursuex = _pac_tile_x;
+    pursuey = _pac_tile_y;
 }
 
 // ===== PATHFINDING AT INTERSECTIONS =====
@@ -189,15 +140,12 @@ if (y > 48 && y < room_height - 48) {
                                 /// Normal chase: Check if player is close (flee) or far (chase)
                                 /// This check uses collision_circle to determine if player is within 128 pixels
                                 
-                                if (collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) ||
-                                    collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false) ||
-                                    (collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false) &&
-                                     collision_circle(_mac_tile_x + 8, _mac_tile_y + 8, 128, Clyde, false, false))) {
-                                    /// Player(s) too close: Flee to scatter corner
+                                if (collision_circle(_pac_tile_x + 8, _pac_tile_y + 8, 128, Clyde, false, false)) {
+                                    /// Player too close: Flee to scatter corner
                                     script_execute(chase_object, tilex, tiley, cornerx, cornery);
                                 } else {
-                                    /// Player(s) at safe distance: Chase directly
-                                    /// pursuex/pursuey already set above (chosen player position)
+                                    /// Player at safe distance: Chase directly
+                                    /// pursuex/pursuey already set above (Pac position)
                                     script_execute(chase_object, tilex, tiley, pursuex, pursuey);
                                 }
                             }
