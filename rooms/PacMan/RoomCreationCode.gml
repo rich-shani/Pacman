@@ -8,6 +8,12 @@ global.mg = 0
 
 global.mb = 255
 
+global.mr2 = 0
+
+global.mg2 = 0
+
+global.mb2 = 255
+
 global.dr = 255
 
 global.dg = 183
@@ -26,11 +32,11 @@ global.mg = 183
 
 global.mb = 174
 
-global.mr2 = 0
+global.mr2 = 255
 
-global.mg2 = 0
+global.mg2 = 255
 
-global.mb2 = 0
+global.mb2 = 255
 
 global.dr = 255
 
@@ -49,6 +55,12 @@ global.mr = 0
 global.mg = 0
 
 global.mb = 255
+
+global.mr2 = 0
+
+global.mg2 = 0
+
+global.mb2 = 255
 
 global.dr = 240
 
@@ -71,6 +83,12 @@ global.mr = irandom(255)
 global.mg = irandom(255)
 
 global.mb = irandom(255)
+
+global.mr2 = global.mr
+
+global.mg2 = global.mg
+
+global.mb2 = global.mb
 
 if global.game = 1{
 
