@@ -8,9 +8,9 @@ global.mg = 0
 
 global.mb = 255
 
-global.mr2 = 0
+global.mr2 = 255
 
-global.mg2 = 0
+global.mg2 = 255
 
 global.mb2 = 255
 
@@ -56,9 +56,9 @@ global.mg = 0
 
 global.mb = 255
 
-global.mr2 = 0
+global.mr2 = 255
 
-global.mg2 = 0
+global.mg2 = 255
 
 global.mb2 = 255
 
@@ -84,11 +84,11 @@ global.mg = irandom(255)
 
 global.mb = irandom(255)
 
-global.mr2 = global.mr
+global.mr2 = 255
 
-global.mg2 = global.mg
+global.mg2 = 255
 
-global.mb2 = global.mb
+global.mb2 = 255
 
 if global.game = 1{
 
