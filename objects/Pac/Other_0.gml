@@ -26,7 +26,7 @@ if (hspeed < 0) {
     bonked = 0;
 
     /// Re-apply speed based on current direction and fright mode
-    if (fright == PAC_FRIGHT.ACTIVE) {
+    if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
             hspeed = oGameManager.spfright;
@@ -80,7 +80,7 @@ if (hspeed > 0) {
     bonked = 0;
 	
     /// Re-apply speed based on current direction and fright mode
-    if (fright == PAC_FRIGHT.ACTIVE) {
+    if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
             hspeed = oGameManager.spfright;

@@ -356,7 +356,7 @@ if (chomp == 0) {
     if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
         if (pause == 0) {
             if (eatdir == 0) { hspeed = oGameManager.spfright; vspeed = 0; eatdir = -1; }
-            if (eatdir == 1) { hspeed = soGameManager.pfright; vspeed = -oGameManager.spfright; eatdir = -1; }
+            if (eatdir == 1) { hspeed = oGameManager.spfright; vspeed = -oGameManager.spfright; eatdir = -1; }
             if (eatdir == 2) { hspeed = 0; vspeed = -oGameManager.spfright; eatdir = -1; }
             if (eatdir == 3) { hspeed = -oGameManager.spfright; vspeed = -oGameManager.spfright; eatdir = -1; }
             if (eatdir == 4) { hspeed = -oGameManager.spfright; vspeed = 0; eatdir = -1; }
@@ -629,16 +629,16 @@ if (dir == 3) { xdir = 0; ydir = 32; }
 
 // ===== GHOST RELEASE TIMING =====
 if (dead == 0 && oGameManager.start == 0) {
-    if (oGameManager.timer > 0) { oGameManager.timer = oGameManager.timer - 1; }
+    if (oGameManager.ghostTimer > 0) { oGameManager.ghostTimer = oGameManager.ghostTimer - 1; }
 
-    if (oGameManager.timer == 0) {
+    if (oGameManager.ghostTimer == 0) {
         if (Pinky.housestate == 1) {
             with (Pinky) {
                 if (y > (ystart - 272) + 270 && y < (ystart - 272) + 274) {
                     y = (ystart - 272) + 272;
                     housestate = 2;
                     oGameManager.psig = 0;
-                    oGameManager.timer = oGameManager.timerstart;
+                    oGameManager.ghostTimer = oGameManager.timerstart;
                 }
             }
         }
@@ -649,7 +649,7 @@ if (dead == 0 && oGameManager.start == 0) {
                         y = (ystart - 272) + 272;
                         housestate = 3;
                         oGameManager.isig = 0;
-                        oGameManager.timer = oGameManager.timerstart;
+                        oGameManager.ghostTimer = oGameManager.timerstart;
                     }
                 }
             }
@@ -660,7 +660,7 @@ if (dead == 0 && oGameManager.start == 0) {
                             y = (ystart - 272) + 272;
                             housestate = 3;
                             oGameManager.csig = 0;
-                            oGameManager.timer = oGameManager.timerstart;
+                            oGameManager.ghostTimer = oGameManager.timerstart;
                         }
                     }
                 }

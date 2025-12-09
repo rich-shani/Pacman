@@ -200,7 +200,7 @@ csig = 244;
 
 /// Direction change timer
 timerstart = 240;
-timer = timerstart;
+ghostTimer = timerstart;
 
 /// Scatter/Chase mode cycle tracking
 cycle = 0;

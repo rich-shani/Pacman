@@ -214,7 +214,7 @@ codir = 0;  // Co-direction
 /// Adjusted per level (varies from 1.8 to 2.0)
 /// Standard value: 1.875 pixels/frame
 
-oGameManager.sp = 1.875;  // Normal speed
+sp = 1.875;  // Normal speed
 
 /// Tunnel/slow area speed (pixels per frame)
 /// Reduced speed when ghost is in tunnel zone

@@ -21,7 +21,7 @@ if housestate = 3{hspeed = -spslow; vspeed = 0; dir = 2;
 }
 if housestate = 4{hspeed = 0; vspeed = -spslow; dir = 1;}
 if house = 1 and state < 2 and x = (xstart - 248) + 216 and y < (ystart - 272) + 224{housestate=0;
-    x = (xstart - 248) + 216; y = (ystart - 272) + 224; hspeed = -oGameManager.sp; vspeed = 0; house = 0; newtile = 0; dir = 2;}
+    x = (xstart - 248) + 216; y = (ystart - 272) + 224; hspeed = -sp; vspeed = 0; house = 0; newtile = 0; dir = 2;}
 }
 
 if Pac.dead = 0 and oGameManager.finish = 0{
@@ -29,10 +29,10 @@ if Pac.dead = 0 and oGameManager.finish = 0{
 if house = 0{
 if state = 0{
     if collision_point(tilex,tiley,Slow,false,true){speed = spslow}
-    else{speed = oGameManager.sp}
+    else{speed = sp}
 }    
 if state = 1{
-    if collision_point(tilex,tiley,Slow,false,true){speed = spslow}else{speed = oGameManager.spfright}
+    if collision_point(tilex,tiley,Slow,false,true){speed = spslow}else{speed = spfright}
 }
 if state = 2{
     speed = speyes

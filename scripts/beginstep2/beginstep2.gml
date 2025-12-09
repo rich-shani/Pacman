@@ -19,7 +19,7 @@ function beginstep2() {
 	    if smashed = true{ global.smashno = global.smashno - 1; if global.boost = 0{Pac.pause2 = 1; Pac.stoppy2 = 1;}; if global.lvl > 0{global.p2score = global.p2score + 40; sound_play(JrDot2);}}
 	    else{if global.game = 2 and global.lvl > 0{sound_play(JrDot)}}; instance_destroy();}}
 	    if global.boost = 0{Pac.eatdir2 = Pac.direction2/45; direction2 = direction2; hspeed2 = 0; vspeed2 = 0;} if global.lvl > 0{global.p2score = global.p2score + 10;}
-	    if global.boost = 0{oGameManager.timer = oGameManager.timerstart + 1;}
+	    if global.boost = 0{oGameManager.ghostTimer = oGameManager.timerstart + 1;}
 	    bonked2 = 0;
 	if global.lvl > 0{
 	    if global.game = 1{
@@ -42,7 +42,7 @@ function beginstep2() {
 	    }
 	    Blinky.visible = true; Pinky.visible = true; Inky.visible = true; Clyde.visible = true; oGameManager.pluseat = 0;
 	    oGameManager.plus = -1; oGameManager.plus2 = 0;
-	    oGameManager.timer = oGameManager.timerstart + 1; if global.plus = 1{oGameManager.plus = irandom(7); if oGameManager.frighttime > 0 and (global.game < 2 and global.lvl > 2) or (global.game = 2 and global.lvl > 1){oGameManager.plus2 = irandom(1);}}
+	    oGameManager.ghostTimer = oGameManager.timerstart + 1; if global.plus = 1{oGameManager.plus = irandom(7); if oGameManager.frighttime > 0 and (global.game < 2 and global.lvl > 2) or (global.game = 2 and global.lvl > 1){oGameManager.plus2 = irandom(1);}}
 	    with Blinky{aboutface = 1; if state<2 and oGameManager.frighttime > 0{if oGameManager.plus = 0{if state=1{state=0}}else{state = 1}}}
 	    with Pinky{aboutface = 1; if state<2 and oGameManager.frighttime > 0{if oGameManager.plus = 1{if state=1{state=0}}else{state = 1}}}
 	    with Inky{aboutface = 1; if state<2 and oGameManager.frighttime > 0{if oGameManager.plus = 2{if state=1{state=0}}else{state = 1}}}
@@ -101,7 +101,7 @@ function beginstep2() {
 	    with Inky{if state < 2{visible = false}}
 	    with Clyde{if state < 2{visible = false}}
 	    }
-	    oGameManager.timer = oGameManager.timerstart + 1;
+	    oGameManager.ghostTimer = oGameManager.timerstart + 1;
 	    with Blinky{aboutface = 1; if state<2 and oGameManager.bonustime > 0{state = 1}}
 	    with Pinky{aboutface = 1; if state<2 and oGameManager.bonustime > 0{state = 1}}
 	    with Inky{aboutface = 1; if state<2 and oGameManager.bonustime > 0{state = 1}}

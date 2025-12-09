@@ -411,7 +411,7 @@ if (dead == PAC_STATE.ALIVE && oGameManager.start == 0 && (oGameManager.prohibit
         }
 
         if (global.boost == 0) {
-            oGameManager.timer = oGameManager.timerstart + 1;
+            oGameManager.ghostTimer = oGameManager.timerstart + 1;
         }
 
         bonked = 0;
@@ -478,7 +478,7 @@ if (dead == PAC_STATE.ALIVE) {
                 }
             }
             /// Activate fright mode and set duration
-            fright = PAC_FRIGHT.ACTIVE;
+            oGameManager.fright = PAC_FRIGHT.ACTIVE;
             alarm[0] = oGameManager.frighttime;
             chompcount = 0;
         }
@@ -493,7 +493,7 @@ if (dead == PAC_STATE.ALIVE) {
         plus = -1;
         plus2 = 0;
 
-        oGameManager.timer = oGameManager.timerstart + 1;
+        oGameManager.ghostTimer = oGameManager.timerstart + 1;
         if (global.plus == 1) {
             plus = irandom(7);
             if (oGameManager.frighttime > 0 && ((global.game < 2 && global.lvl > 2) || (global.game == 2 && global.lvl > 1))) {
@@ -721,7 +721,7 @@ if (dead == PAC_STATE.ALIVE && (oGameManager.prohibit == GHOST_PROHIBIT.ALLOWED 
                         }
                     }
 
-                    oGameManager.timer = oGameManager.timerstart + 1;
+                    oGameManager.ghostTimer = oGameManager.timerstart + 1;
 
                     /// All ghosts reverse and go frightened
                     with (Blinky) {

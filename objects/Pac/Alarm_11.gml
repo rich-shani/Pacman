@@ -219,7 +219,7 @@ if (dead == PAC_STATE.DEAD || dead == PAC_STATE.DEAD_FINAL) {
         oGameManager.psig = oGameManager.dotcount + 7;
         oGameManager.isig = oGameManager.dotcount + 17;
         oGameManager.csig = oGameManager.dotcount + 32;
-        oGameManager.timer = oGameManager.timerstart;
+        oGameManager.ghostTimer = oGameManager.timerstart;
 
         /// Add power pellets to tile layer
         with (Power) {

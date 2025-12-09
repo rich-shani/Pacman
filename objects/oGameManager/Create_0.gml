@@ -56,7 +56,7 @@ scatter4 = 5;
 // ===== GHOST RELEASE TIMING =====
 /// Ghost release timer (counts down from timerstart)
 /// When reaches 0, next ghost exits house
-timer = 0;
+ghostTimer = 0;
 
 /// Timer start value (set per level)
 timerstart = 240;

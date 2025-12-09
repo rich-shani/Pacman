@@ -109,7 +109,7 @@ if (Pac.dead == 0 && oGameManager.finish == 0) {
         housestate = 0;  /// Reset house state (no longer in house)
         x = (xstart - 216) + 216;  /// Snap to entrance X
         y = (ystart - 224) + 224;  /// Snap to entrance Y
-        hspeed = -oGameManager.sp;  /// Begin moving left (at normal speed)
+        hspeed = sp;  /// Begin moving left (at normal speed)
         vspeed = 0;  /// No vertical movement
         house = 0;  /// RELEASED - now free to roam maze
         newtile = 0;  /// Reset intersection flag for pathfinding
@@ -174,7 +174,7 @@ if (Pac.dead == 0 && oGameManager.finish == 0) {
                 else {
                     /// NORMAL SPEED: Plenty of dots remain
                     /// Standard hunt speed
-                    speed = oGameManager.sp;        // 1.875 pixels/frame (normal)
+                    speed = sp;        // 1.875 pixels/frame (normal)
                 }
             }
         }
@@ -187,7 +187,7 @@ if (Pac.dead == 0 && oGameManager.finish == 0) {
                 speed = spslow;
             } else {
                 /// Normal maze: use frightened speed (reduced from normal)
-                speed = oGameManager.spfright;  // 1.25 pixels/frame (slower)
+                speed = spfright;  // 1.25 pixels/frame (slower)
             }
         }
         else if (state == GHOST_STATE.EYES) {
