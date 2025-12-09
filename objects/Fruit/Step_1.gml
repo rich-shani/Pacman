@@ -1,4 +1,4 @@
-if state > -1 and Pac.chomp = 0 and Pac.dead = 0 and oGameManager.finish = 0 and oGameManager.start = 0{
+if state > -1 and Pac.chomp = 0 and Pac.dead = 0 and Pac.finish = 0 and global.start = 0{
 
     if up = 1{
 
@@ -70,7 +70,7 @@ if room_width = 448{}else{
 }
 
 
-if oGameManager.finish = 0{
+if Pac.finish = 0{
 
 if state > -1{
 

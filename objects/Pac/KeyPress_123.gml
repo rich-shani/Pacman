@@ -5,8 +5,8 @@
 /// Called: When F12 key is pressed
 ///
 /// Triggers:
-/// - Sets dotcount to global.dottotal (effectively resets progress)
+/// - Sets Pac.dotcount to global.dottotal (effectively resets progress)
 /// - Used for testing level completion without eating all dots
 /// ===============================================================================
 
-dotcount = global.dottotal;
+Pac.dotcount = global.dottotal;

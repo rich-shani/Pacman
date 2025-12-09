@@ -2,7 +2,7 @@
 /// ALARM_10 - LEVEL INITIALIZATION AND GAME START SEQUENCE
 /// ===============================================================================
 /// Purpose: Initialize level on game start, manage ghost releases, setup fruits
-/// Called: After introductory pause (alarm[10] triggers after countdown)
+/// Called: After introductory pause (alarm[10] triggers after Pac.countdown )
 ///
 /// Major Sections:
 /// 1. Game Start Flag & Level Completion Check
@@ -17,13 +17,13 @@
 /// SECTION 1: GAME START FLAG & LEVEL COMPLETION CHECK
 /// ===============================================================================
 /// Clear the start delay flag so gameplay can begin
-oGameManager.start = 0;
+global.start = 0;
 
 /// Check if level is complete (all dots eaten)
 /// Conditions: level exists, start completed, Pac alive, all dots eaten, level not already finishing
-if (global.lvl > 0 && oGameManager.start == 0 && dead == PAC_STATE.ALIVE && oGameManager.dotcount == global.dottotal && oGameManager.finish == 0) {
-    /// Level completed - trigger finish sequence
-    oGameManager.finish = 1;
+if (global.lvl > 0 && global.start == 0 && dead == PAC_STATE.ALIVE && Pac.dotcount == global.dottotal && Pac.finish == 0) {
+    /// Level completed - trigger Pac.finish sequence
+    Pac.finish = 1;
     alarm[11] = 60;  /// Trigger level completion handler in 60 frames
 
     /// Stop all ghosts
@@ -43,31 +43,31 @@ if (global.lvl > 0 && oGameManager.start == 0 && dead == PAC_STATE.ALIVE && oGam
     /// SECTION 2: KEYBOARD INPUT & PLAYER DIRECTION SETUP
     /// ===============================================================================
     /// Initialize ambience sound
-    oGameManager.ambience = -1;
+    ambience = -1;
 
     /// PLAYER 1 INPUT
     if (keyboard_check(vk_right) == true) {
         dir = PAC_DIRECTION.RIGHT;
-        hspeed = oGameManager.sp;
+        hspeed = sp;
     } else {
         dir = PAC_DIRECTION.LEFT;
-        hspeed = -oGameManager.sp;
+        hspeed = -sp;
     }
     vspeed = 0;
 
     /// PLAYER 2 INPUT
     if (keyboard_check(ord("A")) == true) {
         dir2 = PAC_DIRECTION.LEFT;
-        hspeed2 = -oGameManager.sp;
+        hspeed2 = -sp;
     } else {
         dir2 = PAC_DIRECTION.RIGHT;
-        hspeed2 = oGameManager.sp;
+        hspeed2 = sp;
     }
     vspeed2 = 0;
 
     /// Set Blinky (red ghost) initial movement
     with (Blinky) {
-        hspeed = -oGameManager.sp;
+        hspeed = -sp;
         vspeed = 0;
     }
 
@@ -87,57 +87,57 @@ if (global.lvl > 0 && oGameManager.start == 0 && dead == PAC_STATE.ALIVE && oGam
             if ((global.game < 2 && room_height < 672 && collision_point(0, 512, Wall, false, true)) ||
                 (global.game == 2 && (room_width == 864 || room_width == 496))) {
                 /// Standard maze: use base release times
-                oGameManager.psig = 0;      /// Pinky released immediately
-                oGameManager.isig = 30;     /// Inky released at 30 dots eaten
-                oGameManager.csig = 90;     /// Clyde released at 90 dots eaten
+                psig = 0;      /// Pinky released immediately
+                isig = 30;     /// Inky released at 30 dots eaten
+                csig = 90;     /// Clyde released at 90 dots eaten
 
                 /// Level 2 and Plus Level 1: Inky and Clyde release together
                 if (global.lvl == 2 || (global.plus == PAC_PLUS_MODE.ACTIVE && global.lvl == 1)) {
-                    oGameManager.psig = 0;
-                    oGameManager.isig = 0;
-                    oGameManager.csig = 50;  /// Both release at 50 dots
+                    psig = 0;
+                    isig = 0;
+                    csig = 50;  /// Both release at 50 dots
                 }
 
                 /// Level 3+ and Plus Level 2+: All ghosts released immediately
                 if (global.lvl > 2 || (global.plus == PAC_PLUS_MODE.ACTIVE && global.lvl > 1)) {
-                    oGameManager.psig = 0;
-                    oGameManager.isig = 0;
-                    oGameManager.csig = 0;
+                    psig = 0;
+                    isig = 0;
+                    csig = 0;
                 }
             } else {
                 /// Extended maze: same logic but adjust for initial dot count
-                oGameManager.psig = 0;
-                oGameManager.isig = 30;
-                oGameManager.csig = 90;
+                psig = 0;
+                isig = 30;
+                csig = 90;
 
                 if (global.lvl == 2 || (global.plus == PAC_PLUS_MODE.ACTIVE && global.lvl == 1)) {
-                    oGameManager.psig = 0;
-                    oGameManager.isig = 0;
-                    oGameManager.csig = 50;
+                    psig = 0;
+                    isig = 0;
+                    csig = 50;
                 }
 
                 if (global.lvl > 2 || (global.plus == PAC_PLUS_MODE.ACTIVE && global.lvl > 1)) {
-                    oGameManager.psig = 0;
-                    oGameManager.isig = 0;
-                    oGameManager.csig = 0;
+                    psig = 0;
+                    isig = 0;
+                    csig = 0;
                 }
 
                 /// Adjust for dots already eaten
-                oGameManager.psig = oGameManager.psig + oGameManager.dotcount;
-                oGameManager.isig = oGameManager.isig + oGameManager.dotcount;
-                oGameManager.csig = oGameManager.csig + oGameManager.dotcount;
+                psig = psig + Pac.dotcount;
+                isig = isig + Pac.dotcount;
+                csig = csig + Pac.dotcount;
             }
         } else {
             /// JR. PAC-MAN (game == 2)
-            oGameManager.psig = 0 + oGameManager.dotcount;      /// Pinky released immediately
-            oGameManager.isig = 0 + oGameManager.dotcount;      /// Inky released immediately
-            oGameManager.csig = 50 + oGameManager.dotcount;     /// Clyde released at 50 dots
+            psig = 0 + Pac.dotcount;      /// Pinky released immediately
+            isig = 0 + Pac.dotcount;      /// Inky released immediately
+            csig = 50 + Pac.dotcount;     /// Clyde released at 50 dots
 
             /// Level 2+: All ghosts released immediately
             if (global.lvl > 1 || global.plus == PAC_PLUS_MODE.ACTIVE) {
-                oGameManager.psig = 0 + oGameManager.dotcount;
-                oGameManager.isig = 0 + oGameManager.dotcount;
-                oGameManager.csig = 0 + oGameManager.dotcount;
+                psig = 0 + Pac.dotcount;
+                isig = 0 + Pac.dotcount;
+                csig = 0 + Pac.dotcount;
             }
         }
 
@@ -149,7 +149,7 @@ if (global.lvl > 0 && oGameManager.start == 0 && dead == PAC_STATE.ALIVE && oGam
     /// SECTION 4: SCATTER/CHASE MODE INITIALIZATION
     /// ===============================================================================
     /// Begin first scatter mode phase with calculated duration
-    alarm[1] = oGameManager.scatter1 * 60;
+    alarm[1] = scatter1 * 60;
 
     /// ===============================================================================
     /// SECTION 5: SLOWDOWN EFFECT CLEANUP (MS. PAC-MAN SPECIFIC)

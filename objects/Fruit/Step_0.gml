@@ -4,14 +4,14 @@ smashed = 1; global.smashno = global.smashno + 1; tile_layer_delete_at(depth,x,y
 tile_add(tile1,41*16,0,16,16,x,y,depth-1); tile_add(tile2,41*16,0,16,16,x,y,depth+1)
 tile_set_blend(tile_layer_find(depth-1,x,y),make_color_hsv(Drawless.mh,Drawless.ms,Drawless.mv))
 tile_set_blend(tile_layer_find(depth+1,x,y),make_color_hsv(Drawless.mh2,Drawless.ms2,Drawless.mv2))
-if oGameManager.plus2 = 1{
+if Pac.plus2 = 1{
 tile_layer_hide(depth-1)
 tile_layer_hide(depth+1)
 }
 visible = false;
 }}}}
 
-if (oGameManager.dotcount > -1 + 70 and global.game = 0) or (oGameManager.dotcount > -1 + 73 and global.game = 1) or (global.game = 2 and ((Drawless.c64 = 1 and oGameManager.dotcount > -1 + 246) or (oGameManager.dotcount > -1 + 96))){
+if (Pac.dotcount > -1 + 70 and global.game = 0) or (Pac.dotcount > -1 + 73 and global.game = 1) or (global.game = 2 and ((Drawless.c64 = 1 and Pac.dotcount > -1 + 246) or (Pac.dotcount > -1 + 96))){
     if global.ex1 = 0{
         if room_width = 448{//Pac-Man's fruit
             if spawn = 0{spawn = 1; x = xstart; y = ystart; alarm[0] = 540 + irandom(60)}
@@ -61,7 +61,7 @@ else{
     }
 }
 }
-if (oGameManager.dotcount > -1 + 170 and global.game = 0) or (oGameManager.dotcount > -1 + 176 and global.game = 1) or (global.game = 2 and ((Drawless.c64 = 1 and oGameManager.dotcount > -1 + 323) or (oGameManager.dotcount > -1 + 207))){
+if (Pac.dotcount > -1 + 170 and global.game = 0) or (Pac.dotcount > -1 + 176 and global.game = 1) or (global.game = 2 and ((Drawless.c64 = 1 and Pac.dotcount > -1 + 323) or (Pac.dotcount > -1 + 207))){
     if global.ex1 = 0{
         if room_width = 448{//Pac-Man's fruit
             if spawn = 1{spawn = 2; x = xstart; y = ystart; alarm[0] = 540 + irandom(60)}
@@ -113,12 +113,12 @@ else{
     }
 }
 if global.game = 2{
-if global.game = 2 and ((Drawless.c64 = 1 and oGameManager.dotcount > -1 + 400) or (oGameManager.dotcount > -1 + 301)){///Jr. Pac-Man's fruit
+if global.game = 2 and ((Drawless.c64 = 1 and Pac.dotcount > -1 + 400) or (Pac.dotcount > -1 + 301)){///Jr. Pac-Man's fruit
         if spawn = 2{
             spawn = 3; if state = -1{alarm[0] = irandom(1080)+120; state = 0; if irandom(1) = 0{direction = 0; dir = 0; x = Blinky.xstart; y = Blinky.ystart;} else{direction = 180; dir = 2; x = Blinky.xstart - 1; y = Blinky.ystart;} tilex = 16*(round(x/16)); tiley = 16*(round(y/16)); newtile = 0;}
         }
 }
-if global.game = 2 and ((Drawless.c64 = 1 and oGameManager.dotcount > -1 + 477) or (oGameManager.dotcount > -1 + 413)){///Jr. Pac-Man's fruit
+if global.game = 2 and ((Drawless.c64 = 1 and Pac.dotcount > -1 + 477) or (Pac.dotcount > -1 + 413)){///Jr. Pac-Man's fruit
         if spawn = 3{
             spawn = 4; if state = -1{alarm[0] = irandom(1080)+120; state = 0; if irandom(1) = 0{direction = 0; dir = 0; x = Blinky.xstart; y = Blinky.ystart;} else{direction = 180; dir = 2; x = Blinky.xstart - 1; y = Blinky.ystart;} tilex = 16*(round(x/16)); tiley = 16*(round(y/16)); newtile = 0;}
         }

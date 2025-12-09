@@ -75,7 +75,7 @@ pressed = 1; alarm[0] = 1;
 if pause = 0{
 __background_set( e__BG.Alpha, 0, 0 );
 instance_activate_all()
-oGameManager.ambience = -1;
+ambience = -1;
 with Wall{
 if image_index = 18 and ((y = room_height - 48) or (room_height = 960 and y = room_height - 64)){
 tile_set_alpha(tile_layer_find(depth-1,x,y+8),1);

@@ -145,7 +145,7 @@ enum GHOST_PROHIBIT {
 // ===== GHOST EATING MULTIPLIER =====
 /// Points for eating ghosts increase with each consecutive eat
 /// Ghost 1 = 200, Ghost 2 = 400, Ghost 3 = 800, Ghost 4 = 1600
-/// These can be affected by bonus modes (pluseat multiplier)
+/// These can be affected by bonus modes (Pac.pluseat  multiplier)
 
 #macro CHOMP_1 200
 #macro CHOMP_2 400
@@ -153,7 +153,7 @@ enum GHOST_PROHIBIT {
 #macro CHOMP_4 1600
 
 // ===== BONUS MODE MULTIPLIER =====
-/// When bonus multiplier is active (pluseat = 1), all ghost eating scores double
+/// When bonus multiplier is active (Pac.pluseat  = 1), all ghost eating scores double
 #macro CHOMP_BONUS_MULTIPLIER 2
 
 /// ===============================================================================

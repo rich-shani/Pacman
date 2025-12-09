@@ -1,51 +1,51 @@
 /// @description /snapping back to grid after cornering 
 function endstep() {
-	if oGameManager.fright = 1{
-	if corner2 = 1{if y2  < 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = oGameManager.spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 2{if y2  > 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = oGameManager.spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 3{if x2  > 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -oGameManager.spfright; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 4{if x2  < 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -oGameManager.spfright; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 5{if y2  < 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = -oGameManager.spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 6{if y2  > 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = -oGameManager.spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 7{if x2  > 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = oGameManager.spfright; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 8{if x2  < 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = oGameManager.spfright; corner2 = 0; corner2check = 0; exit}}
+	if fright = 1{
+	if corner2 = 1{if y2  < 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 2{if y2  > 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 3{if x2  > 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -spfright; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 4{if x2  < 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -spfright; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 5{if y2  < 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = -spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 6{if y2  > 16*(round(y2/16)) {y2 = 16*(round(y2/16)); hspeed2 = -spfright; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 7{if x2  > 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = spfright; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 8{if x2  < 16*(round(x2/16)) {x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = spfright; corner2 = 0; corner2check = 0; exit}}
 	}
 	else{
-	if corner2 = 1{if y2  < 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = oGameManager.sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 2{if y2  > 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = oGameManager.sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 3{if x2  > 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -oGameManager.sp; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 4{if x2  < 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -oGameManager.sp; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 5{if y2  < 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = -oGameManager.sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 6{if y2  > 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = -oGameManager.sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 7{if x2  > 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = oGameManager.sp; corner2 = 0; corner2check = 0; exit}}
-	if corner2 = 8{if x2  < 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = oGameManager.sp; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 1{if y2  < 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 2{if y2  > 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 3{if x2  > 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -sp; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 4{if x2  < 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = -sp; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 5{if y2  < 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = -sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 6{if y2  > 16*(round(y2/16)){y2 = 16*(round(y2/16)); hspeed2 = -sp; vspeed2 = 0; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 7{if x2  > 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = sp; corner2 = 0; corner2check = 0; exit}}
+	if corner2 = 8{if x2  < 16*(round(x2/16)){x2 = 16*(round(x2/16)); hspeed2 = 0; vspeed2 = sp; corner2 = 0; corner2check = 0; exit}}
 	}
 	////resetting speed after dot/powerpellet
 	if chomp = 0{
-	    if oGameManager.fright = true{
+	    if fright = true{
 	        if pause2 = 0{
-	            if eatdir2 = 0{hspeed2 = oGameManager.spfright; vspeed2 = 0; eatdir2 = -1}
-	            if eatdir2 = 1{hspeed2 = oGameManager.spfright; vspeed2 = -oGameManager.spfright; eatdir2 = -1}
-	            if eatdir2 = 2{hspeed2 = 0; vspeed2 = -oGameManager.spfright; eatdir2 = -1}
-	            if eatdir2 = 3{hspeed2 = -oGameManager.spfright; vspeed2 = -oGameManager.spfright; eatdir2 = -1}
-	            if eatdir2 = 4{hspeed2 = -oGameManager.spfright; vspeed2 = 0; eatdir2 = -1}
-	            if eatdir2 = 5{hspeed2 = -oGameManager.spfright; vspeed2 = oGameManager.spfright; eatdir2 = -1}
-	            if eatdir2 = 6{hspeed2 = 0; vspeed2 = oGameManager.spfright; eatdir2 = -1}
-	            if eatdir2 = 7{hspeed2 = oGameManager.spfright; vspeed2 = oGameManager.spfright; eatdir2 = -1}
+	            if eatdir2 = 0{hspeed2 = spfright; vspeed2 = 0; eatdir2 = -1}
+	            if eatdir2 = 1{hspeed2 = spfright; vspeed2 = -spfright; eatdir2 = -1}
+	            if eatdir2 = 2{hspeed2 = 0; vspeed2 = -spfright; eatdir2 = -1}
+	            if eatdir2 = 3{hspeed2 = -spfright; vspeed2 = -spfright; eatdir2 = -1}
+	            if eatdir2 = 4{hspeed2 = -spfright; vspeed2 = 0; eatdir2 = -1}
+	            if eatdir2 = 5{hspeed2 = -spfright; vspeed2 = spfright; eatdir2 = -1}
+	            if eatdir2 = 6{hspeed2 = 0; vspeed2 = spfright; eatdir2 = -1}
+	            if eatdir2 = 7{hspeed2 = spfright; vspeed2 = spfright; eatdir2 = -1}
 	            stoppy2 = 0;
 	        }
 	    else{pause2 = pause2 -1;}
 	    }
 	    else{
 	        if pause2 = 0{
-	            if eatdir2 = 0{hspeed2 = oGameManager.sp; vspeed2 = 0; eatdir2 = -1}
-	            if eatdir2 = 1{hspeed2 = oGameManager.sp; vspeed2 = -oGameManager.sp; eatdir2 = -1}
-	            if eatdir2 = 2{hspeed2 = 0; vspeed2 = -oGameManager.sp; eatdir2 = -1}
-	            if eatdir2 = 3{hspeed2 = -oGameManager.sp; vspeed2 = -oGameManager.sp; eatdir2 = -1}
-	            if eatdir2 = 4{hspeed2 = -oGameManager.sp; vspeed2 = 0; eatdir2 = -1}
-	            if eatdir2 = 5{hspeed2 = -oGameManager.sp; vspeed2 = oGameManager.sp; eatdir2 = -1}
-	            if eatdir2 = 6{hspeed2 = 0; vspeed2 = oGameManager.sp; eatdir2 = -1}
-	            if eatdir2 = 7{hspeed2 = oGameManager.sp; vspeed2 = oGameManager.sp; eatdir2 = -1}
+	            if eatdir2 = 0{hspeed2 = sp; vspeed2 = 0; eatdir2 = -1}
+	            if eatdir2 = 1{hspeed2 = sp; vspeed2 = -sp; eatdir2 = -1}
+	            if eatdir2 = 2{hspeed2 = 0; vspeed2 = -sp; eatdir2 = -1}
+	            if eatdir2 = 3{hspeed2 = -sp; vspeed2 = -sp; eatdir2 = -1}
+	            if eatdir2 = 4{hspeed2 = -sp; vspeed2 = 0; eatdir2 = -1}
+	            if eatdir2 = 5{hspeed2 = -sp; vspeed2 = sp; eatdir2 = -1}
+	            if eatdir2 = 6{hspeed2 = 0; vspeed2 = sp; eatdir2 = -1}
+	            if eatdir2 = 7{hspeed2 = sp; vspeed2 = sp; eatdir2 = -1}
 	            stoppy2 = 0;
 	        }
 	    else{pause2 = pause2 -1;}

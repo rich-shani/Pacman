@@ -1,17 +1,17 @@
-if Pac.dead = 0 and oGameManager.finish = 0{
+if Pac.dead = 0 and Pac.finish = 0{
 if house = 1{newtile = 0; tilex = (xstart - 216) +  224; tiley = (ystart - 272) +  224}
 if house = 0 and state = 2 and x > (xstart - 216) + 212 and x < (xstart - 216) +  220 and y = (ystart - 272) +  224{housestate=0;
     x = (xstart - 216) +  216; y = (ystart - 272) +  224; hspeed = 0; vspeed = speyes; house = 1; dir = 3;}
 if house = 1 and state = 2 and x = (xstart - 216) +  216 and y > (ystart - 272) +  272 + 8{housestate=1;
     x = (xstart - 216) +  216; y = (ystart - 272) +  272 + 8; hspeed = 0; vspeed = -spslow; state = 0; dir = 1;}
 if housestate = 1{  ///bouncing state
-    if oGameManager.psig > oGameManager.dotcount{
+    if Pac.psig > Pac.dotcount{
         if y < (ystart - 272) +  264{y = (ystart - 272) +  264; hspeed = 0; vspeed = spslow; up = 0; dir = 3}
         if y > (ystart - 272) +  280{y = (ystart - 272) +  280; hspeed = 0; vspeed = -spslow; up = 1; dir = 1}
         if up = 0{hspeed = 0; vspeed = spslow;}else{hspeed = 0; vspeed = -spslow;}
     }
     else{
-        if oGameManager.start = 0 and oGameManager.finish = 0{housestate = 2}
+        if global.start = 0 and Pac.finish = 0{housestate = 2}
     }
 }
 if housestate = 2{hspeed = 0; vspeed = -spslow; dir = 1}
@@ -19,7 +19,7 @@ if house = 1 and state < 2 and x = (xstart - 216) +  216 and y < (ystart - 272) 
     x = (xstart - 216) +  216; y = (ystart - 272) +  224; hspeed = -sp; vspeed = 0; house = 0; newtile = 0; dir = 2;}
 }
 
-if Pac.dead = 0 and oGameManager.finish = 0{
+if Pac.dead = 0 and Pac.finish = 0{
 //speed
 if house = 0{
 if state = 0{

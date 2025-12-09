@@ -18,7 +18,7 @@ if dead > 1{
 
 else{
 
-if oGameManager.prohibit = 1{
+if Pac.prohibit = 1{
 
     if room_width = 448{
 
@@ -38,7 +38,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if oGameManager.start = false{
+    if global.start = false{
 
     if global.boost > 0{
 
@@ -84,9 +84,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,oGameManager.chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,oGameManager.chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 
@@ -122,7 +122,7 @@ if dead > 1{
 
 else{
 
-if oGameManager.prohibit = 1{
+if Pac.prohibit = 1{
 
     if room_width = 448{
 
@@ -142,7 +142,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if oGameManager.start = false{
+    if global.start = false{
 
     if global.boost = 1{
 
@@ -188,9 +188,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y-512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 
@@ -221,7 +221,7 @@ if dead > 1{
 
 else{
 
-if oGameManager.prohibit = 1{
+if Pac.prohibit = 1{
 
     if room_width = 448{
 
@@ -241,7 +241,7 @@ else{
 
 if chomp = 0 or chomper = 2{
 
-    if oGameManager.start = false{
+    if global.start = false{
 
     if global.boost = 1{
 
@@ -287,9 +287,9 @@ if chomp = 0 or chomper = 2{
 
 else{
 
-    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
 
-    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+    else{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(x)-(8*(scale-1)),round(y+512)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 
 }
 
@@ -396,7 +396,7 @@ script_execute(draw2,x2,y2+512);
 
 //if global.game = 0{
 
-//if blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 
@@ -438,7 +438,7 @@ script_execute(draw2,x2,y2+512);
 
 //if global.game = 1{
 
-//if blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 
@@ -482,7 +482,7 @@ script_execute(draw2,x2,y2+512);
 
 //draw_set_color(c_yellow)
 
-//if blink = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+__view_get( e__VW.XView, 0 )+16,16,string_hash_to_newline(global.p1score))
 
@@ -500,7 +500,7 @@ script_execute(draw2,x2,y2+512);
 
 //if global.game = 0{
 
-//if blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 
@@ -514,7 +514,7 @@ script_execute(draw2,x2,y2+512);
 
 //if global.game = 1{
 
-//if blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 
@@ -530,7 +530,7 @@ script_execute(draw2,x2,y2+512);
 
 //draw_set_color(c_yellow)
 
-//if blink = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,0,string_hash_to_newline("1UP"))}
+//if Pac.blink = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,0,string_hash_to_newline("1UP"))}
 
 //draw_text(96+__view_get( e__VW.XView, 0 )+16,16,string_hash_to_newline(global.p1score))
 
@@ -1167,7 +1167,7 @@ script_execute(draw2,x2,y2+512);
 
 //if global.game < 2{
 
-//if ((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and global.lvl > 0 and countdown > -1{
+//if ((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and global.lvl > 0 and Pac.countdown  > -1{
 
 //draw_set_font(font0); draw_set_halign(fa_left); draw_set_color(c_yellow);
 
@@ -1179,9 +1179,9 @@ script_execute(draw2,x2,y2+512);
 
 //draw_text((Blinky.xstart - 216)+144,(Blinky.ystart - 224)+320,string_hash_to_newline(" CONTINUE "))
 
-//if countdown = 10{draw_text(208,ystart,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(208,ystart,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(208,ystart,string_hash_to_newline(countdown))}
+//else{draw_text(208,ystart,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
@@ -1189,7 +1189,7 @@ script_execute(draw2,x2,y2+512);
 
 //else{
 
-//if ((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and global.lvl > 0 and countdown > -1{
+//if ((global.p1lives = 0 and global.p1gameover = 0) or (global.p2lives = 0 and global.p2gameover = 0)) and global.lvl > 0 and Pac.countdown  > -1{
 
 //draw_set_font(font0); draw_set_halign(fa_left); draw_set_color(make_color_hsv(Drawless.mh2,Drawless.ms2,Drawless.mv2));
 
@@ -1203,9 +1203,9 @@ script_execute(draw2,x2,y2+512);
 
 //if (room_height < 960 and Drawless.c64 = 0) or room = A2600_4{
 
-//if countdown = 10{draw_text(xstart-10,ystart+2,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-10,ystart+2,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-10,ystart+2,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-10,ystart+2,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
@@ -1213,17 +1213,17 @@ script_execute(draw2,x2,y2+512);
 
 //if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_06 or room = A2600_2 or room = A2600_6 or room = A2600_7{
 
-//if countdown = 10{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-10,ystart+2+48,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
 //else{
 
-//if countdown = 10{draw_text(xstart-10,ystart+2+96,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-10,ystart+2+96,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-10,ystart+2+96,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-10,ystart+2+96,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
@@ -1241,9 +1241,9 @@ script_execute(draw2,x2,y2+512);
 
 //if (room_height < 960 and Drawless.c64 = 0) or room = A2600_4{
 
-//if countdown = 10{draw_text(xstart-8,ystart,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-8,ystart,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-8,ystart,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-8,ystart,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
@@ -1251,17 +1251,17 @@ script_execute(draw2,x2,y2+512);
 
 //if room = C64_01 or room = C64_02 or room = C64_03 or room = C64_06 or room = A2600_2 or room = A2600_6 or room = A2600_7{
 
-//if countdown = 10{draw_text(xstart-8,ystart+48,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-8,ystart+48,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-8,ystart+48,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-8,ystart+48,string_hash_to_newline(Pac.countdown ))}
 
 //}
 
 //else{
 
-//if countdown = 10{draw_text(xstart-8,ystart+96,string_hash_to_newline(countdown-1))}
+//if Pac.countdown  = 10{draw_text(xstart-8,ystart+96,string_hash_to_newline(Pac.countdown -1))}
 
-//else{draw_text(xstart-8,ystart+96,string_hash_to_newline(countdown))}
+//else{draw_text(xstart-8,ystart+96,string_hash_to_newline(Pac.countdown ))}
 
 //}
 

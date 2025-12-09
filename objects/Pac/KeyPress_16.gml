@@ -7,7 +7,7 @@
 /// Triggers:
 /// - Increment credit counter
 /// - Play credit sound effect
-/// - If ongoing game with one player dead, trigger recovery countdown
+/// - If ongoing game with one player dead, trigger recovery Pac.countdown 
 /// - At level 0, reset game mode and return to menu
 /// ===============================================================================
 
@@ -20,9 +20,9 @@ action_sound(Credit, 0);
 /// Check if one player is dead and game is in progress
 if (((global.p1lives == 0 && global.p2gameover == 1) ||
      (global.p1gameover == 1 && global.p2lives == 0)) &&
-    global.lvl > 0 && countdown > -1) {
-    /// Trigger recovery countdown
-    countdown = 10;
+    global.lvl > 0 && Pac.countdown  > -1) {
+    /// Trigger recovery Pac.countdown 
+    Pac.countdown  = 10;
     alarm[11] = 1;
 }
 

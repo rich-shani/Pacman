@@ -22,7 +22,7 @@
 /// ===============================================================================
 
 /// Advance to next cycle phase
-oGameManager.cycle = oGameManager.cycle + 1;
+cycle = cycle + 1;
 
 /// Signal all ghosts to reverse direction and pick new targets
 with (Blinky) {
@@ -42,52 +42,52 @@ with (Clyde) {
 }
 
 /// PHASE 1: First Chase Mode
-if (oGameManager.cycle == 1) {
-    alarm[1] = oGameManager.chase1 * 60;
-    oGameManager.scatter = 0;
+if (cycle == 1) {
+    alarm[1] = chase1 * 60;
+    scatter = 0;
     exit;
 }
 
 /// PHASE 2: Scatter Mode 2 (conditional on standard maze)
-if (oGameManager.cycle == 2) {
+if (cycle == 2) {
     if (global.ex1 == 0 && room_width == 448) {
-        alarm[1] = oGameManager.scatter2 * 60;
-        oGameManager.scatter = 1;
+        alarm[1] = scatter2 * 60;
+        scatter = 1;
     }
     exit;
 }
 
 /// PHASE 3: Second Chase Mode
-if (oGameManager.cycle == 3) {
-    alarm[1] = oGameManager.chase2 * 60;
-    oGameManager.scatter = 0;
+if (cycle == 3) {
+    alarm[1] = chase2 * 60;
+    scatter = 0;
     exit;
 }
 
 /// PHASE 4: Third Scatter Mode
-if (oGameManager.cycle == 4) {
-    alarm[1] = oGameManager.scatter3 * 60;
-    oGameManager.scatter = 1;
+if (cycle == 4) {
+    alarm[1] = scatter3 * 60;
+    scatter = 1;
     exit;
 }
 
 /// PHASE 5: Third Chase Mode
-if (oGameManager.cycle == 5) {
-    alarm[1] = oGameManager.chase3 * 60;
-    oGameManager.scatter = 0;
+if (cycle == 5) {
+    alarm[1] = chase3 * 60;
+    scatter = 0;
     exit;
 }
 
 /// PHASE 6: Fourth Scatter Mode
-if (oGameManager.cycle == 6) {
-    alarm[1] = oGameManager.scatter4 * 60;
-    oGameManager.scatter = 1;
+if (cycle == 6) {
+    alarm[1] = scatter4 * 60;
+    scatter = 1;
     exit;
 }
 
 /// PHASE 7+: Indefinite Chase Mode
-if (oGameManager.cycle == 7) {
-    oGameManager.scatter = 0;
+if (cycle == 7) {
+    scatter = 0;
     exit;
 }
 

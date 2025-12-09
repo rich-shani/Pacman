@@ -1,8 +1,8 @@
 /// @description /animation
 function beginstep() {
-	if dead < 2 or oGameManager.finish < 0{
+	if dead < 2 or Pac.finish < 0{
 	deadani2m = 0;
-	if oGameManager.start = 1{
+	if global.start = 1{
 	    if global.game = 0{i2m = 0;}
 	    else{i2m = 1;}
 	}
@@ -14,7 +14,7 @@ function beginstep() {
 	if dead = 2{
 	if deadani2m < 12{deadani2m = deadani2m + 0.125}
 	}
-	if oGameManager.start = 0 and oGameManager.finish = 0{i2m2 = i2m2 + 0.5; if i2m2 = 4{i2m2 = 0}}
+	if global.start = 0 and Pac.finish = 0{i2m2 = i2m2 + 0.5; if i2m2 = 4{i2m2 = 0}}
 
 
 

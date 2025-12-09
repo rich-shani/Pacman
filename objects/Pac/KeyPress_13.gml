@@ -5,7 +5,7 @@
 /// Called: When Enter/Return key is pressed
 ///
 /// Triggers:
-/// - Only active if level exists, game not over, and countdown not finished
+/// - Only active if level exists, game not over, and Pac.countdown  not finished
 /// - Requires available credit to continue
 /// - Restores lives to dead player and resumes gameplay
 /// ===============================================================================
@@ -13,7 +13,7 @@
 /// Check if a player is out of lives and game can still continue
 if (((global.p1lives == 0 && global.p1gameover == 0) ||
      (global.p2lives == 0 && global.p2gameover == 0)) &&
-    global.lvl > 0 && countdown > -1) {
+    global.lvl > 0 && Pac.countdown  > -1) {
 
     /// Check if player has credits available
     if (global.credit > 0) {
@@ -30,7 +30,7 @@ if (((global.p1lives == 0 && global.p1gameover == 0) ||
         /// Deduct credit and trigger life recovery
         alarm[11] = 1;
         global.credit = global.credit - 1;
-        countdown = 10;
+        Pac.countdown  = 10;
 
         /// Reset Player 2 state
         hspeed2 = 0;
@@ -64,8 +64,8 @@ if (((global.p1lives == 0 && global.p1gameover == 0) ||
             }
         }
 
-        /// Reset blink animation and pause handler
-        blink = 0;
+        /// Reset Pac.blink animation and pause handler
+        Pac.blink = 0;
         alarm[8] = 14;
         Pauser.ignore = 1;
     } else {

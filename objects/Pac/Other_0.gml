@@ -26,41 +26,41 @@ if (hspeed < 0) {
     bonked = 0;
 
     /// Re-apply speed based on current direction and fright mode
-    if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
+    if (fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
-            hspeed = oGameManager.spfright;
+            hspeed = spfright;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.UP) {
             hspeed = 0;
-            vspeed = -oGameManager.spfright;
+            vspeed = -spfright;
         }
         if (dir == PAC_DIRECTION.LEFT) {
-            hspeed = -oGameManager.spfright;
+            hspeed = -spfright;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.DOWN) {
             hspeed = 0;
-            vspeed = oGameManager.spfright;
+            vspeed = spfright;
         }
     } else {
         /// NORMAL MODE: Standard speeds
         if (dir == PAC_DIRECTION.RIGHT) {
-            hspeed = oGameManager.sp;
+            hspeed = sp;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.UP) {
             hspeed = 0;
-            vspeed = -oGameManager.sp;
+            vspeed = -sp;
         }
         if (dir == PAC_DIRECTION.LEFT) {
-            hspeed = -oGameManager.sp;
+            hspeed = -sp;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.DOWN) {
             hspeed = 0;
-            vspeed = oGameManager.sp;
+            vspeed = sp;
         }
     }
 }
@@ -80,41 +80,41 @@ if (hspeed > 0) {
     bonked = 0;
 	
     /// Re-apply speed based on current direction and fright mode
-    if (oGameManager.fright == PAC_FRIGHT.ACTIVE) {
+    if (fright == PAC_FRIGHT.ACTIVE) {
         /// FRIGHT MODE: Faster speeds
         if (dir == PAC_DIRECTION.RIGHT) {
-            hspeed = oGameManager.spfright;
+            hspeed = spfright;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.UP) {
             hspeed = 0;
-            vspeed = -oGameManager.spfright;
+            vspeed = -spfright;
         }
         if (dir == PAC_DIRECTION.LEFT) {
-            hspeed = -oGameManager.spfright;
+            hspeed = -spfright;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.DOWN) {
             hspeed = 0;
-            vspeed = oGameManager.spfright;
+            vspeed = spfright;
         }
     } else {
         /// NORMAL MODE: Standard speeds
         if (dir == PAC_DIRECTION.RIGHT) {
-            hspeed = oGameManager.sp;
+            hspeed = sp;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.UP) {
             hspeed = 0;
-            vspeed = -oGameManager.sp;
+            vspeed = -sp;
         }
         if (dir == PAC_DIRECTION.LEFT) {
-            hspeed = -oGameManager.sp;
+            hspeed = -sp;
             vspeed = 0;
         }
         if (dir == PAC_DIRECTION.DOWN) {
             hspeed = 0;
-            vspeed = oGameManager.sp;
+            vspeed = sp;
         }
     }
 }

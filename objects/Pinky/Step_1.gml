@@ -72,7 +72,7 @@ if Pac.chomp = 0 or state = 2{
 
                 if state = 0{
 
-                if oGameManager.scatter = 1{
+                if Pac.scatter = 1{
 
                     if global.ex1 = 0 and room_width = 448{script_execute(chase_object,tilex,tiley,cornerx,cornery);}
 

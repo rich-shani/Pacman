@@ -9,7 +9,7 @@ function draw2(argument0, argument1) {
 	    else{if dead < 3{draw_sprite(spr_JrDead2,floor(deadani2m),round(argument0),round(argument1))}}
 	}}
 	else{
-	if oGameManager.prohibit = 2{
+	if Pac.prohibit = 2{
 	    if room_width = 448{
 	        if global.ex1=0{draw_sprite_ext(spr_Man2,16,argument0,argument1,1,1,0,c_white,1)}
 	        else{if global.otto = 0{draw_sprite_ext(spr_MsMan2,16,argument0,argument1,1,1,0,c_white,1)}
@@ -19,7 +19,7 @@ function draw2(argument0, argument1) {
 	    }
 	else{
 	if chomp = 0 or chomper = 1{
-	    if oGameManager.start = false{
+	    if global.start = false{
 	    if global.boost > 0{
 	    if global.otto = 1{if dir2 = 1{draw_sprite_ext(spr_boostlines,5,argument0,argument1,1,1,0,c_lime,1)};else{if dir2 = 3{draw_sprite_ext(spr_boostlines,6,argument0,argument1,1,1,0,c_lime,1)};else{draw_sprite_ext(spr_boostlines,dir2,argument0,argument1,1,1,0,c_lime,1)}}}
 	    else{
@@ -42,8 +42,8 @@ function draw2(argument0, argument1) {
 	    }
 	}
 	else{
-	    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
-	    else{draw_sprite_ext(spr_Chomp,chompcount-1+oGameManager.pluseat,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
+	    if global.plus = 0{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(0,255,255),1)}
+	    else{draw_sprite_ext(spr_Chomp,chompcount-1+Pac.pluseat ,round(argument0)-(8*(scale-1)),round(argument1)-(8*(scale-1)),scale,scale,0,make_color_rgb(255,255,0),1)}
 	}
 	}
 	}

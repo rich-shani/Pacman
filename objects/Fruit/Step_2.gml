@@ -1,6 +1,6 @@
 if state > -1 and nomove = 0 and Pac.dead = 0{
 //speed
-if oGameManager.finish > 0{speed = 0;}
+if Pac.finish > 0{speed = 0;}
 else{
 if global.game = 1{speed = 1.00001}
 if global.game = 2{speed = 0.75001}

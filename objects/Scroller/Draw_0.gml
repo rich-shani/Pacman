@@ -21,10 +21,10 @@ draw_set_halign(fa_right)
 draw_set_color(c_white)
 if global.rand = 0{
 if global.game = 0{
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -44,10 +44,10 @@ if global.mode = 4{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__
 }
 }
 if global.game = 1{
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -68,10 +68,10 @@ if global.mode = 4{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__
 }
 if global.game = 2{
 draw_set_color(c_yellow)
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -93,10 +93,10 @@ if global.mode = 4{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__
 }
 else{
 if global.game = 0{
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -104,10 +104,10 @@ if global.plus = 0{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__
 else{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.pacplusrandscore))}
 }
 if global.game = 1{
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -116,10 +116,10 @@ else{draw_text(256+16+__view_get( e__VW.XView, 0 ),__view_get( e__VW.YView, 0 )+
 }
 if global.game = 2{
 draw_set_color(c_yellow)
-if oGameManager.blink = 0 or global.p1lives = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
+if Pac.blink = 0 or global.p1lives = 0{draw_text(80+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("1UP"))}
 draw_text(96+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p1score))
 if global.players > 0{
-if oGameManager.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
+if Pac.blink = 0 or global.p2lives = 0{draw_text(80+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("2UP"))}
 draw_text(96+16+__view_get( e__VW.XView, 0 )+(19*16),__view_get( e__VW.YView, 0 )+16,string_hash_to_newline(global.p2score))
 }
 draw_text(288+__view_get( e__VW.XView, 0 )+16,__view_get( e__VW.YView, 0 )+0,string_hash_to_newline("HIGH SCORE"))
@@ -476,7 +476,7 @@ if global.lvl > 6{draw_sprite(spr_Fruit,30,216-16,__view_get( e__VW.YView, 0 )+5
 }
 if global.game = 2{
 if (Pac.test = 0 and Pac.dead = 3) or (global.p1lives = 0 and global.p2lives = 0){}else{
-if oGameManager.start = 1{
+if global.start = 1{
 if global.p1lives>3 and Pauser.ignore = 0{draw_sprite(spr_Jrlife,0,__view_get( e__VW.XView, 0 ) + 136-24-12,__view_get( e__VW.YView, 0 ) + -24+568)}
 if global.p1lives>2{draw_sprite(spr_Jrlife,0,__view_get( e__VW.XView, 0 ) + 104-24-12,__view_get( e__VW.YView, 0 ) + -24+568)}
 if global.p1lives>1{draw_sprite(spr_Jrlife,0,__view_get( e__VW.XView, 0 ) + 72-24-12,__view_get( e__VW.YView, 0 ) + -24+568)}
@@ -547,45 +547,45 @@ collision_circle(16*(round(Pac.x2/16)),16*(round(Pac.y2/16)),128,Clyde,false,fal
 action_font(font0, 0);
 action_color(65535);
 action_draw_variable(global.dottotal, Blinky.xstart - 16, Blinky.ystart + 32);
-action_draw_variable(oGameManager.dotcount, Blinky.xstart - 16, Blinky.ystart + 48);
-__b__ = action_if_variable(oGameManager.start, 0, 0);
+action_draw_variable(Pac.dotcount, Blinky.xstart - 16, Blinky.ystart + 48);
+__b__ = action_if_variable(global.start, 0, 0);
 if __b__
 {
 {
-__b__ = action_if_variable(oGameManager.dotcount, oGameManager.psig, 1);
+__b__ = action_if_variable(Pac.dotcount, Pac.psig, 1);
 if __b__
 {
 {
 action_color(16759039);
-action_draw_variable(oGameManager.psig, Blinky.xstart - 16, Blinky.ystart + 64);
+action_draw_variable(Pac.psig, Blinky.xstart - 16, Blinky.ystart + 64);
 }
 }
 else
 {
 {
-__b__ = action_if_variable(oGameManager.dotcount, oGameManager.isig, 1);
+__b__ = action_if_variable(Pac.dotcount, Pac.isig, 1);
 if __b__
 {
 {
 action_color(16776960);
-action_draw_variable(oGameManager.isig, Blinky.xstart - 16, Blinky.ystart + 64);
+action_draw_variable(Pac.isig, Blinky.xstart - 16, Blinky.ystart + 64);
 }
 }
 else
 {
 {
-__b__ = action_if_variable(oGameManager.dotcount, oGameManager.csig, 1);
+__b__ = action_if_variable(Pac.dotcount, Pac.csig, 1);
 if __b__
 {
 {
 action_color(5421311);
-action_draw_variable(oGameManager.csig, Blinky.xstart - 16, Blinky.ystart + 64);
+action_draw_variable(Pac.csig, Blinky.xstart - 16, Blinky.ystart + 64);
 }
 }
 else
 {
 {
-__b__ = action_if_variable(oGameManager.dotcount, Blinky.elroydots, 1);
+__b__ = action_if_variable(Pac.dotcount, Blinky.elroydots, 1);
 if __b__
 {
 {
@@ -596,7 +596,7 @@ action_draw_variable(Blinky.elroydots, Blinky.xstart - 16, Blinky.ystart + 64);
 else
 {
 {
-__b__ = action_if_variable(oGameManager.dotcount, Blinky.elroydots2, 1);
+__b__ = action_if_variable(Pac.dotcount, Blinky.elroydots2, 1);
 if __b__
 {
 {
@@ -679,8 +679,8 @@ action_draw_variable(Fruit.chasey, __view_get( e__VW.XView, 0 ) + 400 + 64, __vi
 action_color(16777215);
 action_draw_variable(Pac.alarm[0], __view_get( e__VW.XView, 0 ) + 384, __view_get( e__VW.YView, 0 ) + 16);
 action_draw_variable(Pac.alarm[1], __view_get( e__VW.XView, 0 ) + 384, __view_get( e__VW.YView, 0 ) + 0);
-action_draw_variable(oGameManager.cycle, __view_get( e__VW.XView, 0 ) + 384, __view_get( e__VW.YView, 0 ) + 32);
-action_draw_variable(oGameManager.scatter, __view_get( e__VW.XView, 0 ) + 384 + 16, __view_get( e__VW.YView, 0 ) + 32);
+action_draw_variable(cycle, __view_get( e__VW.XView, 0 ) + 384, __view_get( e__VW.YView, 0 ) + 32);
+action_draw_variable(scatter, __view_get( e__VW.XView, 0 ) + 384 + 16, __view_get( e__VW.YView, 0 ) + 32);
 action_color(255);
 action_draw_variable(Blinky.dir, __view_get( e__VW.XView, 0 ) + 0, __view_get( e__VW.YView, 0 ) + 0);
 action_draw_variable(Blinky.resdir, __view_get( e__VW.XView, 0 ) + 0 + 16, __view_get( e__VW.YView, 0 ) + 0);
