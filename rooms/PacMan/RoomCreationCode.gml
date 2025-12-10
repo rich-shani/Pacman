@@ -8,11 +8,11 @@ global.mg = 0
 
 global.mb = 255
 
-global.mr2 = 255
+global.mr2 = 0
 
-global.mg2 = 255
+global.mg2 = 0
 
-global.mb2 = 255
+global.mb2 = 0
 
 global.dr = 255
 
@@ -21,6 +21,7 @@ global.dg = 183
 global.db = 174
 
 global.ex1 = 0
+global.ex2 = 0
 
 }
 
@@ -32,11 +33,11 @@ global.mg = 183
 
 global.mb = 174
 
-global.mr2 = 255
+global.mr2 = 0
 
-global.mg2 = 255
+global.mg2 = 0
 
-global.mb2 = 255
+global.mb2 = 0
 
 global.dr = 255
 
@@ -56,11 +57,11 @@ global.mg = 0
 
 global.mb = 255
 
-global.mr2 = 255
+global.mr2 = 53
 
-global.mg2 = 255
+global.mg2 = 181
 
-global.mb2 = 255
+global.mb2 = 252465
 
 global.dr = 240
 

@@ -9,11 +9,9 @@ function __init_global() {
 	global.mr = 255;
 	global.mg = 255;
 	global.mb = 255;
-	
-	global.mr2 = 0;
-	global.mg2 = 0;
-	global.mb2 = 0;
-	
+	global.mr2 = 255;
+	global.mg2 = 255;
+	global.mb2 = 255;
 	global.dr = 255;
 	global.dg = 255;
 	global.db = 255;

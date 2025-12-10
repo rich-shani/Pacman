@@ -1,15 +1,27 @@
 if global.rand = 0{
+if global.loop = 0{
 global.mr = 222
 global.mg = 222
 global.mb = 255
-global.mr2 = 71
-global.mg2 = 183
+global.mr2 = 222
+global.mg2 = 222
 global.mb2 = 255
 global.dr = 255
-global.dg = 255
+global.dg = 0
 global.db = 0
-global.ex1 = 64
-global.ex2 = 416
+}
+global.ex1 = 192
+if global.loop = 1{
+global.mr = 255
+global.mg = 255
+global.mb = 0
+global.mr2 = 255
+global.mg2 = 255
+global.mb2 = 0
+global.dr = 0
+global.dg = 255
+global.db = 255
+}
 }
 else{
 global.mr = irandom(255)
@@ -30,7 +42,7 @@ if global.game = 0{
 global.ex1 = 0
 }
 if global.game = 1{
-global.ex1 = 64
+global.ex1 = 192
 }
 }
 global.p1x = 0
